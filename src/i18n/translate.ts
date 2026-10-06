@@ -15,6 +15,15 @@ export type TranslateFn = (
   params?: Record<string, string | number>,
 ) => string;
 
+function escapeInterpolation(value: string | number): string {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 function resolvePath(
   messages: Record<string, unknown>,
   key: string,
@@ -40,7 +49,7 @@ export function createTranslator(locale: AppLocale): TranslateFn {
     if (typeof value === 'string') text = value;
     if (params) {
       Object.entries(params).forEach(([name, val]) => {
-        text = text.replaceAll(`{${name}}`, String(val));
+        text = text.replaceAll(`{${name}}`, escapeInterpolation(val));
       });
     }
     return text;
