@@ -32,12 +32,18 @@ export function WorldViewContainer() {
     );
   }
 
-  let retreatDisabled = false;
+  let retreatDisabled = snap.resolving;
   if (state.battle?.result) retreatDisabled = true;
+
+  const enemyLeader = state.enemyHeroes?.[0];
+  const enemyLeaderHex = enemyLeader
+    ? `${enemyLeader.q},${enemyLeader.r}`
+    : '';
 
   return (
     <WorldView
       combatChrome={combatChrome}
+      enemyLeaderHex={enemyLeaderHex}
       inBattle={Boolean(state.battle)}
       labels={worldShellLabels(t)}
       mapHeading={mapHeadingCopy(state, t)}

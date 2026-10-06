@@ -11,7 +11,9 @@
 .in-battle .map-heading,
 .in-battle .map-caption,
 .in-battle .map-compass,
-.in-battle .footer {
+.in-battle .footer,
+.in-battle .combat-roster-strip,
+.in-battle .combat-event {
   display: none;
 }
 .combat-toolbar:empty {
@@ -507,7 +509,7 @@
     min-height: 270px;
   }
   .in-battle .scene {
-    inset: 173px -15px 112px;
+    inset: 155px 0 52px;
   }
   .combat-heading {
     top: 17px;
@@ -593,14 +595,14 @@
     right: 14px;
     font-size: 9px;
   }
-  .in-battle .retreat {
+  #app.in-battle .world > .retreat.MuiButton-root {
     top: 16px;
     right: 14px;
     font-size: 9px;
   }
   .in-battle .map-tools {
     left: 13px;
-    bottom: 111px;
+    bottom: 58px;
   }
   .combat-toolbar {
     min-height: 139px;

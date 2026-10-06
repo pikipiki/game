@@ -1,4 +1,57 @@
 /* Adventure UI: native strategy-game frame, map, minimap and hero command column. */
+.scene {
+  position: relative;
+}
+.opponent-strike-bubble {
+  position: absolute;
+  z-index: 8;
+  max-width: min(220px, 72vw);
+  padding: 8px 12px;
+  margin: 0;
+  transform: translate(-50%, -100%) translateY(-10px);
+  pointer-events: none;
+  border: 2px solid var(--color-faction-enemy-strong);
+  border-radius: 14px;
+  background: linear-gradient(
+    165deg,
+    #2a1218 0%,
+    #1a0c10 100%
+  );
+  box-shadow:
+    0 6px 18px #00000080,
+    0 0 0 1px #dc9eaa55 inset;
+  animation: opponent-strike-bubble-pop 0.35s ease-out;
+}
+.opponent-strike-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 14px;
+  height: 14px;
+  transform: translateX(-50%) rotate(45deg);
+  background: #1a0c10;
+  border-right: 2px solid var(--color-faction-enemy-strong);
+  border-bottom: 2px solid var(--color-faction-enemy-strong);
+}
+.opponent-strike-bubble__text {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  color: #f5d4dc;
+}
+@keyframes opponent-strike-bubble-pop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -100%) translateY(-4px) scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%) translateY(-10px) scale(1);
+  }
+}
 body {
   background: var(--color-bg-page);
 }
@@ -61,21 +114,64 @@ body {
 .map-compass {
   display: none;
 }
-.map-tools {
-  bottom: 35px;
+.world .map-tools {
+  bottom: 74px;
   left: 8px;
+  z-index: 6;
 }
-.map-caption {
+.world .map-caption--explore {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 8px;
-  min-height: 28px;
+  width: 100%;
+  max-width: none;
+  transform: none;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 8px 10px 8px 52px;
+  min-height: 44px;
   background: #272c1eec;
   border-top: 2px ridge #9d8551;
   color: #e6d7a9;
   font-size: 10px;
+  white-space: normal;
+  z-index: 2;
+  pointer-events: none;
+}
+.map-caption__movement {
+  display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 6px;
+  margin: 0;
+  font-weight: 700;
+  font-size: 10px;
+}
+.map-caption__hint {
+  display: block;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  font-size: 9px;
+  line-height: 1.4;
+  color: #c9bc8e;
+}
+.map-caption__hint-line {
+  display: block;
+  margin-top: 2px;
+}
+.map-caption--battle {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  transform: none;
+  justify-content: center;
+  padding: 8px;
+  background: #272c1eec;
+  border-top: 2px ridge #9d8551;
 }
 .sidebar {
   padding: 10px;
@@ -110,6 +206,32 @@ body {
   padding: 7px;
   border: 3px ridge #a98f51;
   background: #20261a;
+}
+.adventure-hero > div {
+  flex: 1;
+  min-width: 0;
+}
+.adventure-hero .sidebar-citadel-btn.MuiButton-root {
+  flex-shrink: 0;
+  min-width: 52px;
+  min-height: 44px;
+  padding: 8px 12px !important;
+  font-size: 11px !important;
+  font-weight: 700;
+  color: #1a1608 !important;
+  background: linear-gradient(180deg, #f0d48c, #c9a24e) !important;
+  border: 2px ridge #ffe9b0 !important;
+  box-shadow:
+    inset 0 1px 0 #fff5d6,
+    0 2px 6px #00000055;
+}
+.adventure-hero .sidebar-citadel-btn.MuiButton-root:hover {
+  background: linear-gradient(180deg, #ffe2a0, #d4ad5a) !important;
+  filter: none;
+}
+.adventure-hero .sidebar-citadel-btn .MuiSvgIcon-root {
+  color: #3d2f12 !important;
+  font-size: 22px !important;
 }
 .hero-medallion {
   width: 46px;
@@ -192,6 +314,32 @@ body {
 }
 .location-card .button {
   margin-top: 8px;
+}
+.location-action .location-move-btn.MuiButton-root {
+  flex-shrink: 0;
+  min-width: 52px;
+  min-height: 44px;
+  padding: 8px 14px !important;
+  font-size: 12px !important;
+  font-weight: 700;
+  color: #1a1608 !important;
+  background: linear-gradient(180deg, #f0d48c, #c9a24e) !important;
+  border: 2px ridge #ffe9b0 !important;
+  box-shadow:
+    inset 0 1px 0 #fff5d6,
+    0 2px 6px #00000055;
+}
+.location-action .location-move-btn.MuiButton-root:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ffe2a0, #d4ad5a) !important;
+  filter: none;
+}
+.location-action .location-move-btn.MuiButton-root:disabled {
+  opacity: 0.45;
+  color: #2a2418 !important;
+}
+.location-action .travel-cost {
+  color: #e8dcc0;
+  font-weight: 600;
 }
 .footer {
   height: 72px;
@@ -319,7 +467,6 @@ body {
     padding: 8px;
   }
   .adventure-minimap,
-  .adventure-hero,
   .army-slots,
   .adventure-calendar,
   .sidebar .journal {
@@ -337,10 +484,55 @@ body {
   .location-card .badge {
     display: none;
   }
-  .location-card .button {
+  .location-card .location-action {
+    display: contents;
+  }
+  .location-card .travel-cost {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: center;
+    font-size: 9px;
+  }
+  .location-card .location-move-btn,
+  .location-card .location-move-btn.MuiButton-root {
     grid-column: 2;
     grid-row: 1 / span 3;
     align-self: center;
+    min-width: 108px;
+    min-height: 48px;
+    margin-top: 0;
+  }
+  .location-card .button:not(.location-move-btn),
+  .location-card .MuiButton-root:not(.location-move-btn) {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: center;
+  }
+  .adventure-hero {
+    display: flex;
+    margin-bottom: 6px;
+    padding: 6px;
+    max-height: none;
+  }
+  .adventure-hero small {
+    display: none;
+  }
+  .adventure-hero .hero-medallion,
+  .adventure-hero > div {
+    display: none;
+  }
+  .adventure-hero {
+    justify-content: stretch;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    margin-bottom: 4px;
+  }
+  .adventure-hero .sidebar-citadel-btn.MuiButton-root {
+    width: 100%;
+    margin-left: 0;
+    min-height: 48px;
+    font-size: 12px !important;
   }
   .footer {
     padding: 4px;
@@ -358,9 +550,6 @@ body {
   }
   .end-day {
     min-width: 100px;
-  }
-  .map-caption .drag-tip {
-    display: none;
   }
   .in-battle .sidebar {
     display: none;

@@ -12,6 +12,7 @@ import {
   GameActionButton,
   GameActionIconButton,
 } from '@/app/components/ui/GameActionButton';
+import { OpponentStrikeBubbleContainer } from '@/app/containers/OpponentStrikeBubbleContainer';
 import { SceneWebglOverlay } from '@/app/components/feedback/SceneWebglOverlay';
 import type {
   MapHeadingCopy,
@@ -30,6 +31,7 @@ export interface WorldViewProps {
   readonly combatChrome: CombatChromeModel | null;
   readonly sceneWebglError: boolean;
   readonly webglError: WebglErrorCopy;
+  readonly enemyLeaderHex: string;
 }
 
 export function WorldView({
@@ -42,6 +44,7 @@ export function WorldView({
   combatChrome,
   sceneWebglError,
   webglError,
+  enemyLeaderHex,
 }: WorldViewProps) {
   return (
     <Box
@@ -50,8 +53,14 @@ export function WorldView({
       component="section"
     >
       <MapHeadingView copy={mapHeading} />
-      <div className="scene" id="scene" style={{ position: 'relative' }}>
-        <div ref={sceneHostRef} style={{ position: 'absolute', inset: 0 }} />
+      <div className="scene" id="scene">
+        <div
+          className="scene-host"
+          data-enemy-leader-hex={enemyLeaderHex}
+          data-testid="adventure-scene"
+          ref={sceneHostRef}
+        />
+        <OpponentStrikeBubbleContainer />
         <SceneWebglOverlay copy={webglError} visible={sceneWebglError} />
       </div>
       <div className="map-tools">
@@ -89,7 +98,8 @@ export function WorldView({
       </div>
       <MapCaptionView
         allyLegend={labels.allyLegend}
-        dragTip={labels.dragTip}
+        dragTipEnemies={labels.dragTipEnemies}
+        dragTipPan={labels.dragTipPan}
         enemyLegend={labels.enemyLegend}
         inBattle={inBattle}
         movementLabel={movementLabel}
@@ -113,14 +123,16 @@ export function WorldView({
           model={combatChrome}
         />
       )}
-      <GameActionButton
-        gameAction="training"
-        className="training-entry"
-        startIcon={<SportsMmaIcon />}
-        variant="gold"
-      >
-        {labels.training}
-      </GameActionButton>
+      {!inBattle && (
+        <GameActionButton
+          gameAction="training"
+          className="training-entry"
+          startIcon={<SportsMmaIcon />}
+          variant="gold"
+        >
+          {labels.training}
+        </GameActionButton>
+      )}
     </Box>
   );
 }

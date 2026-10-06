@@ -24,11 +24,6 @@ import type { TownDetailModel } from '@/app/types/town-detail';
 import { TownDetailView } from '@/app/components/town/TownDetailView';
 import { SceneWebglOverlay } from '@/app/components/feedback/SceneWebglOverlay';
 
-function markerClassName(selectedId: string, buildingId: string): string {
-  if (selectedId === buildingId) return 'town-marker selected';
-  return 'town-marker';
-}
-
 function navClassName(selectedId: string, buildingId: string): string {
   if (selectedId === buildingId) return 'selected';
   return '';
@@ -137,20 +132,6 @@ export function TownView({
             >
               <GameIcon name="target" />
             </GameActionIconButton>
-          </div>
-          <div className="town-building-markers">
-            {BUILDINGS.map((building) => (
-              <GameActionButton
-                key={building.id}
-                actionId={building.id}
-                aria-label={labels.enterBuildingAria(building.name)}
-                className={markerClassName(townBuilding, building.id)}
-                gameAction="town-building"
-                variant="text"
-              >
-                {building.name}
-              </GameActionButton>
-            ))}
           </div>
           <p className="town-view-tip">{labels.viewTip}</p>
         </div>

@@ -18,7 +18,8 @@ export function GameHeaderContainer() {
     <GameHeaderView
       crystals={formatNumber(state.crystals)}
       gold={formatNumber(state.gold)}
-      labels={headerShellLabels(t)}
+      labels={headerShellLabels(t, snap.locale)}
+      locale={snap.locale}
       mana={`${state.mana}/${maxMana(state)}`}
       soundMuted={audio.muted}
       soundToggleLabel={soundToggleAria(audio.muted, t)}

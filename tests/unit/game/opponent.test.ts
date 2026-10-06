@@ -166,6 +166,12 @@ describe('Tour stratégique adverse automatique', () => {
     expect(attack.battle?.siege?.wallHp).toBe(180);
     expect(loadGame(JSON.stringify(attack))).toEqual(attack);
   });
+  it('retraite sans enchaîner un second combat adverse', () => {
+    const state = siegeScenario();
+    state.enemyQueue = ['enemy-dawn'];
+    const retreated = reduce(state, { type: 'retreat' });
+    expect(retreated.battle).toBeNull();
+  });
   it(
     'reprend automatiquement le reste de l’équipe après une défense',
     () => {

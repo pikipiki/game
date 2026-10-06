@@ -586,7 +586,9 @@ function settleOpponentBattle(
   }
   game.battle = null;
   revealExplored(game);
-  playOpponents(game);
+  if (!retreat) {
+    playOpponents(game);
+  }
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity -- reducer principal

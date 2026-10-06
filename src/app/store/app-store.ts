@@ -14,6 +14,12 @@ export interface AppSnapshot {
   storageWorks: boolean;
   sandbox: boolean;
   resolving: boolean;
+  /** Carte visible : pause avant combat adverse (fin de journée). */
+  opponentStrikePause: boolean;
+  opponentStrikeBubble: {
+    enemyId: string;
+    message: string;
+  } | null;
   townOpen: boolean;
   townPanel: boolean;
   townBuilding: BuildingId;

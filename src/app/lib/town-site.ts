@@ -1,5 +1,14 @@
-import { SITES, key } from '@/game/data';
+import { SITES, key, type Hex } from '@/game/data';
 import type { GameState } from '@/game/engine';
+
+/** Château allié sur cette case (pas garnison ennemie). */
+export function ownedCastleAt(hex: Hex, state: GameState) {
+  const site = SITES.find((entry) => key(entry) === key(hex));
+  if (!site || site.kind !== 'castle') return undefined;
+  if (!state.owned.includes(site.id)) return undefined;
+  if (state.enemyOwned?.includes(site.id)) return undefined;
+  return site;
+}
 
 export function homeCastleSite(state: GameState) {
   return SITES.find(

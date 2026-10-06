@@ -37,4 +37,6 @@ export interface AdventureSidebarViewModel {
   readonly journalEnemies: string;
   readonly minimapAria: string;
   readonly armyAria: string;
+  readonly citadelAria: string;
+  readonly citadelShort: string;
 }

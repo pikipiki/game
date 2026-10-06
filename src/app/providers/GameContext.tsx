@@ -21,9 +21,10 @@ export interface GameRuntime {
   audio: GameAudio;
   audioUiTick: number;
   bumpAudioUi: () => void;
-  toast: (message: string) => void;
+  toast: (message: string, durationMs?: number) => void;
   toastOpen: boolean;
   toastMessage: string;
+  toastDurationMs: number;
   dismissToast: () => void;
   dispatch: (action: Action) => Promise<void>;
   persist: () => void;

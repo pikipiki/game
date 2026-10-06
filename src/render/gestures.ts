@@ -80,6 +80,10 @@ export class PointerGestures {
     return this.points.size > 0;
   }
 
+  get pointerCount() {
+    return this.points.size;
+  }
+
   private separation() {
     const [pointA, pointB] = [...this.points.values()];
     if (pointA && pointB) {
@@ -99,16 +103,49 @@ export function bindSceneGestures(
   },
 ) {
   const gestures = new PointerGestures();
+  const captured = new Set<number>();
+  let touchPinching = false;
+  let touchPinchDistance = 0;
+
   const point = (event: PointerEvent) => ({
     x: event.clientX,
     y: event.clientY,
   });
+  const releaseCapture = (pointerId: number) => {
+    if (!captured.has(pointerId)) return;
+    try {
+      canvas.releasePointerCapture(pointerId);
+    } catch {
+      /* ignore */
+    }
+    captured.delete(pointerId);
+  };
+  const touchSpan = (touches: TouchList) => {
+    if (touches.length < 2) return 0;
+    const a = touches[0]!;
+    const b = touches[1]!;
+    return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+  };
   const down = (event: PointerEvent) => {
-    if (event.button !== 0) return;
+    if (event.button !== 0 || touchPinching) return;
     gestures.down(event.pointerId, point(event));
-    canvas.setPointerCapture(event.pointerId);
+    if (gestures.pointerCount >= 2) {
+      for (const pointerId of [...captured]) {
+        releaseCapture(pointerId);
+      }
+      return;
+    }
+    if (event.pointerType === 'mouse') {
+      try {
+        canvas.setPointerCapture(event.pointerId);
+        captured.add(event.pointerId);
+      } catch {
+        /* ignore */
+      }
+    }
   };
   const move = (event: PointerEvent) => {
+    if (touchPinching) return;
     const action = gestures.move(event.pointerId, point(event));
     if (action?.type === 'pinch') callbacks.zoom(action.factor);
     if (action?.type === 'pan') {
@@ -117,17 +154,56 @@ export function bindSceneGestures(
     if (!gestures.active) callbacks.hover?.(event.clientX, event.clientY);
   };
   const up = (event: PointerEvent) => {
+    releaseCapture(event.pointerId);
+    if (touchPinching) {
+      gestures.up(event.pointerId, point(event), true);
+      return;
+    }
     const action = gestures.up(event.pointerId, point(event));
     if (action?.type === 'tap') callbacks.tap(action.x, action.y);
   };
   const cancel = (event: PointerEvent) => {
+    releaseCapture(event.pointerId);
     gestures.up(event.pointerId, point(event), true);
   };
-  const reset = () => gestures.reset();
+  const reset = () => {
+    for (const pointerId of [...captured]) {
+      releaseCapture(pointerId);
+    }
+    touchPinching = false;
+    touchPinchDistance = 0;
+    gestures.reset();
+  };
   const wheel = (event: WheelEvent) => {
     event.preventDefault();
     const delta = Math.max(-100, Math.min(100, event.deltaY));
     callbacks.zoom(Math.exp(-delta * 0.001));
+  };
+  const onTouchStart = (event: TouchEvent) => {
+    if (event.touches.length < 2) return;
+    event.preventDefault();
+    gestures.reset();
+    for (const pointerId of [...captured]) {
+      releaseCapture(pointerId);
+    }
+    touchPinching = true;
+    touchPinchDistance = touchSpan(event.touches);
+  };
+  const onTouchMove = (event: TouchEvent) => {
+    if (!touchPinching || event.touches.length < 2) return;
+    event.preventDefault();
+    const span = touchSpan(event.touches);
+    if (touchPinchDistance > 1 && span > 1) {
+      callbacks.zoom(span / touchPinchDistance);
+    }
+    touchPinchDistance = span;
+  };
+  const onTouchEnd = (event: TouchEvent) => {
+    if (event.touches.length < 2) {
+      touchPinching = false;
+      touchPinchDistance = 0;
+      gestures.reset();
+    }
   };
   canvas.addEventListener('pointerdown', down);
   canvas.addEventListener('pointermove', move);
@@ -135,6 +211,10 @@ export function bindSceneGestures(
   canvas.addEventListener('pointercancel', cancel);
   canvas.addEventListener('lostpointercapture', cancel);
   canvas.addEventListener('wheel', wheel, { passive: false });
+  canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+  canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+  canvas.addEventListener('touchend', onTouchEnd);
+  canvas.addEventListener('touchcancel', onTouchEnd);
   window.addEventListener('blur', reset);
   return {
     reset,
@@ -146,6 +226,10 @@ export function bindSceneGestures(
       canvas.removeEventListener('pointercancel', cancel);
       canvas.removeEventListener('lostpointercapture', cancel);
       canvas.removeEventListener('wheel', wheel);
+      canvas.removeEventListener('touchstart', onTouchStart);
+      canvas.removeEventListener('touchmove', onTouchMove);
+      canvas.removeEventListener('touchend', onTouchEnd);
+      canvas.removeEventListener('touchcancel', onTouchEnd);
       window.removeEventListener('blur', reset);
     },
   };

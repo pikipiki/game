@@ -14,7 +14,14 @@ export function useAppShellEffects(): void {
     mount.classList.toggle('in-battle', Boolean(state.battle));
     mount.classList.toggle('in-town', snap.townOpen);
     mount.classList.toggle('resolving', snap.resolving);
-  }, [state.battle, snap.townOpen, snap.resolving, mountRef]);
+    mount.classList.toggle('opponent-strike-pause', snap.opponentStrikePause);
+  }, [
+    state.battle,
+    snap.townOpen,
+    snap.resolving,
+    snap.opponentStrikePause,
+    mountRef,
+  ]);
 
   useEffect(() => {
     if (state.battle && snap.townOpen) {

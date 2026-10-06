@@ -8,6 +8,11 @@
     "fr": "Français",
     "en": "English"
   },
+  "alerts": {
+    "enemyAttack": "An enemy is attacking you!",
+    "enemySiege": "An enemy is besieging your castle!",
+    "endDayIncome": "Day {day} · +{gold} gold"
+  },
   "skipLink": "Skip to game panel",
   "errors": {
     "webglTitle": "This game needs WebGL",
@@ -16,6 +21,8 @@
   "header": {
     "brand": "The Plush Kingdoms",
     "settingsAria": "Save and settings",
+    "localeToggleToEn": "Switch to English",
+    "localeToggleToFr": "Switch to French",
     "soundOn": "Mute sound",
     "soundOff": "Turn sound on"
   },
@@ -42,7 +49,8 @@
     "training": "Training battle",
     "allyLegend": "Your army",
     "enemyLegend": "Enemy",
-    "dragTip": "Drag to pan the map · Red banners: enemies",
+    "dragTipPan": "Drag to pan the map",
+    "dragTipEnemies": "Red banners: enemies",
     "movement": "{current}/{max} moves",
     "movementMana": "{moveCurrent}/{moveMax} moves · {manaCurrent}/{manaMax} mana",
     "campaignTag": "CAMPAIGN · CHAPTER I",
@@ -65,7 +73,9 @@
     "journalEnemies": "{count} enemy heroes · Mine: {mine}",
     "mineEnemy": "enemy",
     "mineAlly": "allied",
-    "mineNeutral": "neutral"
+    "mineNeutral": "neutral",
+    "citadelAria": "Open the citadel",
+    "citadelShort": "Citadel"
   },
   "creature": {
     "guardian": "GUARDIAN",
