@@ -8,13 +8,13 @@ describe('Textures locales du jeu', () => {
       'battle-grass.png',
       'battle-mountain.png',
     ])
-      {expect(h3Image(name)).toMatch(/^data:image\/png;base64,/);}
+      {expect(h3Image(name)).toMatch(/^(data:image\/png;base64,|\/|\.\/|https?:)/);}
   });
   it('fournit les variantes de terrain utilisées par la carte continue', () => {
     for (const kind of ['grass', 'sand', 'water'] as const) {
       expect(assets[kind].frames.length).toBeGreaterThan(1);
       for (const frame of assets[kind].frames)
-        {expect(h3Image(frame)).toMatch(/^data:image\/png;base64,/);}
+        {expect(h3Image(frame)).toMatch(/^(data:image\/png;base64,|\/|\.\/|https?:)/);}
     }
   });
   it('ne charge pas de panorama de ville ni sprite de bâtiment 3D', () => {

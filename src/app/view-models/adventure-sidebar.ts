@@ -5,7 +5,7 @@ import { createTranslator, type AppLocale } from '@/i18n/translate';
 import {
   getCreature,
   SITES,
-  WORLD,
+  worldTileAt,
   key,
   type Hex,
 } from '@/game/data';
@@ -75,9 +75,7 @@ export function buildAdventureSidebarViewModel(
   for (let cellIndex = 0; cellIndex < 81; cellIndex += 1) {
     const hexQ = (cellIndex % 9) - 4;
     const hexR = Math.floor(cellIndex / 9) - 4;
-    const tile = WORLD.find(
-      (worldTile) => worldTile.q === hexQ && worldTile.r === hexR,
-    );
+    const tile = worldTileAt({ q: hexQ, r: hexR });
     const known = Boolean(tile && state.explored.includes(key(tile)));
     const site = SITES.find(
       (siteEntry) => siteEntry.q === hexQ && siteEntry.r === hexR,

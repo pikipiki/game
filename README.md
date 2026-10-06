@@ -18,7 +18,7 @@ pnpm dev
 pnpm check
 ```
 
-`pnpm check` exécute ESLint, les tests Vitest, TypeScript strict puis le build Vite. `pnpm build` produit `dist/index.html`, un fichier autonome. Après modification, recopiez-le sur `JOUER.html` pour actualiser cette version.
+`pnpm check` exécute ESLint, les tests Vitest, TypeScript strict puis le build Vite (version Netlify découpée). `pnpm build` produit un `dist/` avec HTML, JS et assets séparés (meilleur cache et démarrage). `pnpm build:jouer` compile un fichier unique et met à jour `JOUER.html` pour le jeu hors ligne.
 
 ## Netlify
 

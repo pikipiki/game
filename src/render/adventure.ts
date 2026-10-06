@@ -1,5 +1,12 @@
 import * as THREE from 'three';
-import { WORLD, SITES, WALKABLE, key, pathTo, type Hex } from '../game/data';
+import {
+  SITES,
+  WALKABLE,
+  worldTileAt,
+  key,
+  pathTo,
+  type Hex,
+} from '../game/data';
 import type { GameState } from '../game/engine';
 import { creatureModel, type Pick } from './scene';
 import { h3Texture } from './h3-assets';
@@ -13,7 +20,7 @@ export function adventureCellAt(posX: number, posY: number): Hex | null {
   const hexQ = Math.floor(posX / CELL + 0.5),
     hexR = Math.floor(-posY / CELL + 0.5);
   return (function ternaryValue() {
-    if (WORLD.some((tile) => tile.q === hexQ && tile.r === hexR)) {
+    if (worldTileAt({ q: hexQ, r: hexR })) {
       return { q: hexQ, r: hexR };
     }
     return null;
@@ -169,7 +176,7 @@ export class AdventureScene {
     this.clear();
     for (let hexR = -4; hexR <= 4; hexR++) {
       for (let hexQ = -4; hexQ <= 4; hexQ++) {
-        const tile = WORLD.find((tile) => tile.q === hexQ && tile.r === hexR),
+        const tile = worldTileAt({ q: hexQ, r: hexR }),
           known = !!tile && state.explored.includes(key(tile));
         const kind = (function ternaryValue() {
           if (tile?.terrain === 'water') {

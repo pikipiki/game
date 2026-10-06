@@ -4,8 +4,8 @@ import type { TranslateFn } from '@/i18n/translate';
 import {
   getCreature,
   SITES,
-  WORLD,
   WALKABLE,
+  worldTileAt,
   key,
   pathTo,
   type Hex,
@@ -33,7 +33,7 @@ function locationEyebrow(
 }
 
 function terrainTitle(target: Hex, t: TranslateFn): string {
-  const tile = WORLD.find((worldTile) => key(worldTile) === key(target));
+  const tile = worldTileAt(target);
   if (tile?.terrain === 'forest') return t('location.forestTitle');
   return t('location.grassTitle');
 }

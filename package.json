@@ -11,6 +11,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
+    "build:single": "tsc --noEmit && vite build --config vite.config.single.ts",
+    "build:jouer": "pnpm build:single && node scripts/copy-jouer.mjs",
     "preview": "vite preview --host 0.0.0.0",
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run",

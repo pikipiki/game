@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import atlasUrl from '../assets/material-atlas.png?inline';
+import atlasUrl from '../assets/material-atlas.png';
 import { h3Image } from './h3-assets';
 
 export type MaterialKind = 'stone' | 'roof' | 'wood' | 'grass';

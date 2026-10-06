@@ -1,14 +1,33 @@
 export type MusicTrack = 'adventure' | 'town' | 'battle';
 export type SoundEffect = 'click' | 'move' | 'attack' | 'spell' | 'catapult';
-const files = import.meta.glob<string>('./assets/audio/*.{mp3,wav}', {
-  eager: true,
-  query: '?inline',
-  import: 'default',
-});
+
+const musicLoaders: Record<
+  MusicTrack,
+  () => Promise<{ default: string }>
+> = {
+  adventure: () => import('./assets/audio/adventure.mp3'),
+  battle: () => import('./assets/audio/battle.mp3'),
+  town: () => import('./assets/audio/town.mp3'),
+};
+
+const effectLoaders: Record<
+  SoundEffect,
+  () => Promise<{ default: string }>
+> = {
+  attack: () => import('./assets/audio/attack.wav'),
+  catapult: () => import('./assets/audio/catapult.wav'),
+  click: () => import('./assets/audio/click.wav'),
+  move: () => import('./assets/audio/move.wav'),
+  spell: () => import('./assets/audio/spell.wav'),
+};
+
 export class GameAudio {
   private readonly music = document.createElement('audio');
   private unlocked = false;
   private track: MusicTrack = 'adventure';
+  private musicLoadGen = 0;
+  private readonly musicSrcCache = new Map<MusicTrack, string>();
+  private readonly effectSrcCache = new Map<SoundEffect, string>();
   muted = false;
   musicVolume = 0.28;
   effectsVolume = 0.55;
@@ -46,15 +65,27 @@ export class GameAudio {
     this.resume();
   }
   setTrack(track: MusicTrack) {
-    if (this.track !== track || !this.music.src) {
-      this.track = track;
-      const musicSrc = files[`./assets/audio/${track}.mp3`];
-      if (musicSrc) {
-        this.music.src = musicSrc;
-      }
-      this.music.dataset.track = track;
-      this.music.load();
+    if (this.track === track && this.music.src) {
+      this.resume();
+      return;
     }
+    this.track = track;
+    const cached = this.musicSrcCache.get(track);
+    if (cached) {
+      this.applyMusicSrc(track, cached);
+      return;
+    }
+    const gen = ++this.musicLoadGen;
+    void musicLoaders[track]().then((mod) => {
+      if (gen !== this.musicLoadGen || this.track !== track) return;
+      this.musicSrcCache.set(track, mod.default);
+      this.applyMusicSrc(track, mod.default);
+    });
+  }
+  private applyMusicSrc(track: MusicTrack, src: string) {
+    this.music.src = src;
+    this.music.dataset.track = track;
+    this.music.load();
     this.resume();
   }
   private resume() {
@@ -67,7 +98,17 @@ export class GameAudio {
   }
   effect(name: SoundEffect) {
     if (!this.unlocked || this.muted || this.effectsVolume === 0) return;
-    const sound = new Audio(files[`./assets/audio/${name}.wav`]);
+    void this.playEffect(name);
+  }
+  private async playEffect(name: SoundEffect) {
+    let src = this.effectSrcCache.get(name);
+    if (!src) {
+      const mod = await effectLoaders[name]();
+      src = mod.default;
+      this.effectSrcCache.set(name, src);
+    }
+    const sound = document.createElement('audio');
+    sound.src = src;
     sound.volume = this.effectsVolume;
     void sound.play().catch(() => {});
   }

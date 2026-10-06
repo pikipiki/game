@@ -1,4 +1,4 @@
-import { distance } from '../geo';
+import { distance, key } from '../geo';
 import { SITES } from './sites';
 import type { Hex } from '../types/hex';
 import type { Terrain, Tile } from '../types/world';
@@ -46,3 +46,9 @@ for (let col = -4; col <= 4; col++)
 export const WALKABLE = WORLD.filter(
   (tile) => tile.terrain !== 'water' && tile.terrain !== 'mountain',
 );
+
+export const WORLD_BY_KEY = new Map(WORLD.map((tile) => [key(tile), tile]));
+
+export function worldTileAt(hex: Hex): Tile | undefined {
+  return WORLD_BY_KEY.get(key(hex));
+}

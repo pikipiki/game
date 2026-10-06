@@ -16,7 +16,8 @@ describe('Audio du jeu', () => {
     vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {});
     vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {});
   });
-  afterEach(() => {
+  afterEach(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
     document
       .querySelectorAll('[data-role="game-music"]')
       .forEach((node) => node.remove());
@@ -38,17 +39,22 @@ describe('Audio du jeu', () => {
     expect(JSON.parse(localStorage.getItem('pompon-audio')!).muted).toBe(false);
   });
 
-  it('déverrouille la lecture après un geste et change de piste', () => {
+  it('déverrouille la lecture après un geste et change de piste', async () => {
     const audio = new GameAudio();
     audio.effect('click');
     expect(HTMLMediaElement.prototype.play).not.toHaveBeenCalled();
     audio.unlock();
     audio.setTrack('battle');
     audio.setTrack('town');
+    await vi.waitFor(() =>
+      expect(HTMLMediaElement.prototype.play).toHaveBeenCalled(),
+    );
     audio.setVolume('music', 0.4);
     audio.setVolume('effects', 1.2);
     audio.effect('attack');
-    expect(HTMLMediaElement.prototype.play).toHaveBeenCalled();
+    await vi.waitFor(() =>
+      expect(HTMLMediaElement.prototype.play).toHaveBeenCalled(),
+    );
     Object.defineProperty(document, 'hidden', {
       configurable: true,
       value: true,
@@ -63,7 +69,7 @@ describe('Audio du jeu', () => {
     expect(HTMLMediaElement.prototype.pause).toHaveBeenCalled();
   });
 
-  it('ignore les effets silencieux et les erreurs de lecture', () => {
+  it('ignore les effets silencieux et les erreurs de lecture', async () => {
     const audio = new GameAudio();
     document.dispatchEvent(new PointerEvent('pointerdown'));
     document.dispatchEvent(new KeyboardEvent('keydown'));
@@ -75,7 +81,9 @@ describe('Audio du jeu', () => {
     );
     audio.unlock();
     audio.setTrack('adventure');
-    expect(HTMLMediaElement.prototype.play).toHaveBeenCalled();
+    await vi.waitFor(() =>
+      expect(HTMLMediaElement.prototype.play).toHaveBeenCalled(),
+    );
   });
 
   it('ignore les préférences corrompues et les écritures impossibles', () => {
