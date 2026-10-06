@@ -1,0 +1,3544 @@
+:root {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  color: #eeeade;
+  background: #121a24;
+  font-synthesis: none;
+  --bg: #121a24;
+  --surface: #1b2530;
+  --surface2: #232e38;
+  --line: #ffffff12;
+  --muted: #9aa7ae;
+  --gold: #e2c58d;
+  --purple: #b4a0db;
+  --mint: #9bcbb0;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+button {
+  border: 0;
+}
+svg {
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 8px 0 16px;
+}
+h1,
+h2,
+h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  margin: 0;
+}
+h1 {
+  font-size: 36px;
+  letter-spacing: -0.8px;
+}
+h2 {
+  font-size: 25px;
+}
+h3 {
+  font-size: 21px;
+}
+.eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.centered {
+  text-align: center;
+  justify-content: center;
+}
+.full {
+  width: 100%;
+}
+.header {
+  height: 84px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 34px;
+  gap: 24px;
+  background: #151e28;
+}
+.brand {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  min-width: 245px;
+  color: var(--gold);
+}
+.brand > svg {
+  border: 1px solid #ddc38c4a;
+  border-radius: 10px;
+  box-sizing: content-box;
+  padding: 10px;
+}
+.brand > span {
+  font-family: Georgia, serif;
+  letter-spacing: 2px;
+  font-size: 12px;
+  color: #e9e3d5;
+}
+.brand small {
+  display: block;
+  font-size: 19px;
+  letter-spacing: 3px;
+  margin-top: 4px;
+}
+.resources {
+  display: flex;
+  gap: 32px;
+  margin-left: auto;
+  margin-right: 24px;
+}
+.resource {
+  display: grid;
+  grid-template-columns: 22px auto;
+  column-gap: 9px;
+  align-items: center;
+}
+.resource svg {
+  grid-row: 1/3;
+}
+.resource > span {
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.resource small {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 3px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.gold-text {
+  color: var(--gold);
+}
+.purple-text {
+  color: var(--purple);
+}
+.mint-text {
+  color: var(--mint);
+}
+.icon-btn {
+  background: #ffffff05;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  width: 39px;
+  height: 39px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-btn:hover {
+  background: #ffffff12;
+  border-color: #ddc38c55;
+}
+.layout {
+  display: flex;
+  height: calc(100dvh - 171px);
+  min-height: 530px;
+}
+.world {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 48%, #29444a 0%, #20323c 38%, #16222d 73%);
+}
+.world:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#c4dbb535 0.6px, transparent 0.6px);
+  background-size: 70px 70px;
+  pointer-events: none;
+  opacity: 0.2;
+}
+.scene {
+  position: absolute;
+  inset: 70px 0 30px;
+  touch-action: none;
+}
+.scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.map-heading {
+  position: absolute;
+  z-index: 1;
+  top: 26px;
+  left: 34px;
+  pointer-events: none;
+}
+.region-tag {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  color: #b1c9bb;
+  margin-bottom: 11px;
+}
+.region-tag i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--mint);
+}
+.map-heading p {
+  font-size: 12px;
+  margin-top: 7px;
+}
+.map-tools {
+  position: absolute;
+  left: 25px;
+  bottom: 28px;
+  display: flex;
+  gap: 6px;
+}
+.map-tools .icon-btn {
+  background: #17232cdf;
+  box-shadow: 0 4px 14px #0002;
+}
+.map-caption {
+  position: absolute;
+  bottom: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #bfcdc7;
+  white-space: nowrap;
+}
+.caption-divider {
+  margin: 0 5px;
+  color: #7f9394;
+}
+.map-compass {
+  position: absolute;
+  right: 29px;
+  bottom: 20px;
+  font-size: 52px;
+  color: #c9c39c6e;
+  font-family: Georgia, serif;
+}
+.map-compass span {
+  position: absolute;
+  left: 18px;
+  top: -2px;
+  font: 10px sans-serif;
+  color: #bec6b2;
+}
+.sidebar {
+  width: 340px;
+  padding: 23px 22px;
+  background: #17212b;
+  border-left: 1px solid var(--line);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  flex-shrink: 0;
+}
+.day-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 22px;
+  margin-bottom: 19px;
+  border-bottom: 1px solid var(--line);
+}
+.day-card h2 {
+  font-size: 22px;
+  margin-top: 8px;
+}
+.day-card h2 span {
+  font: 11px sans-serif;
+  color: var(--muted);
+}
+.day-card > svg {
+  color: var(--gold);
+}
+.location-card {
+  border: 1px solid #d9c7a229;
+  border-radius: 13px;
+  background: linear-gradient(140deg, #2b3540aa, #1e2a32);
+  padding: 19px;
+}
+.location-card h2 {
+  font-size: 23px;
+  margin-top: 12px;
+  line-height: 1.2;
+}
+.location-card p {
+  font-size: 12px;
+  margin-bottom: 17px;
+}
+.location-action {
+  display: flex;
+  gap: 9px;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ffffff0d;
+  padding-top: 14px;
+}
+.travel-cost {
+  display: flex;
+  gap: 4px;
+  font-size: 10px;
+  color: #b3c0be;
+}
+.button {
+  min-height: 40px;
+  border-radius: 8px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 14px;
+  transition:
+    background 0.15s,
+    transform 0.15s;
+  border: 1px solid transparent;
+}
+.button:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.button.primary {
+  background: #b4a0d9;
+  color: #1b1630;
+}
+.button.gold {
+  background: var(--gold);
+  color: #30291c;
+}
+.button.subtle {
+  background: #ffffff05;
+  border-color: #ffffff18;
+  color: #d9e0d7;
+}
+.button.danger {
+  background: #c68b93;
+  color: #29171d;
+}
+.button.large {
+  min-height: 51px;
+  font-size: 14px;
+}
+.button.selected {
+  outline: 2px solid #fff2b7;
+  outline-offset: 2px;
+}
+.section-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 1.1px;
+  color: #a6b2b9;
+  margin: 24px 0 13px;
+}
+.section-label > span + span {
+  letter-spacing: 0;
+  font-size: 11px;
+}
+.text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--gold);
+  background: none;
+  padding: 4px 0;
+}
+.army-card {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  gap: 12px;
+  align-items: center;
+  background: #202b35;
+  border: 1px solid #ffffff0b;
+  border-radius: 11px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+.army-card:hover {
+  border-color: #b8a1db66;
+  background: #25303d;
+}
+.avatar {
+  width: 62px;
+  height: 65px;
+  border-radius: 9px;
+  background: radial-gradient(circle, #9584ba3b, #252632);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.portrait {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 8px 8px #0002);
+}
+.army-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+.army-info small {
+  font-size: 8px;
+  letter-spacing: 0.8px;
+  color: var(--muted);
+}
+.army-info strong {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: 17px;
+}
+.army-info > span {
+  font-size: 9px;
+  color: #b9c7b0;
+}
+.army-count {
+  text-align: center;
+  font-size: 21px;
+  font-family: Georgia, serif;
+  color: #e3d5ae;
+  min-width: 25px;
+  font-weight: 400;
+}
+.army-count small {
+  font: 8px sans-serif;
+  color: var(--muted);
+  display: block;
+  margin-top: 4px;
+}
+.quest-card {
+  margin-top: 23px;
+  padding: 18px 0 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 11px;
+}
+.quest-icon {
+  color: var(--gold);
+  background: #e4c78e10;
+  border: 1px solid #e4c78e25;
+  border-radius: 9px;
+  height: 38px;
+  width: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.quest-card strong {
+  font-size: 12px;
+  font-weight: 500;
+  display: block;
+  margin-top: 7px;
+}
+.quest-card .eyebrow {
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.quest-card p {
+  font-size: 10px;
+  margin: 6px 0 11px;
+}
+.progress {
+  height: 3px;
+  border-radius: 8px;
+  background: #ffffff0f;
+  overflow: hidden;
+}
+.progress i {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+}
+.journal {
+  border-top: 1px solid var(--line);
+  padding-top: 17px;
+}
+.journal .eyebrow {
+  color: #899ba2;
+  font-size: 8px;
+}
+.journal p {
+  font-size: 11px;
+  margin-bottom: 0;
+}
+.footer {
+  height: 87px;
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  padding: 0 28px;
+  border-top: 1px solid var(--line);
+  background: #151e28;
+}
+.footer nav {
+  display: flex;
+  gap: 8px;
+}
+.nav-btn {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  padding: 14px 19px;
+  border-radius: 10px;
+  background: transparent;
+  color: #9eaab4;
+  font-size: 12px;
+}
+.nav-btn:hover {
+  color: #e8e1d3;
+  background: #ffffff05;
+}
+.nav-btn.active {
+  color: var(--gold);
+  background: #dec08a0c;
+  border: 1px solid #dec08a22;
+}
+.save-indicator {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font-size: 10px;
+  color: #7e929b;
+  margin-left: auto;
+}
+.save-indicator > i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #98b6a3;
+}
+.save-indicator > i.unsaved {
+  background: #c68b93;
+}
+.save-indicator .text-button {
+  margin-left: 9px;
+}
+.end-day {
+  padding: 10px 18px;
+  min-width: 181px;
+  gap: 13px;
+  min-height: 49px;
+}
+.end-day > span {
+  font-size: 9px;
+  text-align: left;
+  font-weight: 400;
+}
+.end-day b {
+  display: block;
+  font-size: 12px;
+  margin-top: 3px;
+  font-weight: 600;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: #080f18b5;
+  backdrop-filter: blur(8px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal {
+  width: min(550px, 100%);
+  max-height: calc(100dvh - 48px);
+  background: #1b2631;
+  border: 1px solid #d0c2a232;
+  border-radius: 20px;
+  box-shadow: 0 25px 100px #0006;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.modal.wide {
+  width: min(800px, 100%);
+}
+.modal-header {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: #1b2631f5;
+  z-index: 2;
+}
+.modal-header h2 {
+  font-size: 22px;
+}
+.modal-body {
+  padding: 24px;
+}
+.modal-body > .full {
+  margin-top: 10px;
+}
+.modal-subtitle {
+  margin-top: 0;
+}
+.intro-modal .modal-header {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.intro-modal .modal-header h2 {
+  font: 11px sans-serif;
+  color: var(--muted);
+}
+.intro-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  background: radial-gradient(ellipse, #aa88d126, transparent 70%);
+  height: 160px;
+  margin: -4px 0 14px;
+}
+.intro-art .portrait {
+  height: 155px;
+  width: 155px;
+}
+.intro-art > span {
+  color: var(--gold);
+  font-size: 27px;
+}
+.intro-title {
+  font-size: 34px;
+  text-align: center;
+  line-height: 1.17;
+  letter-spacing: -0.4px;
+  margin: 16px 0;
+}
+.intro-copy {
+  text-align: center;
+  margin: 13px 0 22px;
+}
+.intro-features {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  font-size: 10px;
+  color: #b4c0bd;
+  margin: 0 0 28px;
+}
+.intro-features > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.intro-features svg {
+  color: var(--gold);
+  width: 16px;
+}
+.fine-print {
+  font-size: 10px;
+  color: #8999a2;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+.notice {
+  background: #ae99d510;
+  border: 1px solid #ae99d526;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 17px 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #c9c1dd;
+}
+.notice svg {
+  margin-right: 7px;
+}
+.creature-hero {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  border-radius: 13px;
+  background: radial-gradient(ellipse at 15% 50%, #9380c433, transparent 75%);
+  padding: 10px;
+}
+.creature-hero > .portrait {
+  width: 165px;
+  height: 165px;
+  flex-shrink: 0;
+}
+.creature-hero h2 {
+  font-size: 32px;
+  margin-top: 9px;
+}
+.creature-hero p {
+  font-size: 12px;
+}
+.badge {
+  display: inline-block;
+  border: 1px solid #dec38c40;
+  background: #dec38c0a;
+  color: var(--gold);
+  font-size: 10px;
+  border-radius: 20px;
+  padding: 6px 10px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 22px 0;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  overflow: hidden;
+}
+.stats-grid > span {
+  padding: 16px 8px;
+  text-align: center;
+  border-right: 1px solid var(--line);
+}
+.stats-grid > span:last-child {
+  border: 0;
+}
+.stats-grid svg {
+  color: var(--purple);
+  width: 17px;
+  margin-right: 6px;
+}
+.stats-grid b {
+  font-size: 20px;
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+.stats-grid small {
+  display: block;
+  margin-top: 9px;
+  font-size: 9px;
+  color: var(--muted);
+}
+.evolution-card,
+.recruit-card,
+.building-card {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  background: #ffffff03;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  margin: 10px 0;
+}
+.evolution-card > .portrait,
+.recruit-card > .portrait {
+  width: 80px;
+  height: 85px;
+  flex-shrink: 0;
+}
+.evolution-card > div,
+.recruit-card > div,
+.building-card > div {
+  flex: 1;
+}
+.evolution-card h3,
+.recruit-card h3,
+.building-card h3 {
+  font-size: 21px;
+}
+.evolution-card p,
+.recruit-card p,
+.building-card p {
+  font-size: 11px;
+  margin: 5px 0 8px;
+}
+.evolution-card small,
+.recruit-card small,
+.building-card small {
+  font-size: 10px;
+  color: var(--gold);
+}
+.castle-banner {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: linear-gradient(120deg, #d9c08e14, transparent);
+  border: 1px solid #d9c08e22;
+  padding: 22px;
+  border-radius: 12px;
+}
+.castle-banner > svg {
+  color: var(--gold);
+}
+.castle-banner h2 {
+  margin-top: 8px;
+  font-size: 28px;
+}
+.castle-banner p {
+  margin-bottom: 0;
+}
+.building-card > svg {
+  color: var(--gold);
+}
+.codex-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+.codex-card {
+  border: 1px solid var(--line);
+  padding: 18px;
+  border-radius: 13px;
+  background: radial-gradient(ellipse at 50% 0%, #a58ac512, transparent);
+}
+.codex-card > .portrait {
+  height: 130px;
+  margin-bottom: 18px;
+}
+.codex-card h3 {
+  margin-top: 10px;
+  font-size: 23px;
+}
+.codex-card p {
+  font-size: 11px;
+  margin-bottom: 12px;
+}
+.codex-card small {
+  color: #bda5df;
+  font-size: 9px;
+  line-height: 1.6;
+  display: block;
+}
+.codex-card .eyebrow {
+  color: var(--muted);
+  font-size: 8px;
+}
+.help-steps > div {
+  display: flex;
+  gap: 20px;
+  margin: 6px 0 25px;
+}
+.help-steps > div > b {
+  color: var(--gold);
+  font:
+    24px Georgia,
+    serif;
+  padding-top: 2px;
+}
+.help-steps h3 {
+  font-size: 23px;
+}
+.help-steps p {
+  font-size: 12px;
+}
+.save-summary {
+  display: flex;
+  gap: 17px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin: 20px 0;
+}
+.save-summary svg {
+  color: var(--purple);
+}
+.save-summary strong {
+  font-size: 13px;
+}
+.save-summary p {
+  font-size: 11px;
+  margin-bottom: 0;
+}
+.active-creature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0;
+}
+.active-creature > .portrait {
+  width: 60px;
+  height: 64px;
+}
+.active-creature h2 {
+  font-size: 20px;
+  margin: 0;
+}
+.active-creature p {
+  font-size: 10px;
+  margin: 6px 0 0;
+}
+.battle-hint {
+  margin-bottom: 15px !important;
+}
+.battle-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.battle-buttons .button {
+  flex: 1;
+  white-space: nowrap;
+  padding: 10px;
+}
+.legend-dot {
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+.legend-dot.ally {
+  background: var(--mint);
+}
+.legend-dot.enemy {
+  background: #ce8c9b;
+}
+.retreat {
+  display: none;
+  position: absolute;
+  right: 25px;
+  top: 27px;
+  z-index: 3;
+  background: #17232cdf !important;
+  font-size: 10px;
+  min-height: 33px;
+}
+.in-battle .retreat {
+  display: flex;
+}
+.in-battle .map-heading h1 {
+  font-size: 28px;
+}
+.result {
+  text-align: center;
+}
+.result .eyebrow {
+  justify-content: center;
+}
+.result-symbol,
+.victory-art {
+  color: var(--gold);
+  text-align: center;
+  padding: 20px;
+}
+.toast {
+  position: fixed;
+  z-index: 50;
+  left: 50%;
+  bottom: 108px;
+  transform: translate(-50%, 15px);
+  background: #ecdfc7;
+  color: #2b2b25;
+  box-shadow: 0 4px 25px #0004;
+  padding: 12px 19px;
+  border-radius: 10px;
+  opacity: 0;
+  pointer-events: none;
+  font-size: 12px;
+  max-width: 90%;
+  text-align: center;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+.toast.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.webgl-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+}
+@media (min-width: 1500px) {
+  .sidebar {
+    width: 370px;
+    padding: 28px;
+  }
+  .map-heading {
+    left: 45px;
+    top: 34px;
+  }
+  .scene {
+    inset: 60px 0 10px;
+  }
+  .location-card {
+    padding: 22px;
+  }
+}
+@media (max-width: 1100px) {
+  .sidebar {
+    width: 300px;
+    padding: 20px 16px;
+  }
+  .header {
+    padding: 0 22px;
+  }
+  .resources {
+    gap: 23px;
+  }
+  .footer {
+    padding: 0 20px;
+    gap: 15px;
+  }
+  .nav-btn {
+    padding: 14px 13px;
+  }
+  .save-indicator {
+    font-size: 0;
+    gap: 0;
+  }
+  .save-indicator > i {
+    margin-right: 4px;
+  }
+  .save-indicator .text-button {
+    font-size: 10px;
+  }
+  .army-card {
+    gap: 9px;
+  }
+  .avatar {
+    width: 52px;
+    height: 57px;
+  }
+  .army-info strong {
+    font-size: 15px;
+  }
+  .map-caption {
+    font-size: 9px;
+    bottom: 31px;
+  }
+  .drag-tip,
+  .caption-divider {
+    display: none;
+  }
+  .map-tools {
+    left: 17px;
+    bottom: 19px;
+  }
+  .map-compass {
+    right: 18px;
+    bottom: 12px;
+  }
+  .map-heading {
+    left: 23px;
+  }
+  .map-heading h1 {
+    font-size: 30px;
+  }
+  .location-action {
+    flex-wrap: wrap;
+  }
+  .location-action .button {
+    margin-left: auto;
+  }
+}
+@media (max-width: 760px) {
+  #app {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .header {
+    height: 68px;
+    flex-shrink: 0;
+    padding: 0 15px;
+    gap: 8px;
+  }
+  .brand {
+    min-width: 0;
+    gap: 8px;
+  }
+  .brand > svg {
+    width: 23px;
+    height: 23px;
+    padding: 6px;
+    border-radius: 8px;
+  }
+  .brand > span {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+  .brand small {
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+  }
+  .header > .icon-btn {
+    width: 34px;
+    height: 34px;
+    margin-left: 3px;
+  }
+  .resources {
+    gap: 12px;
+    margin: 0 0 0 auto;
+  }
+  .resource {
+    grid-template-columns: 15px auto;
+    column-gap: 4px;
+  }
+  .resource svg {
+    width: 15px;
+  }
+  .resource > span {
+    font-size: 11px;
+  }
+  .resource small {
+    font-size: 7px;
+    letter-spacing: 0;
+  }
+  .layout {
+    flex-direction: column;
+    height: auto;
+    flex: 1;
+    min-height: 0;
+  }
+  .world {
+    flex: 1;
+    min-height: 230px;
+  }
+  .scene {
+    inset: 65px -20px -6px;
+  }
+  .map-heading {
+    top: 18px;
+    left: 18px;
+  }
+  .region-tag {
+    font-size: 7px;
+    letter-spacing: 1.3px;
+    margin-bottom: 8px;
+  }
+  .map-heading h1 {
+    font-size: 27px;
+  }
+  .map-heading p {
+    font-size: 10px;
+    margin: 5px 0;
+  }
+  .map-tools {
+    left: 14px;
+    bottom: 14px;
+    gap: 5px;
+  }
+  .map-tools .icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+  .map-tools svg {
+    width: 16px;
+  }
+  .map-caption {
+    left: auto;
+    right: 16px;
+    bottom: 25px;
+    transform: none;
+    font-size: 9px;
+    gap: 5px;
+  }
+  .map-compass {
+    display: none;
+  }
+  .sidebar {
+    width: 100%;
+    padding: 0;
+    background: #17212b;
+    overflow: visible;
+    border-left: 0;
+    flex-shrink: 0;
+  }
+  .desktop-only {
+    display: none;
+  }
+  .location-card {
+    border-radius: 16px 16px 0 0;
+    border: 0;
+    border-top: 1px solid #d9c7a232;
+    background: linear-gradient(140deg, #242f3c, #1b2731);
+    padding: 14px 18px 13px;
+    min-height: 134px;
+  }
+  .location-card .eyebrow {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+  .location-card h2 {
+    font-size: 21px;
+    margin: 7px 0 0;
+  }
+  .location-card p {
+    font-size: 10px;
+    line-height: 1.5;
+    margin: 6px 0 10px;
+    max-width: 500px;
+  }
+  .location-action {
+    padding-top: 9px;
+    flex-wrap: nowrap;
+  }
+  .location-action .button {
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+  .travel-cost {
+    font-size: 9px;
+  }
+  .footer {
+    height: auto;
+    min-height: 73px;
+    flex-shrink: 0;
+    padding: 7px 10px calc(7px + env(safe-area-inset-bottom));
+    gap: 8px;
+  }
+  .footer nav {
+    gap: 1px;
+    flex: 1;
+    justify-content: space-between;
+  }
+  .nav-btn {
+    flex-direction: column;
+    gap: 5px;
+    padding: 7px 8px;
+    font-size: 8px;
+    min-width: 47px;
+    border-radius: 8px;
+    min-height: 52px;
+  }
+  .nav-btn > svg {
+    width: 19px;
+    height: 19px;
+  }
+  .save-indicator {
+    display: none;
+  }
+  .end-day {
+    min-width: 0;
+    padding: 8px 10px;
+    gap: 8px;
+    min-height: 50px;
+    border-radius: 9px;
+  }
+  .end-day > svg:first-child {
+    width: 17px;
+  }
+  .end-day > svg:last-child {
+    display: none;
+  }
+  .end-day span {
+    font-size: 8px;
+  }
+  .end-day b {
+    font-size: 10px;
+    max-width: 76px;
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+  .modal-backdrop {
+    padding: 12px;
+    align-items: center;
+  }
+  .modal {
+    max-height: calc(100dvh - 24px);
+    border-radius: 16px;
+  }
+  .modal-header {
+    padding: 15px 17px;
+  }
+  .modal-header h2 {
+    font-size: 20px;
+  }
+  .modal-body {
+    padding: 18px;
+  }
+  .intro-art {
+    height: 145px;
+    margin-bottom: 12px;
+    gap: 0;
+  }
+  .intro-art > .portrait {
+    height: 145px;
+    width: 145px;
+  }
+  .intro-title {
+    font-size: 30px;
+  }
+  .intro-copy {
+    font-size: 12px;
+  }
+  .intro-features {
+    gap: 11px;
+    font-size: 9px;
+  }
+  .intro-features svg {
+    width: 14px;
+  }
+  .creature-hero {
+    gap: 12px;
+    padding: 0;
+  }
+  .creature-hero > .portrait {
+    height: 115px;
+    width: 105px;
+  }
+  .creature-hero h2 {
+    font-size: 25px;
+  }
+  .creature-hero .eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.8px;
+  }
+  .creature-hero p {
+    font-size: 10px;
+    margin-bottom: 9px;
+  }
+  .badge {
+    font-size: 8px;
+  }
+  .stats-grid {
+    margin: 20px 0;
+  }
+  .stats-grid > span {
+    padding: 12px 6px;
+  }
+  .stats-grid b {
+    font-size: 19px;
+  }
+  .stats-grid small {
+    font-size: 8px;
+  }
+  .evolution-card,
+  .recruit-card {
+    gap: 10px;
+    padding: 12px;
+    flex-wrap: wrap;
+  }
+  .evolution-card > .portrait,
+  .recruit-card > .portrait {
+    width: 64px;
+    height: 74px;
+  }
+  .evolution-card > div,
+  .recruit-card > div {
+    min-width: calc(100% - 80px);
+  }
+  .evolution-card > .button,
+  .recruit-card > .button {
+    width: 100%;
+    min-height: 39px;
+  }
+  .evolution-card h3,
+  .recruit-card h3,
+  .building-card h3 {
+    font-size: 20px;
+  }
+  .castle-banner {
+    padding: 17px;
+    gap: 14px;
+  }
+  .castle-banner h2 {
+    font-size: 23px;
+  }
+  .castle-banner .eyebrow {
+    font-size: 8px;
+  }
+  .castle-banner > svg {
+    width: 40px;
+  }
+  .building-card {
+    gap: 13px;
+    flex-wrap: wrap;
+  }
+  .building-card > div {
+    min-width: calc(100% - 55px);
+  }
+  .building-card > .button {
+    width: 100%;
+  }
+  .codex-grid {
+    gap: 10px;
+  }
+  .codex-card {
+    padding: 13px;
+  }
+  .codex-card > .portrait {
+    height: 104px;
+    margin-bottom: 14px;
+  }
+  .codex-card h3 {
+    font-size: 20px;
+  }
+  .codex-card p {
+    font-size: 10px;
+  }
+  .codex-card small {
+    font-size: 8px;
+  }
+  .help-steps > div {
+    gap: 14px;
+  }
+  .help-steps h3 {
+    font-size: 21px;
+  }
+  .help-steps p {
+    font-size: 11px;
+  }
+  .help-steps > div > b {
+    font-size: 22px;
+  }
+  .toast {
+    bottom: 93px;
+    font-size: 11px;
+  }
+  .in-battle .map-heading h1 {
+    font-size: 22px;
+    max-width: 240px;
+  }
+  .retreat {
+    right: 14px;
+    top: 17px;
+    min-height: 29px;
+    padding: 7px 10px;
+    font-size: 8px;
+  }
+  .in-battle .scene {
+    inset: 60px -15px -10px;
+  }
+  .battle-card .active-creature {
+    margin: 8px 0;
+  }
+  .active-creature > .portrait {
+    width: 46px;
+    height: 49px;
+  }
+  .active-creature h2 {
+    font-size: 19px;
+    margin-top: 0;
+  }
+  .battle-card .battle-hint {
+    margin-bottom: 10px !important;
+    font-size: 10px;
+  }
+  .battle-buttons .button {
+    font-size: 10px;
+    min-height: 36px;
+    padding: 8px;
+  }
+  .battle-card {
+    padding-top: 12px;
+  }
+  .result-symbol {
+    display: none;
+  }
+  .result h2 {
+    font-size: 23px;
+  }
+  .result .full {
+    min-height: 37px;
+  }
+  .result p {
+    margin: 7px auto 12px;
+  }
+}
+@media (max-width: 380px) {
+  .brand > span {
+    font-size: 6px;
+  }
+  .brand small {
+    font-size: 11px;
+  }
+  .brand > svg {
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+  }
+  .resources {
+    gap: 8px;
+  }
+  .header {
+    padding: 0 10px;
+  }
+  .resource > span {
+    font-size: 10px;
+  }
+  .header > .icon-btn {
+    width: 30px;
+    height: 30px;
+  }
+  .nav-btn {
+    min-width: 40px;
+    padding: 7px 5px;
+  }
+  .end-day {
+    padding: 8px;
+  }
+  .scene {
+    inset: 65px -35px 0;
+  }
+  .intro-title {
+    font-size: 26px;
+  }
+  .intro-features {
+    gap: 9px;
+    font-size: 8px;
+  }
+  .codex-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+.direction-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.direction-grid .button {
+  font-size: 11px;
+  padding: 10px 8px;
+}
+.destination-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  text-align: left;
+  padding: 15px 12px;
+  background: #ffffff03;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin: 9px 0;
+}
+.destination-row > span:nth-child(2) {
+  flex: 1;
+}
+.destination-row strong {
+  display: block;
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: 19px;
+}
+.destination-row small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 6px;
+}
+.destination-icon {
+  background: #dec08a0b;
+  border: 1px solid #dec08a22;
+  border-radius: 8px;
+  width: 37px;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+}
+.in-battle .map-tools [data-action='destinations'] {
+  display: none;
+}
+@media (max-width: 760px) {
+  .map-tools {
+    gap: 4px;
+  }
+  .direction-grid .button {
+    font-size: 10px;
+  }
+  .destination-row strong {
+    font-size: 18px;
+  }
+  .destination-row {
+    padding: 13px 10px;
+  }
+}
+@media (max-width: 760px) and (max-height: 500px) {
+  #app {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+  .layout {
+    flex: none;
+    height: auto;
+  }
+  .world {
+    min-height: 290px;
+  }
+  .footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+  }
+}
+/* Dedicated tactical battle screen. */
+.training-entry {
+  position: absolute;
+  right: 24px;
+  top: 27px;
+  z-index: 4;
+  font-size: 11px;
+  min-height: 36px;
+}
+.in-battle .training-entry,
+.in-battle .map-heading,
+.in-battle .map-caption,
+.in-battle .map-compass,
+.in-battle .footer {
+  display: none;
+}
+.combat-toolbar:empty {
+  display: none;
+}
+.in-battle .layout {
+  height: calc(100dvh - 202px);
+  min-height: 0;
+}
+.in-battle .world {
+  background: radial-gradient(ellipse at center, #394936, #1e302a 68%, #192723);
+}
+.in-battle .sidebar {
+  width: 300px;
+  padding: 20px 16px;
+  background: #1d2928;
+  border-color: #cfbc8729;
+}
+.in-battle .scene {
+  inset: 145px 0 106px;
+}
+.in-battle .map-tools {
+  bottom: 107px;
+  left: 18px;
+}
+.in-battle .retreat {
+  top: 65px;
+  right: 24px;
+}
+.combat-heading {
+  position: absolute;
+  top: 23px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+}
+.combat-heading .eyebrow {
+  justify-content: center;
+  font-size: 8px;
+}
+.combat-heading h1 {
+  font-size: 26px;
+  margin-top: 7px;
+}
+.hero-banner {
+  position: absolute;
+  top: 23px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e5d0a5;
+  font-family: Georgia, serif;
+  font-size: 16px;
+}
+.hero-banner > svg {
+  padding: 11px;
+  box-sizing: content-box;
+  background: #d7ba8310;
+  border: 1px solid #d7ba833a;
+  border-radius: 50%;
+}
+.hero-banner small {
+  display: block;
+  font: 9px sans-serif;
+  color: #a1b9a9;
+  margin-top: 5px;
+}
+.ally-hero {
+  left: 23px;
+}
+.enemy-hero {
+  right: 23px;
+}
+.enemy-hero > svg {
+  color: #e0a3a8;
+  background: #cf8a9d13;
+  border-color: #cf8a9d44;
+}
+.initiative-bar {
+  position: absolute;
+  top: 91px;
+  left: 23px;
+  right: 23px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid #ead29825;
+  padding-top: 12px;
+}
+.initiative-bar > span {
+  font-size: 8px;
+  letter-spacing: 1.3px;
+  color: #acbdb0;
+  margin-right: 6px;
+}
+.initiative-bar > small {
+  margin-left: auto;
+  font-size: 10px;
+  color: #e7cf9d;
+}
+.initiative-unit {
+  height: 40px;
+  width: 44px;
+  border: 1px solid #9dc7a33a;
+  border-radius: 8px;
+  background: #9dc7a30c;
+  position: relative;
+}
+.initiative-unit.enemy {
+  border-color: #dc9eaa3a;
+  background: #dc9eaa0c;
+}
+.initiative-unit.current {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  background: #dfbd7830;
+}
+.initiative-unit .portrait {
+  height: 38px;
+}
+.initiative-unit b {
+  position: absolute;
+  right: 1px;
+  bottom: -4px;
+  background: #192923;
+  border: 1px solid #e1c59188;
+  border-radius: 4px;
+  min-width: 17px;
+  padding: 2px;
+  font: 9px sans-serif;
+}
+.combat-roster-strip {
+  position: absolute;
+  bottom: 41px;
+  left: 23px;
+  right: 23px;
+  display: flex;
+  gap: 9px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.combat-roster-unit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  min-width: 148px;
+  text-align: left;
+  background: #203329e8;
+  border: 1px solid #a6cbad3b;
+  border-radius: 9px;
+  padding: 7px 10px;
+}
+.combat-roster-unit.enemy {
+  border-color: #d799a244;
+  background: #382b2de8;
+}
+.combat-roster-unit .portrait {
+  width: 39px;
+  height: 43px;
+}
+.combat-roster-unit strong {
+  display: block;
+  font:
+    14px Georgia,
+    serif;
+}
+.combat-roster-unit small {
+  display: block;
+  margin: 4px 0 6px;
+  font-size: 8px;
+  color: #b7c3b7;
+}
+.combat-roster-unit.playing {
+  border-color: #e2c58d99;
+}
+.combat-roster-unit.chosen {
+  outline: 2px solid #dfc381;
+  outline-offset: -2px;
+  background: #4b4230;
+}
+.health-track {
+  display: block;
+  height: 4px;
+  border-radius: 10px;
+  background: #050d0877;
+  overflow: hidden;
+}
+.health-track > i {
+  height: 100%;
+  display: block;
+  background: #98c69d;
+}
+.enemy .health-track > i {
+  background: #d2929e;
+}
+.combat-event {
+  position: absolute;
+  bottom: 13px;
+  left: 23px;
+  right: 23px;
+  font-size: 10px;
+  color: #bccbbd;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.combat-event svg {
+  color: var(--gold);
+}
+.combat-toolbar {
+  min-height: 118px;
+  padding: 15px 24px;
+  border-top: 2px solid #a7905a66;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: linear-gradient(180deg, #2d3430, #1b2522);
+  box-shadow: 0 -7px 30px #0003;
+}
+.combat-active {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 230px;
+}
+.combat-active > .portrait {
+  width: 63px;
+  height: 70px;
+}
+.combat-active small {
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  color: var(--gold);
+  display: block;
+}
+.combat-active strong {
+  display: block;
+  font:
+    20px Georgia,
+    serif;
+  margin: 7px 0;
+}
+.combat-active b {
+  font-size: 10px;
+  font-weight: 400;
+  color: #b6c4b5;
+}
+.combat-command-area {
+  flex: 1;
+}
+.combat-instruction {
+  font-size: 11px;
+  color: #d9dac1;
+  margin-bottom: 9px;
+}
+.combat-commands {
+  display: flex;
+  gap: 8px;
+}
+.combat-command {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 49px;
+  min-width: 100px;
+  border: 1px solid #d7c49144;
+  border-radius: 8px;
+  color: #ddd5bc;
+  background: linear-gradient(#4a4a39, #323a2d);
+  box-shadow: inset 0 1px #f1e0a51a;
+  font-size: 11px;
+}
+.combat-command:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: #615740;
+}
+.combat-command.attack-command {
+  background: linear-gradient(#65533a, #493c29);
+  color: #f8dfaa;
+}
+.combat-command.armed {
+  outline: 2px solid #d0b8f0;
+  background: #68507a;
+}
+.combat-command svg {
+  width: 18px;
+}
+.cast-button {
+  min-width: 120px;
+}
+.fighter-detail {
+  border: 1px solid #d4c29833;
+  border-radius: 12px;
+  padding: 15px;
+  background: #263530;
+}
+.fighter-detail .active-creature h2 {
+  font-size: 21px;
+}
+.fighter-detail .active-creature > .portrait {
+  height: 78px;
+  width: 70px;
+}
+.fighter-health > span {
+  font-size: 10px;
+  color: #c3d4bb;
+  display: block;
+  margin-bottom: 7px;
+}
+.fighter-health > .health-track {
+  height: 6px;
+}
+.fighter-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 14px 0;
+  border-bottom: 1px solid #ffffff10;
+  margin-top: 5px;
+}
+.fighter-stats > span {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #a7b8a7;
+}
+.fighter-stats b {
+  color: #eee0b7;
+  font-weight: 500;
+}
+.fighter-detail p {
+  font-size: 10px;
+  margin: 12px 0 0;
+}
+.damage-forecast {
+  padding: 11px 8px;
+  margin-top: 13px;
+  background: #d7bd8516;
+  border-radius: 7px;
+  font-size: 10px;
+  color: var(--gold);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.damage-forecast svg {
+  width: 16px;
+}
+.combat-roster-heading {
+  font-size: 8px;
+  letter-spacing: 1.3px;
+  color: var(--gold);
+  margin: 22px 0 12px;
+}
+.combat-sidebar-roster {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 18px;
+}
+.combat-sidebar-roster .combat-roster-unit {
+  width: 100%;
+}
+.combat-sidebar-roster .combat-roster-unit > span {
+  flex: 1;
+}
+.combat-history {
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+.combat-history .eyebrow {
+  font-size: 8px;
+}
+.combat-history p {
+  font-size: 10px;
+  margin: 12px 0;
+}
+.combat-summary {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.combat-summary strong {
+  font:
+    28px Georgia,
+    serif;
+  color: var(--gold);
+}
+.combat-summary span {
+  font-size: 12px;
+  color: #c9d3c2;
+  flex: 1;
+}
+.tactical-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+  margin-top: 20px;
+}
+.tactical-grid button {
+  min-height: 40px;
+  border: 1px solid #adcbe155;
+  border-radius: 7px;
+  background: #567887;
+  color: #e9f5f3;
+  font-size: 12px;
+}
+.tactical-grid button:disabled {
+  background: #293630;
+  opacity: 0.4;
+  border-color: #738c7022;
+}
+@media (max-width: 1050px) and (min-width: 761px) {
+  .combat-heading h1 {
+    font-size: 22px;
+  }
+  .hero-banner {
+    font-size: 12px;
+  }
+  .hero-banner > svg {
+    padding: 7px;
+    width: 18px;
+    height: 18px;
+  }
+  .hero-banner small {
+    font-size: 8px;
+  }
+  .combat-heading .eyebrow {
+    font-size: 7px;
+  }
+  .combat-heading {
+    top: 25px;
+  }
+  .combat-active {
+    min-width: 178px;
+  }
+  .combat-active strong {
+    font-size: 17px;
+  }
+  .combat-active > .portrait {
+    width: 48px;
+    height: 57px;
+  }
+  .combat-toolbar {
+    gap: 14px;
+    padding: 14px 18px;
+  }
+  .combat-command {
+    min-width: 0;
+    flex: 1;
+    font-size: 10px;
+    gap: 5px;
+  }
+  .combat-command svg {
+    width: 15px;
+  }
+  .cast-button {
+    min-width: 95px;
+    font-size: 10px;
+  }
+}
+@media (max-width: 760px) {
+  .training-entry {
+    top: 18px;
+    right: 13px;
+    min-height: 31px;
+    font-size: 8px;
+    padding: 8px;
+  }
+  .training-entry svg {
+    width: 13px;
+  }
+  .world:not(:has(.combat-heading)) .map-heading h1 {
+    font-size: 25px;
+  }
+  .in-battle .layout {
+    height: auto;
+    min-height: 0;
+    flex: 1;
+  }
+  .in-battle .sidebar {
+    display: none;
+  }
+  .in-battle .world {
+    min-height: 270px;
+  }
+  .in-battle .scene {
+    inset: 173px -15px 112px;
+  }
+  .combat-heading {
+    top: 17px;
+    left: 18px;
+    transform: none;
+    text-align: left;
+  }
+  .combat-heading h1 {
+    font-size: 24px;
+    margin-top: 7px;
+  }
+  .combat-heading .eyebrow {
+    justify-content: flex-start;
+    font-size: 7px;
+  }
+  .hero-banner {
+    top: 74px;
+    font-size: 13px;
+    gap: 7px;
+  }
+  .hero-banner > svg {
+    width: 17px;
+    height: 17px;
+    padding: 7px;
+  }
+  .hero-banner small {
+    font-size: 8px;
+    margin-top: 4px;
+  }
+  .ally-hero {
+    left: 17px;
+  }
+  .enemy-hero {
+    right: 17px;
+  }
+  .initiative-bar {
+    top: 115px;
+    left: 17px;
+    right: 17px;
+    gap: 7px;
+    padding-top: 12px;
+  }
+  .initiative-bar > span {
+    font-size: 7px;
+    margin-right: 3px;
+  }
+  .initiative-bar > small {
+    font-size: 8px;
+  }
+  .initiative-unit {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+  }
+  .initiative-unit .portrait {
+    height: 33px;
+  }
+  .initiative-unit b {
+    font-size: 8px;
+    bottom: -3px;
+  }
+  .combat-roster-strip {
+    bottom: 37px;
+    left: 13px;
+    right: 13px;
+    gap: 7px;
+    padding-bottom: 3px;
+  }
+  .combat-roster-unit {
+    min-width: 155px;
+    padding: 7px 8px;
+  }
+  .combat-roster-unit .portrait {
+    width: 33px;
+    height: 36px;
+  }
+  .combat-roster-unit strong {
+    font-size: 13px;
+  }
+  .combat-event {
+    bottom: 14px;
+    left: 14px;
+    right: 14px;
+    font-size: 9px;
+  }
+  .in-battle .retreat {
+    top: 16px;
+    right: 14px;
+    font-size: 9px;
+  }
+  .in-battle .map-tools {
+    left: 13px;
+    bottom: 111px;
+  }
+  .combat-toolbar {
+    min-height: 139px;
+    flex-shrink: 0;
+    display: block;
+    padding: 10px 13px calc(10px + env(safe-area-inset-bottom));
+    box-shadow: none;
+  }
+  .combat-active {
+    gap: 8px;
+    min-width: 0;
+    margin-bottom: 7px;
+  }
+  .combat-active > .portrait {
+    width: 32px;
+    height: 34px;
+  }
+  .combat-active > span {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    flex: 1;
+  }
+  .combat-active small {
+    font-size: 6px;
+    max-width: 51px;
+    line-height: 1.5;
+  }
+  .combat-active strong {
+    font-size: 14px;
+    margin: 0;
+    flex: 1;
+  }
+  .combat-active b {
+    font-size: 8px;
+  }
+  .combat-instruction {
+    font-size: 9px;
+    line-height: 1.45;
+    margin: 0 0 8px;
+    min-height: 13px;
+  }
+  .combat-commands {
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  .combat-command {
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 47px;
+    padding: 7px 4px;
+    font-size: 8px;
+    border-radius: 7px;
+  }
+  .combat-command svg {
+    width: 16px;
+    height: 16px;
+  }
+  .cast-button {
+    width: 100%;
+    min-height: 32px;
+    font-size: 10px;
+    padding: 7px;
+  }
+  .combat-summary {
+    gap: 11px;
+    flex-wrap: wrap;
+  }
+  .combat-summary strong {
+    font-size: 26px;
+  }
+  .combat-summary span {
+    font-size: 10px;
+    min-width: 150px;
+  }
+  .combat-summary .button {
+    width: 100%;
+    min-height: 41px;
+  }
+  .tactical-grid {
+    gap: 4px;
+  }
+  .tactical-grid button {
+    min-height: 36px;
+    font-size: 10px;
+  }
+  .in-battle .toast {
+    bottom: 148px;
+  }
+}
+@media (max-width: 760px) and (max-height: 650px) {
+  .in-battle .world {
+    min-height: 450px;
+  }
+  .in-battle .combat-toolbar {
+    position: sticky;
+    bottom: 0;
+    z-index: 6;
+  }
+  .in-battle #app {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+  .in-battle .layout {
+    flex: none;
+    height: 450px;
+  }
+}
+.battle-only {
+  display: none;
+}
+.in-battle .battle-only {
+  display: inline-flex;
+}
+.resolving .combat-command {
+  opacity: 0.4;
+  cursor: wait;
+}
+@media (max-width: 760px) and (max-height: 650px) {
+  #app.in-battle {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+}
+/* Classic strategy-game framing: engraved brass, dark timber and parchment. */
+:root {
+  --bg: #211d17;
+  --surface: #302b21;
+  --surface2: #3e3527;
+  --line: #b69a5555;
+  --muted: #c0b99e;
+  --gold: #f0d48c;
+}
+body {
+  background: #211d17;
+}
+.header,
+.footer,
+.sidebar,
+.modal {
+  background: linear-gradient(100deg, #2e2a20, #393123 50%, #24231b);
+}
+.header,
+.footer {
+  border-color: #9e814c;
+  box-shadow:
+    inset 0 0 0 2px #161812,
+    inset 0 0 0 3px #6d603d;
+}
+.brand {
+  color: #e8cc8b;
+}
+.button,
+.icon-btn,
+.nav-btn,
+.army-card,
+.location-card,
+.quest-card,
+.day-card,
+.modal,
+.notice,
+.evolution-card,
+.recruit-card,
+.building-card {
+  border-radius: 2px;
+}
+.button,
+.icon-btn {
+  border: 1px solid #9c824c;
+  box-shadow:
+    inset 1px 1px #c2ac7066,
+    inset -1px -1px #090e0b;
+  background: linear-gradient(#494331, #2b2a20);
+}
+.button.gold,
+.button.primary {
+  background: linear-gradient(#bca56c, #847142);
+  color: #181d17;
+  border-color: #e4ce91;
+}
+.location-card,
+.army-card,
+.quest-card,
+.day-card {
+  border: 1px solid #7f714b;
+  background: linear-gradient(120deg, #3c392a, #2c2c21);
+  box-shadow: inset 0 0 0 2px #1d2018;
+}
+.modal-backdrop {
+  z-index: 40;
+}
+.in-town > .header,
+.in-town > .layout,
+.in-town > .footer,
+.in-town > #combat-toolbar {
+  display: none;
+}
+.town-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  background: #282c20;
+  border: 5px ridge #a68e56;
+  color: #f2e2ae;
+  overflow: hidden;
+}
+.town-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  background: linear-gradient(#393b2c, #23261d);
+  border-bottom: 3px ridge #9c8651;
+  min-height: 80px;
+}
+.town-header h1 {
+  font-size: 29px;
+  text-shadow: 2px 2px #111b14;
+  letter-spacing: 0;
+}
+.town-header .eyebrow {
+  font-size: 9px;
+  color: #c5b481;
+}
+.town-header .resources {
+  margin-left: auto;
+}
+.town-header .resource {
+  background: #20261b;
+  border: 1px solid #7e7143;
+  border-radius: 0;
+}
+.town-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  flex: 1;
+  min-height: 0;
+}
+.town-viewport {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  border-right: 4px ridge #9c8651;
+  background: #6f91a1;
+}
+#town-scene {
+  position: absolute;
+  inset: 0;
+}
+#town-scene canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+.town-scene-title {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  text-align: center;
+  font-family: Georgia, serif;
+  font-size: 15px;
+  font-weight: bold;
+  color: #fff2bd;
+  text-shadow: 0 2px 3px #18251b;
+  pointer-events: none;
+}
+.town-scene-title small {
+  display: block;
+  font: 10px sans-serif;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+.town-camera {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  gap: 4px;
+}
+.town-camera .icon-btn {
+  width: 32px;
+  height: 32px;
+  background: #2c392ae3;
+}
+.town-view-tip {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 4px 12px;
+  background: #142316d9;
+  border: 1px solid #a8ad76;
+  color: #ede4ba;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.town-building-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.town-marker {
+  position: absolute;
+  transform: translate(-50%, 0);
+  background: #1f301bd9;
+  border: 1px solid #c2bb80;
+  color: #f7e8b4;
+  font:
+    11px Georgia,
+    serif;
+  padding: 4px 8px;
+  white-space: nowrap;
+  pointer-events: auto;
+  box-shadow: 0 2px 5px #16251877;
+}
+.town-marker.selected {
+  background: #827338e8;
+  border-color: #ffe7a1;
+  color: #fff5c8;
+}
+.town-detail {
+  min-height: 0;
+  overflow: auto;
+  background: repeating-linear-gradient(96deg, #2a3023 0, #303426 3px, #2b3023 6px);
+  scrollbar-color: #94814a #263020;
+}
+.town-detail-heading {
+  padding: 18px 20px 15px;
+  border-bottom: 2px ridge #8b7950;
+  background: linear-gradient(#454332, #2b3024);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.town-detail-heading h2 {
+  color: #f1dca1;
+  font-size: 25px;
+}
+.town-detail-heading .eyebrow {
+  color: #bfb788;
+  font-size: 9px;
+}
+.town-detail-content {
+  padding: 15px 19px;
+}
+.town-detail p {
+  color: #c5c2a2;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.town-detail h3 {
+  font-size: 21px;
+  color: #e3d29f;
+}
+.town-crest {
+  text-align: center;
+  padding: 5px 0 14px;
+  color: #c2ad6d;
+  filter: drop-shadow(0 3px 1px #121d15);
+}
+.town-stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #b9a77233;
+  padding: 9px 0;
+  font-size: 11px;
+  color: #c5c3a1;
+}
+.town-stat b {
+  color: #ecd28b;
+}
+.town-cost {
+  text-align: center;
+  padding: 18px 0;
+  font-family: Georgia, serif;
+  font-size: 20px;
+  color: #efd385;
+}
+.town-creature {
+  height: 142px;
+  background: radial-gradient(ellipse, #81985944, transparent 65%);
+  text-align: center;
+}
+.town-creature svg {
+  width: 150px;
+  height: 142px;
+}
+.town-detail .stats-grid {
+  margin: 14px 0;
+  gap: 3px;
+}
+.town-detail .stats-grid span {
+  padding: 9px 4px;
+  background: #20291d;
+}
+.town-detail .stats-grid small {
+  font-size: 8px;
+}
+.town-detail .army-card {
+  padding: 9px 6px;
+  margin: 10px 0;
+}
+.town-detail .army-card .avatar {
+  width: 42px;
+  height: 50px;
+}
+.town-detail .army-info strong {
+  font-size: 13px;
+}
+.town-detail .army-info small {
+  font-size: 8px;
+}
+.town-detail .army-info span {
+  font-size: 9px;
+}
+.town-detail .army-count {
+  font-size: 19px;
+}
+.town-spell {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 15px 0;
+  border-top: 1px solid #9b915c66;
+}
+.town-spell h3 {
+  font-size: 19px;
+}
+.town-spell p {
+  margin: 5px 0;
+}
+.town-building-nav {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  flex-shrink: 0;
+  border-top: 4px ridge #a48d50;
+  border-bottom: 3px ridge #a48d50;
+  background: #20291d;
+}
+.town-building-nav button {
+  padding: 8px 4px;
+  border-right: 2px ridge #887744;
+  background: linear-gradient(#42452f, #2c3223);
+  color: #d1c494;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  justify-content: center;
+}
+.town-building-nav button.selected {
+  background: linear-gradient(#8a8352, #4b5230);
+  box-shadow: inset 0 0 0 1px #e4ce89;
+  color: #fff0b5;
+}
+.town-building-nav button strong {
+  font:
+    12px Georgia,
+    serif;
+}
+.town-building-nav button span {
+  color: #c6b477;
+}
+.town-garrison {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 7px 17px;
+  background: linear-gradient(#3b3e2b, #21291c);
+  flex-shrink: 0;
+  min-height: 74px;
+}
+.town-day {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 145px;
+}
+.town-day span {
+  font:
+    bold 11px Georgia,
+    serif;
+  color: #dbc78a;
+}
+.town-day b {
+  font-size: 11px;
+  color: #bfb88d;
+}
+.town-troops {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+.town-troops > span {
+  font-size: 9px;
+  letter-spacing: 1px;
+  max-width: 64px;
+  color: #c1bc93;
+}
+.town-troops button {
+  position: relative;
+  width: 68px;
+  height: 58px;
+  border: 3px ridge #a69565;
+  background: linear-gradient(#475330, #232b1c);
+}
+.town-troops svg {
+  width: 52px;
+  height: 48px;
+}
+.town-troops b {
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  background: #172317d9;
+  padding: 1px 5px;
+  font-size: 12px;
+  color: #ffdf9a;
+}
+.siege-status {
+  position: absolute;
+  right: 16px;
+  top: 170px;
+  background: #392e22e8;
+  border: 2px ridge #b49c67;
+  padding: 10px 14px;
+  pointer-events: none;
+  font-size: 12px;
+  color: #ffdf9c;
+}
+.siege-status small {
+  display: block;
+  margin-top: 4px;
+  color: #d0c3a1;
+}
+@media (max-width: 900px) {
+  .town-body {
+    grid-template-columns: minmax(0, 1fr) 255px;
+  }
+  .town-header {
+    gap: 10px;
+    padding: 8px 12px;
+    min-height: 65px;
+  }
+  .town-header h1 {
+    font-size: 24px;
+  }
+  .town-header .resource small {
+    display: none;
+  }
+  .town-building-nav button strong {
+    font-size: 10px;
+  }
+  .town-building-nav button {
+    gap: 3px;
+  }
+  .town-scene-title {
+    left: 16px;
+    transform: none;
+    font-size: 11px;
+    text-align: left;
+  }
+}
+@media (max-width: 600px) {
+  .town-screen {
+    border-width: 3px;
+    overflow: auto;
+  }
+  .town-header {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 7px 9px;
+    min-height: 85px;
+  }
+  .town-header h1 {
+    font-size: 22px;
+  }
+  .town-header .resources {
+    margin-left: 0;
+    gap: 6px;
+    order: 3;
+    width: 100%;
+  }
+  .town-header .resource {
+    padding: 3px 8px;
+    min-width: 0;
+    height: 28px;
+  }
+  .town-header .resource svg {
+    width: 16px;
+  }
+  .town-header > .button {
+    margin-left: auto;
+    padding: 8px;
+    font-size: 10px;
+    min-height: 34px;
+  }
+  .town-header > .button svg {
+    width: 14px;
+  }
+  .town-header .eyebrow {
+    font-size: 7px;
+  }
+  .town-body {
+    display: flex;
+    flex-direction: column;
+    flex: none;
+    min-height: 0;
+  }
+  .town-viewport {
+    height: 355px;
+    min-height: 355px;
+    flex: none;
+    border-right: 0;
+    border-bottom: 4px ridge #9c8651;
+  }
+  .town-detail {
+    overflow: visible;
+    min-height: 200px;
+    order: 2;
+  }
+  .town-detail-heading {
+    position: static;
+    padding: 12px 16px 9px;
+  }
+  .town-detail-heading h2 {
+    font-size: 23px;
+  }
+  .town-detail-content {
+    padding: 12px 16px;
+  }
+  .town-detail .town-crest {
+    display: none;
+  }
+  .town-marker {
+    font-size: 8px;
+    padding: 3px 5px;
+  }
+  .town-scene-title {
+    top: 10px;
+    left: 10px;
+    font-size: 9px;
+  }
+  .town-scene-title small {
+    font-size: 8px;
+  }
+  .town-camera {
+    top: 8px;
+    right: 8px;
+    gap: 3px;
+  }
+  .town-camera .icon-btn {
+    width: 27px;
+    height: 27px;
+  }
+  .town-view-tip {
+    font-size: 8px;
+    padding: 3px 6px;
+    bottom: 6px;
+  }
+  .town-building-nav {
+    order: 0;
+    display: flex;
+    overflow-x: auto;
+    position: sticky;
+    top: 85px;
+    z-index: 2;
+    border-top: 0;
+    border-bottom-width: 3px;
+    min-height: 48px;
+  }
+  .town-building-nav button {
+    flex: none;
+    min-width: 90px;
+    padding: 6px;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .town-building-nav button strong {
+    font-size: 9px;
+  }
+  .town-building-nav button svg {
+    width: 16px;
+    height: 16px;
+  }
+  .town-body {
+    order: 1;
+  }
+  .town-garrison {
+    order: 2;
+    padding: 8px;
+    gap: 8px;
+    min-height: 70px;
+  }
+  .town-day {
+    min-width: 65px;
+  }
+  .town-day span,
+  .town-day b {
+    font-size: 9px;
+  }
+  .town-troops {
+    gap: 4px;
+  }
+  .town-troops > span {
+    display: none;
+  }
+  .town-troops button {
+    width: 46px;
+    height: 48px;
+  }
+  .town-troops svg {
+    width: 40px;
+    height: 40px;
+  }
+  .town-garrison .button {
+    font-size: 10px;
+    min-height: 38px;
+    padding: 6px;
+  }
+  .town-garrison .button svg {
+    width: 14px;
+  }
+  .siege-status {
+    top: 135px;
+    right: 8px;
+    padding: 5px 9px;
+    font-size: 10px;
+  }
+  .siege-status small {
+    font-size: 8px;
+  }
+}
+
+/* Native Heroes III town composition with unobstructed panorama. */
+.town-body {
+  display: block;
+  position: relative;
+}
+.town-viewport {
+  height: 100%;
+  border-right: 0;
+}
+.town-detail {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  bottom: 18px;
+  width: min(360px, calc(100% - 36px));
+  z-index: 12;
+  border: 5px ridge #a68e56;
+  background: #282c20f5;
+  box-shadow: 0 8px 30px #0009;
+}
+.town-detail[hidden] {
+  display: none;
+}
+.town-detail-heading {
+  position: relative;
+  padding-right: 48px;
+}
+.town-panel-close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  font-size: 27px;
+}
+
+.town-camera {
+  z-index: 4;
+}
+
+@media (max-width: 600px) {
+  .town-screen {
+    overflow-y: auto;
+  }
+  .town-body {
+    order: 0;
+    flex: 1;
+    min-height: 280px;
+    display: block;
+  }
+  .town-viewport {
+    height: 100%;
+    min-height: 280px;
+  }
+  .town-detail {
+    position: fixed;
+    inset: auto 8px 8px;
+    width: auto;
+    max-height: 60vh;
+    height: auto;
+    z-index: 15;
+    overflow-y: auto;
+  }
+  .town-detail-heading {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #282c20;
+  }
+  .town-building-nav {
+    position: static;
+    order: 1;
+    top: auto;
+  }
+  .town-garrison {
+    order: 2;
+  }
+  .town-camera {
+    top: 8px;
+    right: 8px;
+  }
+}
+
+@media (min-width: 900px) {
+  .in-battle > .header {
+    display: none;
+  }
+  .in-battle .layout {
+    height: calc(100dvh - 116px);
+  }
+  .in-battle .scene {
+    inset: 110px 0 90px;
+  }
+  .combat-heading {
+    top: 10px;
+  }
+  .combat-heading h1 {
+    font-size: 24px;
+  }
+  .hero-banner {
+    top: 10px;
+  }
+  .initiative-bar {
+    top: 66px;
+    padding-top: 5px;
+  }
+  .in-battle .retreat {
+    top: 42px;
+  }
+  .in-battle .map-tools {
+    bottom: 95px;
+  }
+}
+.town-mobile-army {
+  display: none;
+}
+@media (max-width: 600px) {
+  .town-mobile-army {
+    display: block;
+    order: 2;
+    flex: 1;
+    padding: 18px 14px 10px;
+    background: repeating-linear-gradient(96deg, #2a3023 0, #303426 3px, #2b3023 6px);
+  }
+  .town-mobile-army .army-card {
+    margin-top: 10px;
+  }
+  .town-mobile-army .eyebrow {
+    color: #d9c796;
+  }
+  .town-mobile-army .fine-print {
+    margin-top: 12px;
+    color: #bdc4a3;
+  }
+  .town-garrison {
+    order: 3;
+  }
+}
+
+@media (max-width: 600px) {
+  .combat-heading {
+    left: 17px;
+    right: 86px;
+    transform: none;
+    text-align: left;
+    white-space: normal;
+  }
+  .combat-heading h1 {
+    font-size: 18px;
+    line-height: 1.15;
+  }
+  .combat-heading .eyebrow {
+    justify-content: flex-start;
+  }
+}
+
+/* Adventure UI: native strategy-game frame, map, minimap and hero command column. */
+:root {
+  --radius: 0px;
+  --gold: #d5bc76;
+}
+body {
+  background: #181b12;
+}
+.header {
+  height: 54px;
+  min-height: 54px;
+  padding: 4px 12px;
+  gap: 12px;
+  border: 3px ridge #ad945a;
+  background: linear-gradient(#4c4933, #282b20);
+}
+.brand {
+  gap: 8px;
+}
+.brand > svg {
+  width: 25px;
+  height: 25px;
+  padding: 5px;
+  border: 2px ridge #a68e56;
+  border-radius: 0;
+}
+.brand span {
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.brand small {
+  font-size: 11px;
+}
+.resources {
+  gap: 10px;
+}
+.resource {
+  padding: 4px 8px;
+  border: 1px solid #74633c;
+  background: #25271c;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  height: calc(100dvh - 126px);
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  max-width: none;
+}
+.world {
+  border: 5px ridge #a68e56;
+  background: #070906;
+  border-radius: 0;
+}
+.scene {
+  inset: 0;
+}
+.map-heading {
+  display: none;
+}
+.map-compass {
+  display: none;
+}
+.map-tools {
+  bottom: 35px;
+  left: 8px;
+}
+.map-caption {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  min-height: 28px;
+  background: #272c1eec;
+  border-top: 2px ridge #9d8551;
+  color: #e6d7a9;
+  font-size: 10px;
+  justify-content: center;
+}
+.sidebar {
+  padding: 10px;
+  width: auto;
+  background: repeating-linear-gradient(96deg, #333728 0, #2a3023 3px, #303426 6px);
+  border: 4px ridge #a68e56;
+  border-left: 0;
+  border-radius: 0;
+  overflow-y: auto;
+}
+.adventure-minimap {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  width: 100%;
+  aspect-ratio: 1;
+  border: 4px ridge #b6a060;
+  margin-bottom: 10px;
+}
+.adventure-minimap button {
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  line-height: 1;
+  color: #fff0aa;
+  font-size: 16px;
+}
+.adventure-hero {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 7px;
+  border: 3px ridge #a98f51;
+  background: #20261a;
+}
+.hero-medallion {
+  width: 46px;
+  height: 50px;
+  flex-shrink: 0;
+  border: 1px solid #8a774c;
+}
+.hero-medallion .portrait {
+  width: 100%;
+  height: 100%;
+}
+.adventure-hero strong {
+  display: block;
+  font:
+    15px Georgia,
+    serif;
+  color: #f3e0a8;
+}
+.adventure-hero small {
+  display: block;
+  font-size: 9px;
+  margin-top: 5px;
+}
+.army-slots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  padding: 7px 0;
+}
+.army-slots button,
+.empty-slot {
+  position: relative;
+  aspect-ratio: 1;
+  border: 2px ridge #948051;
+  background: #222919;
+  padding: 2px;
+}
+.army-slots .portrait {
+  width: 100%;
+  height: 100%;
+}
+.army-slots b {
+  position: absolute;
+  right: 1px;
+  bottom: 0;
+  background: #202618d9;
+  font-size: 11px;
+  color: #f3dfa7;
+}
+.adventure-calendar {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 8px;
+  border: 2px ridge #948051;
+  font:
+    12px Georgia,
+    serif;
+}
+.adventure-calendar small {
+  width: 100%;
+  color: #c6ceaf;
+}
+.location-card {
+  padding: 10px;
+  border: 2px ridge #9d8651;
+  border-radius: 0;
+  background: #27301f;
+  margin: 5px 0 10px;
+}
+.location-card h2 {
+  font:
+    18px Georgia,
+    serif;
+}
+.location-card p {
+  font-size: 11px;
+  line-height: 1.45;
+}
+.location-card .button {
+  margin-top: 8px;
+}
+.footer {
+  height: 72px;
+  min-height: 72px;
+  padding: 5px 10px;
+  border: 3px ridge #a68e56;
+  border-radius: 0;
+  background: linear-gradient(#4b4731, #262c1d);
+  gap: 10px;
+}
+.footer nav {
+  gap: 4px;
+}
+.nav-btn {
+  border: 2px ridge #948051;
+  border-radius: 0;
+  background: #303622;
+  min-width: 90px;
+  padding: 7px 12px;
+}
+.nav-btn.active {
+  color: #ffe2a0;
+  background: #685c32;
+}
+.button,
+.icon-btn,
+.combat-command,
+.modal,
+.army-card,
+.evolution-card,
+.codex-card,
+.fighter-detail,
+.combat-roster-unit,
+.initiative-unit {
+  border-radius: 0;
+}
+.button {
+  min-height: 42px;
+  font-family: Georgia, serif;
+}
+.modal {
+  border: 5px ridge #b39960;
+  background: repeating-linear-gradient(96deg, #323627 0, #2c3024 3px, #303426 6px);
+  box-shadow: 0 12px 45px #000a;
+}
+.modal-header {
+  border-bottom: 3px ridge #95804e;
+  background: linear-gradient(#555038, #2a3022);
+}
+.modal-header h2 {
+  font-family: Georgia, serif;
+  color: #f4dfa8;
+}
+.modal-body {
+  color: #d9d7bb;
+}
+.sound-toggle {
+  font-size: 22px;
+  color: #efdda1;
+}
+.sound-toggle.muted {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+.audio-setting {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+.audio-setting input {
+  width: 100%;
+  accent-color: #c9af69;
+  min-height: 38px;
+}
+.tactical-grid {
+  grid-template-columns: repeat(17, minmax(34px, 1fr));
+  overflow-x: auto;
+}
+.town-scene-title {
+  font-size: 14px;
+}
+@media (min-width: 900px) {
+  .in-battle .layout {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    height: calc(100dvh - 116px);
+  }
+  .in-battle .sidebar {
+    width: 240px;
+  }
+}
+@media (max-width: 899px) {
+  .header {
+    height: 54px;
+    min-height: 54px;
+  }
+  .brand span {
+    display: none;
+  }
+  .resources {
+    margin-left: auto;
+    gap: 4px;
+  }
+  .resource {
+    padding: 3px 4px;
+    font-size: 11px;
+  }
+  .resource small {
+    display: none;
+  }
+  .layout {
+    display: flex;
+    flex-direction: column;
+    height: calc(100dvh - 126px);
+  }
+  .world {
+    flex: 1;
+    min-height: 250px;
+  }
+  .sidebar {
+    max-height: 155px;
+    border-left: 4px ridge #a68e56;
+    border-top: 0;
+    padding: 8px;
+  }
+  .adventure-minimap,
+  .adventure-hero,
+  .army-slots,
+  .adventure-calendar,
+  .sidebar .journal {
+    display: none;
+  }
+  .location-card {
+    margin: 0;
+    padding: 8px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2px 10px;
+  }
+  .location-card .eyebrow,
+  .location-card p,
+  .location-card .badge {
+    display: none;
+  }
+  .location-card .button {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: center;
+  }
+  .footer {
+    padding: 4px;
+    gap: 4px;
+  }
+  .footer .save-indicator {
+    display: none;
+  }
+  .nav-btn {
+    min-width: 44px;
+    padding: 6px;
+  }
+  .nav-btn span {
+    font-size: 8px;
+  }
+  .end-day {
+    min-width: 100px;
+  }
+  .map-caption .drag-tip {
+    display: none;
+  }
+  .in-battle .sidebar {
+    display: none;
+  }
+  .in-battle .layout {
+    height: calc(100dvh - 210px);
+  }
+  .in-battle .world {
+    min-height: 0;
+  }
+  .in-battle .scene {
+    inset: 115px 0 55px;
+  }
+}
+.map-caption {
+  width: auto;
+  max-width: none;
+  transform: none;
+}
+
+.town-project {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #836849;
+  background: #261c14;
+}
+.town-project.built {
+  opacity: 0.75;
+}
+.town-project h3 {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.tactical-grid {
+  overflow-x: auto;
+  max-width: 100%;
+}

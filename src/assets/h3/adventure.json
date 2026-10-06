@@ -1,0 +1,57 @@
+{
+  "grass": {
+    "source": "grastl.def",
+    "frames": [
+      "adventure-grass-49.png",
+      "adventure-grass-50.png",
+      "adventure-grass-51.png",
+      "adventure-grass-52.png",
+      "adventure-grass-53.png",
+      "adventure-grass-54.png",
+      "adventure-grass-55.png",
+      "adventure-grass-56.png",
+      "adventure-grass-57.png",
+      "adventure-grass-58.png",
+      "adventure-grass-59.png",
+      "adventure-grass-60.png",
+      "adventure-grass-61.png",
+      "adventure-grass-62.png",
+      "adventure-grass-63.png",
+      "adventure-grass-64.png"
+    ]
+  },
+  "sand": {
+    "source": "sandtl.def",
+    "frames": [
+      "adventure-sand-0.png",
+      "adventure-sand-1.png",
+      "adventure-sand-2.png",
+      "adventure-sand-3.png",
+      "adventure-sand-4.png",
+      "adventure-sand-5.png",
+      "adventure-sand-6.png",
+      "adventure-sand-7.png",
+      "adventure-sand-8.png",
+      "adventure-sand-9.png",
+      "adventure-sand-10.png",
+      "adventure-sand-11.png"
+    ]
+  },
+  "water": {
+    "source": "watrtl.def",
+    "frames": [
+      "adventure-water-21.png",
+      "adventure-water-22.png",
+      "adventure-water-23.png",
+      "adventure-water-24.png",
+      "adventure-water-25.png",
+      "adventure-water-26.png",
+      "adventure-water-27.png",
+      "adventure-water-28.png",
+      "adventure-water-29.png",
+      "adventure-water-30.png",
+      "adventure-water-31.png",
+      "adventure-water-32.png"
+    ]
+  }
+}

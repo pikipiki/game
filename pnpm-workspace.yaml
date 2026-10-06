@@ -1,0 +1,4 @@
+managePackageManagerVersions: false
+verifyDepsBeforeRun: false
+allowBuilds:
+  esbuild: true
