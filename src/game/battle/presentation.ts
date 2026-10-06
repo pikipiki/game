@@ -12,10 +12,10 @@ import {
   turnOrder,
   type BattleSelection,
 } from './controls';
+import type { TranslateFn } from '@/i18n/translate';
 import {
   BATTLE_LOG_LINES,
   LABEL_BATTLE_JOURNAL,
-  LABEL_CAST_SPELL,
   LABEL_HP_UNIT,
   LABEL_ROSTER_HEADING,
   LABEL_STAT_ATTACK,
@@ -199,6 +199,7 @@ export function buildCombatToolbarModel(
   game: GameState,
   selection: BattleSelection,
   isTraining: boolean,
+  t: TranslateFn,
 ): CombatToolbarModel | null {
   const battle = game.battle!;
   if (battle.result) {
@@ -222,39 +223,39 @@ export function buildCombatToolbarModel(
       gameAction: 'audio-settings',
       label: '♫',
       disabled: false,
-      ariaLabel: 'Musique et bruitages',
+      ariaLabel: t('combat.audioAria'),
     },
     {
       gameAction: 'confirm-move',
-      label: 'Déplacer',
+      label: t('combat.move'),
       disabled: !moveEnabled,
     },
     {
       gameAction: 'confirm-attack',
-      label: 'Attaquer',
+      label: t('combat.attack'),
       disabled: !attackEnabled,
       className: 'attack-command',
     },
     {
       gameAction: 'defend',
-      label: 'Défendre',
+      label: t('combat.defend'),
       disabled: !controls.canPlay,
     },
     {
       gameAction: 'wait',
-      label: 'Attendre',
+      label: t('combat.wait'),
       disabled: !waitEnabled,
     },
     {
       gameAction: 'bolt',
-      label: `Éclair · ${SPELL_MANA_COST}`,
+      label: t('combat.bolt', { cost: SPELL_MANA_COST }),
       disabled: !spellsEnabled,
       className: spellButtonClass(selection.spell, 'bolt'),
       ariaPressed: selection.spell === 'bolt',
     },
     {
       gameAction: 'heal',
-      label: `Soin · ${SPELL_MANA_COST}`,
+      label: t('combat.heal', { cost: SPELL_MANA_COST }),
       disabled: !spellsEnabled,
       className: spellButtonClass(selection.spell, 'heal'),
       ariaPressed: selection.spell === 'heal',
@@ -265,7 +266,7 @@ export function buildCombatToolbarModel(
     const catapultEnabled = controls.canPlay && battle.siege!.wallHp > 0;
     commands.push({
       gameAction: 'catapult',
-      label: 'Catapulte',
+      label: t('combat.catapult'),
       disabled: !catapultEnabled,
     });
   }
@@ -274,12 +275,15 @@ export function buildCombatToolbarModel(
     activeCreatureId: activeFighter.creature,
     roleLabel: activeUnitRoleLabel(activeFighter.side),
     activeName: creature.name,
-    activeSubtitle: `${unitCount(activeFighter)} unités · ${activeFighter.hp} PV`,
+    activeSubtitle: t('combat.activeStack', {
+      count: unitCount(activeFighter),
+      hp: activeFighter.hp,
+    }),
     hint: combatInstructionHint(selection, controls),
     commands,
     castSpell: Boolean(selection.spell),
     castSpellEnabled: controls.cast,
-    castSpellLabel: LABEL_CAST_SPELL,
+    castSpellLabel: t('combat.castSpell'),
   };
 }
 

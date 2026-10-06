@@ -20,7 +20,10 @@ import {
   buildTacticalGridModel,
 } from '@/game/battle/presentation';
 import { battleTitle } from '@/game/opponent';
+import { createTranslator } from '@/i18n/translate';
 const empty: BattleSelection = { unit: null, hex: null, spell: null };
+const tFr = createTranslator('fr');
+const tEn = createTranslator('en');
 function battle(): GameState {
   const state = newGame();
   state.hero = { q: -1, r: -2 };
@@ -111,7 +114,7 @@ describe('Commandes de combat', () => {
     'affiche les commandes, les points de vie et la grille alternative',
     () => {
     const state = battle();
-    const toolbar = buildCombatToolbarModel(state, empty, false)!;
+    const toolbar = buildCombatToolbarModel(state, empty, false, tFr)!;
     expect(toolbar.commands!.some((cmd) => cmd.label === 'Attaquer')).toBe(
       true,
     );
@@ -143,13 +146,13 @@ describe('Commandes de combat', () => {
     );
     const to = reachable(state)[0]!;
     expect(
-      buildCombatToolbarModel(state, { ...empty, hex: to }, false)!.hint,
+      buildCombatToolbarModel(state, { ...empty, hex: to }, false, tFr)!.hint,
     ).toContain('confirmez le déplacement');
     expect(
-      buildCombatToolbarModel(state, { ...empty, unit: 'enemy-0' }, false)!
+      buildCombatToolbarModel(state, { ...empty, unit: 'enemy-0' }, false, tFr)!
         .hint,
     ).toContain('dégâts prévus');
-    expect(buildCombatToolbarModel(battle(), empty, false)!.hint).toContain(
+    expect(buildCombatToolbarModel(battle(), empty, false, tFr)!.hint).toContain(
       'case bleue',
     );
     const far = battle();
@@ -161,24 +164,31 @@ describe('Commandes de combat', () => {
     enemy.q = 14;
     enemy.r = 6;
     expect(
-      buildCombatToolbarModel(far, { ...empty, unit: 'enemy-1' }, false)!
+      buildCombatToolbarModel(far, { ...empty, unit: 'enemy-1' }, false, tFr)!
         .hint,
     ).toContain('hors de portée');
     expect(
-      buildCombatToolbarModel(battle(), { ...empty, spell: 'heal' }, false)!
+      buildCombatToolbarModel(battle(), { ...empty, spell: 'heal' }, false, tFr)!
         .hint,
     ).toContain('un allié');
     expect(
-      buildCombatToolbarModel(state, { ...empty, spell: 'bolt' }, false)!.hint,
+      buildCombatToolbarModel(state, { ...empty, spell: 'bolt' }, false, tFr)!
+        .hint,
     ).toContain('confirmez le sort');
     state.battle!.result = 'victory';
     expect(
-      buildCombatToolbarModel(state, empty, false)!.summaryHeading,
+      buildCombatToolbarModel(state, empty, false, tFr)!.summaryHeading,
     ).toContain('VICTOIRE');
     state.battle!.result = 'defeat';
     expect(
-      buildCombatToolbarModel(state, empty, true)!.continueLabel,
+      buildCombatToolbarModel(state, empty, true, tFr)!.continueLabel,
     ).toContain('Retour à la campagne');
+    const enToolbar = buildCombatToolbarModel(battle(), empty, false, tEn)!;
+    expect(enToolbar.commands!.some((cmd) => cmd.label === 'Attack')).toBe(
+      true,
+    );
+    expect(enToolbar.commands!.some((cmd) => cmd.label === 'Move')).toBe(true);
+    expect(enToolbar.castSpellLabel).toBe('Cast spell');
   });
   it(
     'inclut les unités en attente dans l’ordre d’initiative',
