@@ -9,6 +9,11 @@ import { bindSceneGestures } from '../gestures';
 type TownTexture = 'stone' | 'roof' | 'wood' | 'grass';
 type TownCylinderTexture = 'stone' | 'roof' | 'wood';
 
+function townWebglIsMobile(host: HTMLElement): boolean {
+  if (/Android/i.test(navigator.userAgent)) return true;
+  return host.clientWidth < 600;
+}
+
 /** An actual lit 3D town: every building consists of pickable architectural meshes. */
 export class TownScene {
   private readonly renderer: THREE.WebGLRenderer;
@@ -34,13 +39,17 @@ export class TownScene {
   private readonly reduced = matchMedia(
     '(prefers-reduced-motion: reduce)',
   ).matches;
+  private readonly mobileGpu: boolean;
   constructor(
     private readonly host: HTMLElement,
     private readonly pick: (id: BuildingId) => void,
   ) {
+    this.mobileGpu = townWebglIsMobile(host);
     this.renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      powerPreference: 'low-power',
+      antialias: !this.mobileGpu,
+      alpha: false,
+      failIfMajorPerformanceCaveat: false,
+      powerPreference: this.mobileGpu ? 'default' : 'low-power',
     });
     this.renderer.setPixelRatio(
       Math.min(
@@ -53,7 +62,7 @@ export class TownScene {
         })(),
       ),
     );
-    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.enabled = !this.mobileGpu;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -64,7 +73,7 @@ export class TownScene {
     this.scene.add(new THREE.HemisphereLight('#e4edff', '#4d5438', 1.8));
     const sun = new THREE.DirectionalLight('#ffdab0', 2.0);
     sun.position.set(-17, 27, 12);
-    sun.castShadow = true;
+    sun.castShadow = !this.mobileGpu;
     const shadowSize = (function ternaryValue() {
       if (host.clientWidth < 600) {
         return 512;
@@ -1264,6 +1273,7 @@ export class TownScene {
     this.level = level;
     this.build();
     this.select(this.selected);
+    this.resize();
   }
   select(id: BuildingId | null) {
     this.selected = id;
@@ -1338,6 +1348,13 @@ export class TownScene {
   private animate = () => {
     this.frame = requestAnimationFrame(this.animate);
     if (document.hidden || !this.host.isConnected) return;
+    if (
+      this.host.clientWidth > 0 &&
+      this.host.clientHeight > 0 &&
+      this.renderer.domElement.width === 0
+    ) {
+      this.resize();
+    }
     const now = performance.now();
     if (now - this.lastFrame < 30) return;
     this.lastFrame = now;

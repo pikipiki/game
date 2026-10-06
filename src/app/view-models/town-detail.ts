@@ -12,12 +12,13 @@ import {
   weeklyGrowth,
   type GameState,
 } from '@/game/engine';
-import { builtBuildings, constructionStatus } from '@/game/buildings';
+import { builtBuildings } from '@/game/buildings';
 import type { Family } from '@/game/types';
 import { BUILDINGS, type BuildingId } from '@/render/town';
 import { combatKindLabel } from '@/app/lib/creature-ui-copy';
-import { localizedCreature } from '@/i18n/localize';
+import { localizedBuilding, localizedCreature } from '@/i18n/localize';
 import type { TranslateFn } from '@/i18n/translate';
+import { constructionStatusLabel } from '@/app/lib/town-building-copy';
 
 function hallUpgradeNote(state: GameState, t: TranslateFn): string {
   if (state.castle !== 2) return '';
@@ -46,8 +47,9 @@ function hallProjects(
   const projects: TownHallProjectModel[] = [];
   const paid = BUILDINGS.filter((building) => building.gold > 0);
   for (const building of paid) {
-    const reason = constructionStatus(state, building.id);
+    const reason = constructionStatusLabel(state, building.id, t);
     const done = builtBuildings(state).includes(building.id);
+    const labels = localizedBuilding(building, t);
     let costLine = t('town.hall.costLine', {
       gold: building.gold,
       crystals: building.crystals,
@@ -59,12 +61,12 @@ function hallProjects(
     if (!done) {
       reasonText = reason ?? t('town.hall.readyBuild');
       buildDisabled = !(atTown && home && !reason);
-      buildLabel = t('town.hall.buildBtn', { name: building.name });
+      buildLabel = t('town.hall.buildBtn', { name: labels.name });
     }
     projects.push({
       id: building.id,
-      name: building.name,
-      subtitle: building.subtitle,
+      name: labels.name,
+      subtitle: labels.subtitle,
       costLine,
       built: done,
       reasonText,
@@ -158,7 +160,7 @@ function recruitBody(
     perPurchaseCount: t('town.recruit.perPurchaseCount'),
     stockLabel: t('town.recruit.available'),
     stock,
-    costLine: `${cost} or`,
+    costLine: t('town.recruit.costGold', { cost }),
     recruitLabel: t('town.recruit.recruitBtn', { name: display.name }),
     recruitDisabled: !canRecruit,
     growthFine: t('town.recruit.growthFine', { growth, weekDay }),
@@ -222,13 +224,14 @@ function unbuiltBody(
   t: TranslateFn,
 ): TownDetailBody {
   const building = BUILDINGS.find((entry) => entry.id === townBuilding)!;
-  const reason = constructionStatus(state, townBuilding);
+  const labels = localizedBuilding(building, t);
+  const reason = constructionStatusLabel(state, townBuilding, t);
   const canBuild = atTown && home && !reason;
   const reasonText = reason ?? t('town.unbuilt.buildAvailable');
   return {
     kind: 'unbuilt',
     title: t('town.unbuilt.title'),
-    lead: t('town.unbuilt.lead', { subtitle: building.subtitle }),
+    lead: t('town.unbuilt.lead', { subtitle: labels.subtitle }),
     buildBuildingId: townBuilding,
     costLine: t('town.hall.costLine', {
       gold: building.gold,
@@ -236,7 +239,7 @@ function unbuiltBody(
     }),
     reasonText,
     buildDisabled: !canBuild,
-    buildLabel: t('town.unbuilt.buildBtn', { name: building.name }),
+    buildLabel: t('town.unbuilt.buildBtn', { name: labels.name }),
   };
 }
 
@@ -265,6 +268,7 @@ export function buildTownDetailModel(
   t: TranslateFn,
 ): TownDetailModel {
   const building = BUILDINGS.find((entry) => entry.id === townBuilding)!;
+  const labels = localizedBuilding(building, t);
   let body = detailBody(state, townBuilding, atTown, home, t);
   if (!builtBuildings(state).includes(townBuilding)) {
     body = unbuiltBody(state, townBuilding, atTown, home, t);
@@ -273,8 +277,8 @@ export function buildTownDetailModel(
   if (!atTown) travelNotice = t('town.travelRecruitNotice');
   return {
     heading: {
-      subtitle: building.subtitle,
-      title: building.name,
+      subtitle: labels.subtitle,
+      title: labels.name,
       closeAria: t('town.closeBuildingAria'),
     },
     travelNotice,

@@ -4,7 +4,11 @@ import { homeCastleSite, isHomeCastle } from '@/app/lib/town-site';
 import { builtBuildings } from '@/game/buildings';
 import { TownView } from '@/app/components/town/TownView';
 import { useTranslation } from '@/app/hooks/useTranslation';
-import { townScreenLabels, webglErrorCopy } from '@/app/lib/game-copy';
+import {
+  headerShellLabels,
+  townScreenLabels,
+  webglErrorCopy,
+} from '@/app/lib/game-copy';
 import { creatureStatLabels } from '@/app/lib/creature-stat-labels';
 import { buildTownArmyUnitLabels } from '@/app/lib/town-army-labels';
 import { localizedSite } from '@/i18n/localize';
@@ -29,17 +33,29 @@ export function TownContainer() {
     }
     const host = sceneHostRef.current;
     if (!host || sceneCreatedRef.current) return;
-    sceneCreatedRef.current = true;
-    try {
-      townRef.current = new TownScene(host, (id) => {
-        store.patch({ townBuilding: id, townPanel: true });
-      });
-    } catch {
-      startTransition(() => {
-        setTownWebglError(true);
-      });
-    }
-  }, [snap.townOpen, townRef, store, t]);
+    let cancelled = false;
+    const mountScene = () => {
+      if (cancelled || sceneCreatedRef.current) return;
+      if (!host.clientWidth || !host.clientHeight) {
+        requestAnimationFrame(mountScene);
+        return;
+      }
+      sceneCreatedRef.current = true;
+      try {
+        townRef.current = new TownScene(host, (id) => {
+          store.patch({ townBuilding: id, townPanel: true });
+        });
+      } catch {
+        startTransition(() => {
+          setTownWebglError(true);
+        });
+      }
+    };
+    mountScene();
+    return () => {
+      cancelled = true;
+    };
+  }, [snap.townOpen, townRef, store]);
 
   useEffect(() => {
     if (!snap.townOpen || !townRef.current) return;
@@ -60,6 +76,7 @@ export function TownContainer() {
   if (place) townName = localizedSite(place, t).name;
   const daily = income(state);
   const buildingId = snap.townBuilding as BuildingId;
+  const header = headerShellLabels(t, snap.locale);
   const detail = buildTownDetailModel(
     state,
     buildingId,
@@ -76,6 +93,8 @@ export function TownContainer() {
         detail={detail}
         endDayDisabled={state.won}
         labels={townScreenLabels(t, state.day, daily)}
+        locale={snap.locale}
+        localeToggleAria={header.localeToggleAria}
         sceneHostRef={sceneHostRef}
         statLabels={creatureStatLabels(t)}
         state={state}

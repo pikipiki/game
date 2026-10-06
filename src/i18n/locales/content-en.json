@@ -78,5 +78,35 @@
       "name": "Dawn phoenix",
       "description": "Crowned with feathers and golden wings. The ultimate sun plush form."
     }
+  },
+  "buildings": {
+    "keep": {
+      "name": "Biscuit Castle",
+      "subtitle": "Caramel ramparts"
+    },
+    "hall": {
+      "name": "Grand Donut Hall",
+      "subtitle": "Construction & income"
+    },
+    "sylve": {
+      "name": "Mossbeard’s Cabin",
+      "subtitle": "Sweet forest guardians"
+    },
+    "sol": {
+      "name": "Dawn Bakery",
+      "subtitle": "Plushies & chocolate rolls"
+    },
+    "guild": {
+      "name": "Macaron Tower",
+      "subtitle": "Mage guild"
+    },
+    "tavern": {
+      "name": "Treat Tavern",
+      "subtitle": "Heroes & troops"
+    },
+    "forge": {
+      "name": "Star Sugar Workshop",
+      "subtitle": "Evolutions & star tower"
+    }
   }
 }

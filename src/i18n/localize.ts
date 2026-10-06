@@ -1,4 +1,5 @@
 import type { Creature, Site } from '@/game/data';
+import type { BuildingBlueprint } from '@/game/types/buildings';
 import type { TranslateFn } from '@/i18n/translate';
 
 function localizedField(
@@ -19,6 +20,17 @@ export function localizedSite(
   return {
     name: localizedField(t, `${base}.name`, site.name),
     description: localizedField(t, `${base}.description`, site.description),
+  };
+}
+
+export function localizedBuilding(
+  blueprint: BuildingBlueprint,
+  t: TranslateFn,
+): { name: string; subtitle: string } {
+  const base = `content.buildings.${blueprint.id}`;
+  return {
+    name: localizedField(t, `${base}.name`, blueprint.name),
+    subtitle: localizedField(t, `${base}.subtitle`, blueprint.subtitle),
   };
 }
 

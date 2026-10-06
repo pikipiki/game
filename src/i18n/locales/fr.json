@@ -332,6 +332,7 @@
       "perPurchaseCount": "3 créatures",
       "available": "Créatures disponibles",
       "recruitBtn": "Recruter 3 {name}",
+      "costGold": "{cost} or",
       "growthFine": "+{growth} recrues chaque semaine, le jour {weekDay}. Les recrues adoptent la forme évoluée de votre troupe."
     },
     "guild": {
@@ -351,6 +352,13 @@
     "heroHall": {
       "title": "Le gardien de Sylve",
       "lead": "Jour {day} · Semaine {week}. Votre héros commande ces troupes et {movement}/{maxMove} déplacements lui restent aujourd’hui."
+    },
+    "build": {
+      "unknown": "Bâtiment inconnu",
+      "alreadyBuilt": "Déjà construit",
+      "requires": "Requis : {names}",
+      "alreadyToday": "Un bâtiment a déjà été construit aujourd’hui",
+      "insufficientResources": "Ressources insuffisantes"
     },
     "unbuilt": {
       "title": "Terrain à bâtir",

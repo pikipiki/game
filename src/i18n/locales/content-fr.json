@@ -78,5 +78,35 @@
       "name": "Phénix d’aurore",
       "description": "Couronné de plumes et d’ailes dorées. La forme ultime des Pompons solaires."
     }
+  },
+  "buildings": {
+    "keep": {
+      "name": "Château des biscuits",
+      "subtitle": "Remparts de caramel"
+    },
+    "hall": {
+      "name": "Maison du grand donut",
+      "subtitle": "Construction & revenus"
+    },
+    "sylve": {
+      "name": "Cabane de Barbe-Mousse",
+      "subtitle": "Gardiens de la forêt sucrée"
+    },
+    "sol": {
+      "name": "Pâtisserie de l’Aurore",
+      "subtitle": "Pompons & pains au chocolat"
+    },
+    "guild": {
+      "name": "Tour des macarons",
+      "subtitle": "Guilde des mages"
+    },
+    "tavern": {
+      "name": "Auberge des friandises",
+      "subtitle": "Héros & troupes"
+    },
+    "forge": {
+      "name": "Atelier du sucre étoilé",
+      "subtitle": "Évolutions & tour des astres"
+    }
   }
 }
