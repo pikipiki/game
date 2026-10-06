@@ -172,9 +172,7 @@ body.theme-parchment {
   white-space: nowrap;
 }
 .town-building-markers {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  display: none;
 }
 .town-marker {
   position: absolute;

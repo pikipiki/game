@@ -4,6 +4,7 @@ import { pomponCitadel } from '../kingdom-models';
 import { materialTexture, releaseMaterialTexture } from '../material-textures';
 
 import { INITIAL_BUILDINGS, type BuildingId } from '../../game/buildings';
+import { bindSceneGestures } from '../gestures';
 
 type TownTexture = 'stone' | 'roof' | 'wood' | 'grass';
 type TownCylinderTexture = 'stone' | 'roof' | 'wood';
@@ -26,7 +27,7 @@ export class TownScene {
   private yaw = 0;
   private zoom = 1;
   private selected: BuildingId | null = null;
-  private down: { x: number; y: number; moved: boolean } | null = null;
+  private readonly gestureInput: ReturnType<typeof bindSceneGestures>;
   private readonly ray = new THREE.Raycaster();
   private lastFrame = 0;
   private labelsDirty = true;
@@ -87,39 +88,24 @@ export class TownScene {
       'Ville 3D : touchez un bâtiment, glissez pour changer la vue. ' +
         'Les bâtiments sont aussi accessibles par les boutons.',
     );
-    canvas.addEventListener('pointerdown', (event) => {
-      this.down = { x: event.clientX, y: event.clientY, moved: false };
-      canvas.setPointerCapture(event.pointerId);
-    });
-    canvas.addEventListener('pointermove', (event) => {
-      if (this.down && Math.abs(event.clientX - this.down.x) > 5) {
-        this.yaw = THREE.MathUtils.clamp(
-          this.yaw + (event.clientX - this.down.x) * 0.003,
-          -0.28,
-          0.28,
-        );
-        this.down.x = event.clientX;
-        this.down.moved = true;
+    canvas.style.touchAction = 'none';
+    this.gestureInput = bindSceneGestures(canvas, {
+      pan: (dx) => {
+        this.yaw = THREE.MathUtils.clamp(this.yaw + dx * 0.003, -0.28, 0.28);
         this.positionCamera();
-      }
-      if (!this.down) {
-        const hitId = this.hit(event.clientX, event.clientY);
-        let cursor = 'grab';
-        if (hitId) {
-          cursor = 'pointer';
-        }
-        canvas.style.cursor = cursor;
-      }
-    });
-    canvas.addEventListener('pointerup', (event) => {
-      if (this.down && !this.down.moved) {
-        const id = this.hit(event.clientX, event.clientY);
+      },
+      zoom: (factor) => {
+        this.zoom = THREE.MathUtils.clamp(this.zoom * factor, 0.85, 1.45);
+        this.positionCamera();
+      },
+      tap: (clientX, clientY) => {
+        const id = this.hit(clientX, clientY);
         if (id) this.pick(id);
-      }
-      this.down = null;
-    });
-    canvas.addEventListener('pointercancel', () => {
-      this.down = null;
+      },
+      hover: (clientX, clientY) => {
+        const hitId = this.hit(clientX, clientY);
+        canvas.style.cursor = hitId ? 'pointer' : 'grab';
+      },
     });
     this.update(1);
     this.resize();
@@ -1429,6 +1415,7 @@ export class TownScene {
   }
   dispose() {
     cancelAnimationFrame(this.frame);
+    this.gestureInput.dispose();
     this.observer.disconnect();
     this.clearGeometry();
     this.materials.forEach((mesh) => mesh.dispose());

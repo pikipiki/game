@@ -1,0 +1,119 @@
+/* Rétablit la mise en page du HUD de combat avec MUI Box / Button / IconButton. */
+#app.in-battle .combat-chrome {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#app.in-battle .combat-chrome > * {
+  pointer-events: auto;
+}
+
+#app.in-battle .combat-chrome .hero-banner.MuiBox-root {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 899px) {
+  #app.in-battle .combat-chrome .hero-banner.MuiBox-root {
+    display: none !important;
+  }
+}
+
+#app.in-battle .combat-chrome .initiative-bar.MuiBox-root {
+  display: flex;
+  align-items: center;
+}
+
+#app.in-battle .combat-chrome .combat-roster-strip.MuiBox-root,
+#app.in-battle .combat-chrome .combat-event.MuiBox-root {
+  display: none !important;
+}
+
+#app.in-battle .initiative-unit.MuiIconButton-root {
+  width: 44px;
+  height: 40px;
+  min-width: 44px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: 8px;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+#app.in-battle .combat-roster-unit.MuiButton-root {
+  display: inline-flex !important;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  min-width: 148px;
+  min-height: unset;
+  padding: 7px 10px;
+  text-align: left;
+  text-transform: none;
+  line-height: 1.2;
+  color: inherit;
+}
+
+#app.in-battle .sidebar .active-creature.MuiBox-root {
+  display: flex;
+  align-items: center;
+}
+
+#app.in-battle .sidebar .fighter-stats.MuiBox-root {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+#app.in-battle .sidebar .fighter-stats > span {
+  display: flex;
+  justify-content: space-between;
+}
+
+#app.in-battle .sidebar .combat-sidebar-roster.MuiBox-root {
+  display: flex;
+  flex-direction: column;
+}
+
+#app.in-battle .sidebar .damage-forecast.MuiBox-root {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#app.in-battle .combat-toolbar .combat-active.MuiBox-root {
+  display: flex;
+  align-items: center;
+}
+
+#app.in-battle .combat-toolbar .combat-command-area.MuiBox-root {
+  flex: 1;
+  min-width: 0;
+}
+
+#app.in-battle .combat-toolbar .combat-commands.MuiBox-root {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#app.in-battle .combat-command.MuiButton-root {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 100px;
+  min-height: 49px;
+  padding: 10px 14px;
+  text-transform: none;
+  color: inherit;
+}
+
+#app.in-battle .combat-toolbar .combat-summary.MuiBox-root {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}

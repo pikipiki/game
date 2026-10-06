@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import CastleIcon from '@mui/icons-material/Castle';
 import { getCreature } from '@/game/data';
 import { CreaturePortrait } from '@/app/components/ui/CreaturePortrait';
 import { GameActionButton } from '@/app/components/ui/GameActionButton';
@@ -39,6 +40,16 @@ export function AdventureSidebarView({ model }: AdventureSidebarViewProps) {
           <strong>{model.heroTitle}</strong>
           <small>{model.movementLine}</small>
         </div>
+        <GameActionButton
+          aria-label={model.citadelAria}
+          className="button sidebar-citadel-btn"
+          gameAction="castle"
+          startIcon={<CastleIcon />}
+          title={model.citadelAria}
+          variant="gold"
+        >
+          {model.citadelShort}
+        </GameActionButton>
       </Box>
       <Box aria-label={model.armyAria} className="army-slots">
         {model.armySlots.map((slot) => {

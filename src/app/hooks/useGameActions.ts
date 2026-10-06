@@ -4,7 +4,7 @@ import { writeStoredLocale } from '@/i18n/locale-storage';
 import { useGameRuntime } from '@/app/providers/GameContext';
 import { SITES } from '@/game/data';
 import { battleControls } from '@/game/battle/controls';
-import { income, loadGame, newGame, reduce } from '@/game/engine';
+import { loadGame, newGame, reduce } from '@/game/engine';
 import type { BuildingId } from '@/render/town';
 
 export function useGameActions(): void {
@@ -42,9 +42,13 @@ export function useGameActions(): void {
       );
       if (!button || button.hasAttribute('disabled')) return;
       const actionName = button.dataset.action;
+      const mapOnlyWhilePaused =
+        liveSnap.opponentStrikePause &&
+        !['zoom-in', 'zoom-out', 'camera'].includes(actionName ?? '');
       if (
-        liveSnap.resolving &&
-        !['zoom-in', 'zoom-out', 'camera'].includes(actionName ?? '')
+        mapOnlyWhilePaused ||
+        (liveSnap.resolving &&
+          !['zoom-in', 'zoom-out', 'camera'].includes(actionName ?? ''))
       ) {
         return;
       }
@@ -185,6 +189,12 @@ export function useGameActions(): void {
         store.patch({ locale: 'en' });
         return;
       }
+      if (actionName === 'toggle-locale') {
+        const next = store.getSnapshot().locale === 'fr' ? 'en' : 'fr';
+        writeStoredLocale(next);
+        store.patch({ locale: next });
+        return;
+      }
       if (actionName === 'audio-settings') {
         store.patch({ modal: 'audio' });
         return;
@@ -227,7 +237,6 @@ export function useGameActions(): void {
       }
       if (actionName === 'end-day') {
         void dispatch({ type: 'end-day' });
-        toast(`Jour ${state.day} · +${income(state)} or`);
         return;
       }
       if (actionName === 'fight-hero') {

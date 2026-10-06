@@ -12,6 +12,10 @@ export function GameFooterContainer() {
   const state = snap.game;
   const save = saveIndicatorLabel(snap.storageWorks, snap.sandbox, t);
 
+  if (state.battle) {
+    return null;
+  }
+
   return (
     <GameFooterView
       endDayDisabled={Boolean(state.battle) || state.won}

@@ -106,12 +106,19 @@ export function footerShellLabels(
 export interface HeaderShellLabels {
   brandAria: string;
   settingsAria: string;
+  localeToggleAria: string;
 }
 
-export function headerShellLabels(t: TranslateFn): HeaderShellLabels {
+export function headerShellLabels(
+  t: TranslateFn,
+  locale: 'fr' | 'en',
+): HeaderShellLabels {
+  const localeToggleAria =
+    locale === 'fr' ? t('header.localeToggleToEn') : t('header.localeToggleToFr');
   return {
     brandAria: t('header.brand'),
     settingsAria: t('header.settingsAria'),
+    localeToggleAria,
   };
 }
 
@@ -126,7 +133,8 @@ export interface WorldShellLabels {
   training: string;
   allyLegend: string;
   enemyLegend: string;
-  dragTip: string;
+  dragTipPan: string;
+  dragTipEnemies: string;
   initiativeBarAria: string;
   combatToolbarAria: string;
 }
@@ -143,7 +151,8 @@ export function worldShellLabels(t: TranslateFn): WorldShellLabels {
     training: t('map.training'),
     allyLegend: t('map.allyLegend'),
     enemyLegend: t('map.enemyLegend'),
-    dragTip: t('map.dragTip'),
+    dragTipPan: t('map.dragTipPan'),
+    dragTipEnemies: t('map.dragTipEnemies'),
     initiativeBarAria: t('map.initiativeBarAria'),
     combatToolbarAria: t('map.combatToolbarAria'),
   };

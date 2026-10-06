@@ -26,6 +26,7 @@ import {
 import { animationPlan, animationProgress } from '../game/battle/animation';
 import { ball, box, cylinder, material } from './scene/mesh-primitives';
 
+import { bindSceneGestures } from './gestures';
 import { creatureModel } from './scene/world-meshes';
 
 export { creatureModel };
@@ -34,6 +35,7 @@ export interface Pick {
   hex?: Hex;
   unit?: string;
   site?: string;
+  doubleClick?: boolean;
 }
 function mapSiteMarkerLabel(site: Site, state: GameState): string {
   if (site.kind === 'castle') {
@@ -243,14 +245,7 @@ export class GameScene {
   private frame = 0;
   private battleMode = false;
   private readonly observer: ResizeObserver;
-  private down: {
-    x: number;
-    y: number;
-    angle: number;
-    panX: number;
-    panZ: number;
-  } | null = null;
-  private moved = false;
+  private readonly gestureInput: ReturnType<typeof bindSceneGestures>;
   private readonly reduced = window.matchMedia(
     '(prefers-reduced-motion: reduce)',
   )
@@ -292,96 +287,37 @@ export class GameScene {
       'Champ de bataille 3D : touchez une troupe ou une case. ' +
         'Glissez pour déplacer la vue.',
     );
-    canvas.addEventListener('pointerdown', (event) => {
-      this.down = {
-        x: event.clientX,
-        y: event.clientY,
-        angle: this.angle,
-        panX: this.cameraTarget.x,
-        panZ: this.cameraTarget.z,
-      };
-      this.moved = false;
-      canvas.setPointerCapture(event.pointerId);
-    });
-    canvas.addEventListener('pointermove', (event) => {
-      if (!this.down) return;
-      const delta = event.clientX - this.down.x;
-      if (Math.abs(delta) > 8 || Math.abs(event.clientY - this.down.y) > 8)
-        {this.moved = true;}
-      if (this.moved) {
-        if (this.battleMode && !event.shiftKey) {
+    canvas.style.touchAction = 'none';
+    this.gestureInput = bindSceneGestures(canvas, {
+      pan: (dx, dy, shift) => {
+        if (this.battleMode && !shift) {
           const scale =
             (this.camera.right - this.camera.left) /
             this.host.clientWidth /
             this.zoom;
           this.cameraTarget.x = THREE.MathUtils.clamp(
-            this.down.panX - delta * scale,
+            this.cameraTarget.x - dx * scale,
             -BATTLE_CENTER_X,
             BATTLE_CENTER_X,
           );
           this.cameraTarget.z = THREE.MathUtils.clamp(
-            this.down.panZ - (event.clientY - this.down.y) * scale * 1.6,
+            this.cameraTarget.z - dy * scale * 1.6,
             -BATTLE_CENTER_Z,
             BATTLE_CENTER_Z,
           );
-        } else this.angle = this.down.angle + delta * 0.004;
-        this.positionCamera();
-      }
-    });
-    canvas.addEventListener('pointerup', (event) => {
-      if (this.down && !this.moved) {
-        this.camera.updateMatrixWorld(true);
-        this.content.updateMatrixWorld(true);
-        const rect = canvas.getBoundingClientRect();
-        this.raycaster.setFromCamera(
-          new THREE.Vector2(
-            ((event.clientX - rect.left) / rect.width) * 2 - 1,
-            (-(event.clientY - rect.top) / rect.height) * 2 + 1,
-          ),
-          this.camera,
-        );
-        const hits = this.raycaster.intersectObjects(this.pickables, true);
-        // Text sprites have rectangular hit areas. They must never hide the cells below.
-        const unitHit = hits.find(
-          (hitEntry) =>
-            hitEntry.object instanceof THREE.Mesh &&
-            this.pickOf(hitEntry.object)?.unit,
-        );
-        if (unitHit) this.onPick(this.pickOf(unitHit.object)!);
-        else {
-          const ground = this.raycaster.ray.intersectPlane(
-            new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.01),
-            new THREE.Vector3(),
-          );
-          const hex = (function ternaryValue() {
-            if (ground) {
-              return battleHexAt(ground.x, ground.z);
-            }
-            return null;
-          })();
-          if (hex) this.onPick({ hex });
+        } else {
+          this.angle += dx * 0.004;
         }
-      }
-      this.down = null;
-    });
-    canvas.addEventListener('pointercancel', () => {
-      this.down = null;
-    });
-    canvas.addEventListener(
-      'wheel',
-      (event) => {
-        event.preventDefault();
-        this.setZoom(
-          (function ternaryValue() {
-            if (event.deltaY > 0) {
-              return -0.08;
-            }
-            return 0.08;
-          })(),
-        );
+        this.positionCamera();
       },
-      { passive: false },
-    );
+      zoom: (factor) => {
+        this.zoom = THREE.MathUtils.clamp(this.zoom * factor, 0.7, 1.8);
+        this.positionCamera();
+      },
+      tap: (clientX, clientY) => {
+        this.pickAtClient(clientX, clientY);
+      },
+    });
     this.resize();
     this.animate();
   }
@@ -417,6 +353,38 @@ export class GameScene {
     this.camera.lookAt(this.cameraTarget);
     this.camera.zoom = this.zoom;
     this.camera.updateProjectionMatrix();
+  }
+  private pickAtClient(clientX: number, clientY: number): void {
+    const canvas = this.renderer.domElement;
+    this.camera.updateMatrixWorld(true);
+    this.content.updateMatrixWorld(true);
+    const rect = canvas.getBoundingClientRect();
+    this.raycaster.setFromCamera(
+      new THREE.Vector2(
+        ((clientX - rect.left) / rect.width) * 2 - 1,
+        (-(clientY - rect.top) / rect.height) * 2 + 1,
+      ),
+      this.camera,
+    );
+    const hits = this.raycaster.intersectObjects(this.pickables, true);
+    const unitHit = hits.find(
+      (hitEntry) =>
+        hitEntry.object instanceof THREE.Mesh &&
+        this.pickOf(hitEntry.object)?.unit,
+    );
+    if (unitHit) {
+      const pick = this.pickOf(unitHit.object);
+      if (pick) this.onPick(pick);
+      return;
+    }
+    const ground = this.raycaster.ray.intersectPlane(
+      new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.01),
+      new THREE.Vector3(),
+    );
+    if (ground) {
+      const hex = battleHexAt(ground.x, ground.z);
+      if (hex) this.onPick({ hex });
+    }
   }
   private pickOf(object: THREE.Object3D): Pick | null {
     let object3d: THREE.Object3D | null = object;
@@ -1277,6 +1245,7 @@ export class GameScene {
   };
   dispose() {
     cancelAnimationFrame(this.frame);
+    this.gestureInput.dispose();
     this.observer.disconnect();
     this.clean(this.content);
     this.clean(this.selection);

@@ -135,5 +135,7 @@ export function buildAdventureSidebarViewModel(
     }),
     minimapAria: t('sidebar.minimapAria'),
     armyAria: t('sidebar.armyAria'),
+    citadelAria: t('sidebar.citadelAria'),
+    citadelShort: t('sidebar.citadelShort'),
   };
 }

@@ -25,12 +25,13 @@ function LocationCardActions({
           {action.stepsUnitLabel}
         </span>
         <GameActionButton
+          className="button location-move-btn"
           disabled={!action.possible}
           gameAction="travel"
-          variant="crystal"
+          startIcon={<GameIcon name="foot" size={18} />}
+          variant="gold"
         >
           {action.moveButtonLabel}
-          <GameIcon name="arrow" size={16} />
         </GameActionButton>
       </>
     );
@@ -41,6 +42,7 @@ function LocationCardActions({
         <span className="travel-cost">{action.statusLabel}</span>
         <GameActionButton
           actionId={action.siteId}
+          className="button"
           disabled={!action.cleared && action.locked}
           gameAction="fight"
           variant={action.buttonVariant}
@@ -55,7 +57,7 @@ function LocationCardActions({
     return (
       <>
         <span className="travel-cost">{action.costLine}</span>
-        <GameActionButton gameAction="castle" variant="crystal">
+        <GameActionButton className="button" gameAction="castle" variant="crystal">
           {action.enterButtonLabel}
           <GameIcon name="arrow" size={16} />
         </GameActionButton>
@@ -66,7 +68,7 @@ function LocationCardActions({
     return (
       <>
         <span className="travel-cost">{action.banner}</span>
-        <GameActionButton gameAction="army" variant="subtle">
+        <GameActionButton className="button" gameAction="army" variant="subtle">
           {action.viewArmyButtonLabel}
           <GameIcon name="shield" size={16} />
         </GameActionButton>
@@ -77,6 +79,7 @@ function LocationCardActions({
   return (
     <GameActionButton
       actionId={action.heroId}
+      className="button"
       disabled={!canAct}
       fullWidth
       gameAction={action.gameAction}

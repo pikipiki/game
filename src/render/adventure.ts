@@ -11,11 +11,31 @@ import type { GameState } from '../game/engine';
 import { creatureModel, type Pick } from './scene';
 import { h3Texture } from './h3-assets';
 import assets from '../assets/h3/adventure.json';
+import { bindSceneGestures } from './gestures';
 import { pomponCitadel } from './kingdom-models';
 
 const CELL = 8;
+/** Drapeau hex (sites, héros) — même offset que dans la boucle des sites. */
+const FLAG_ON_HEX = { x: 3, y: 2 };
 const place = (height: Hex) =>
   new THREE.Vector3(height.q * CELL, -height.r * CELL, 0);
+export function normalizePickedHex(raw: unknown): Hex | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const record = raw as {
+    q?: number;
+    r?: number;
+    hexQ?: number;
+    hexR?: number;
+  };
+  if (typeof record.q === 'number' && typeof record.r === 'number') {
+    return { q: record.q, r: record.r };
+  }
+  if (typeof record.hexQ === 'number' && typeof record.hexR === 'number') {
+    return { q: record.hexQ, r: record.hexR };
+  }
+  return null;
+}
+
 export function adventureCellAt(posX: number, posY: number): Hex | null {
   const hexQ = Math.floor(posX / CELL + 0.5),
     hexR = Math.floor(-posY / CELL + 0.5);
@@ -42,13 +62,20 @@ export class AdventureScene {
   private frame = 0;
   private zoom = 1;
   private readonly offset = new THREE.Vector2();
-  private down: { x: number; y: number; moved: boolean } | null = null;
+  private readonly gestureInput: ReturnType<typeof bindSceneGestures>;
+  private lastTap: {
+    at: number;
+    x: number;
+    y: number;
+    hex: Hex;
+  } | null = null;
   private readonly ray = new THREE.Raycaster();
   private hero: THREE.Group | null = null;
   private pickables: THREE.Object3D[] = [];
   private initialized = false;
   private enemies: THREE.Group[] = [];
   private readonly targetHero = new THREE.Vector3();
+  private cameraFollowEnemyId: string | null = null;
   private readonly reduced = matchMedia(
     '(prefers-reduced-motion: reduce)',
   ).matches;
@@ -73,67 +100,100 @@ export class AdventureScene {
       'aria-label',
       'Carte du royaume : terrains, château, mines, ennemis et héros en 3D.',
     );
-    canvas.addEventListener('pointerdown', (event) => {
-      this.down = { x: event.clientX, y: event.clientY, moved: false };
-      canvas.setPointerCapture(event.pointerId);
-    });
-    canvas.addEventListener('pointermove', (event) => {
-      if (!this.down) return;
-      const dx = event.clientX - this.down.x,
-        dy = event.clientY - this.down.y;
-      if (Math.abs(dx) + Math.abs(dy) > 7) {
-        this.down.moved = true;
+    canvas.style.touchAction = 'none';
+    this.gestureInput = bindSceneGestures(canvas, {
+      pan: (dx, dy) => {
         const scale =
           (this.camera.right - this.camera.left) / host.clientWidth / this.zoom;
         this.offset.x -= dx * scale;
-        this.offset.y += dy * scale;
+        this.offset.y -= dy * scale;
         this.offset.clampScalar(-25, 25);
-        this.down.x = event.clientX;
-        this.down.y = event.clientY;
         this.positionCamera();
-      }
+      },
+      zoom: (factor) => {
+        this.applyZoomFactor(factor);
+      },
+      tap: (clientX, clientY) => {
+        this.handleMapTap(clientX, clientY);
+      },
     });
-    canvas.addEventListener('pointerup', (event) => {
-      if (this.down && !this.down.moved) {
-        const rect = canvas.getBoundingClientRect();
-        this.camera.updateMatrixWorld(true);
-        this.ray.setFromCamera(
-          new THREE.Vector2(
-            ((event.clientX - rect.left) / rect.width) * 2 - 1,
-            1 - ((event.clientY - rect.top) / rect.height) * 2,
-          ),
-          this.camera,
-        );
-        this.content.updateMatrixWorld(true);
-        const hit = this.ray.intersectObjects(this.pickables, true)[0];
-        let object: THREE.Object3D | null = hit?.object ?? null;
-        while (object && !object.userData.hex) object = object.parent;
-        if (object?.userData.hex) {
-          this.onPick({ hex: object.userData.hex });
-          this.down = null;
-          return;
-        }
-        const pos = this.ray.ray.intersectPlane(
-          new THREE.Plane(new THREE.Vector3(0, 0, 1), 0),
-          new THREE.Vector3(),
-        );
-        const hex = (function ternaryValue() {
-          if (pos) {
-            return adventureCellAt(pos.x, pos.y);
-          }
-          return null;
-        })();
-        if (hex) this.onPick({ hex });
-      }
-      this.down = null;
-    });
-    canvas.addEventListener('pointercancel', () => {
-      this.down = null;
+    canvas.addEventListener('dblclick', (event) => {
+      event.preventDefault();
+      const hex = this.pickHexAtClient(event.clientX, event.clientY);
+      if (hex) this.onPick({ hex, doubleClick: true });
+      this.lastTap = null;
     });
     this.observer = new ResizeObserver(() => this.resize());
     this.observer.observe(host);
     this.resize();
     this.animate();
+  }
+  /** Position écran (px) pour une bulle au-dessus d’un chef adverse. */
+  enemyBubbleAnchor(enemyId: string): { x: number; y: number } | null {
+    const anchor = this.enemies.find(
+      (group) => String(group.userData.id) === enemyId,
+    );
+    if (!anchor) return null;
+    this.camera.updateMatrixWorld(true);
+    this.content.updateMatrixWorld(true);
+    const world = new THREE.Vector3();
+    anchor.getWorldPosition(world);
+    world.y += 5;
+    world.z += 1;
+    const projected = world.project(this.camera);
+    const width = this.host.clientWidth;
+    const height = this.host.clientHeight;
+    if (!width || !height) return null;
+    return {
+      x: (projected.x * 0.5 + 0.5) * width,
+      y: (-projected.y * 0.5 + 0.5) * height,
+    };
+  }
+
+  private handleMapTap(clientX: number, clientY: number): void {
+    const hex = this.pickHexAtClient(clientX, clientY);
+    if (!hex) return;
+    const now = Date.now();
+    const prev = this.lastTap;
+    let doubleClick = false;
+    if (
+      prev &&
+      now - prev.at < 450 &&
+      Math.abs(clientX - prev.x) < 14 &&
+      Math.abs(clientY - prev.y) < 14 &&
+      key(prev.hex) === key(hex)
+    ) {
+      doubleClick = true;
+      this.lastTap = null;
+    } else {
+      this.lastTap = { at: now, x: clientX, y: clientY, hex };
+    }
+    this.onPick({ hex, doubleClick });
+  }
+  private pickHexAtClient(clientX: number, clientY: number): Hex | null {
+    const canvas = this.renderer.domElement;
+    const rect = canvas.getBoundingClientRect();
+    this.camera.updateMatrixWorld(true);
+    this.ray.setFromCamera(
+      new THREE.Vector2(
+        ((clientX - rect.left) / rect.width) * 2 - 1,
+        1 - ((clientY - rect.top) / rect.height) * 2,
+      ),
+      this.camera,
+    );
+    this.content.updateMatrixWorld(true);
+    const hit = this.ray.intersectObjects(this.pickables, true)[0];
+    let object: THREE.Object3D | null = hit?.object ?? null;
+    while (object && !object.userData.hex) object = object.parent;
+    if (object?.userData.hex) {
+      return normalizePickedHex(object.userData.hex);
+    }
+    const pos = this.ray.ray.intersectPlane(
+      new THREE.Plane(new THREE.Vector3(0, 0, 1), 0),
+      new THREE.Vector3(),
+    );
+    if (pos) return adventureCellAt(pos.x, pos.y);
+    return null;
   }
   private plane(
     width: number,
@@ -158,7 +218,12 @@ export class AdventureScene {
     return mesh;
   }
   // eslint-disable-next-line sonarjs/cognitive-complexity -- adventure map layout
-  update(state: GameState, selected: Hex | null) {
+  update(
+    state: GameState,
+    selected: Hex | null,
+    cameraFollowEnemyId?: string | null,
+  ) {
+    this.cameraFollowEnemyId = cameraFollowEnemyId ?? null;
     const oldEnemies = new Map(
       this.enemies.map((group) => [
         String(group.userData.id),
@@ -247,7 +312,7 @@ export class AdventureScene {
             castle.position.set(hexQ * CELL, -hexR * CELL - 2, 2);
             castle.rotation.x = 0.5;
             castle.scale.setScalar(0.95);
-            castle.userData.hex = { hexQ, hexR };
+            castle.userData.hex = { q: hexQ, r: hexR };
             this.pickables.push(castle);
             this.content.add(castle);
           } else if (site.kind === 'gold')
@@ -269,30 +334,48 @@ export class AdventureScene {
             );
             foe.scale.setScalar(2);
             foe.position.set(hexQ * CELL + 2, -hexR * CELL - 2, 4);
-            foe.userData.hex = { hexQ, hexR };
+            foe.userData.hex = { q: hexQ, r: hexR };
             this.pickables.push(foe);
             this.content.add(foe);
-            this.flag(hexQ * CELL + 3, -hexR * CELL + 2, '#c33a3a');
-          } else if (state.enemyOwned?.includes(site.id)) {
-            this.flag(hexQ * CELL + 3, -hexR * CELL + 2, '#c33a3a');
-          } else if (state.owned.includes(site.id))
-            {this.flag(hexQ * CELL + 3, -hexR * CELL + 2, '#447bce');}
+          }
+          const isFortified =
+            site.kind === 'castle' || site.kind === 'fortress';
+          if (isFortified && state.enemyOwned?.includes(site.id)) {
+            this.flag(
+              hexQ * CELL + FLAG_ON_HEX.x,
+              -hexR * CELL + FLAG_ON_HEX.y,
+              '#c33a3a',
+            );
+          } else if (isFortified && state.owned.includes(site.id)) {
+            this.flag(
+              hexQ * CELL + FLAG_ON_HEX.x,
+              -hexR * CELL + FLAG_ON_HEX.y,
+              '#447bce',
+            );
+          }
         }
       }
     }
     for (const enemy of state.enemyHeroes ?? []) {
       if (!state.explored.includes(key(enemy))) continue;
-      const group = creatureModel(enemy.army[0]?.creature ?? 'sylve');
-      group.scale.setScalar(2.5);
-      const target = place(enemy).add(new THREE.Vector3(1, -1, 7));
-      group.position.copy(oldEnemies.get(enemy.id) ?? target);
-      group.userData.target = target;
-      group.userData.id = enemy.id;
-      group.userData.hex = { q: enemy.q, r: enemy.r };
-      this.pickables.push(group);
-      this.enemies.push(group);
-      this.content.add(group);
-      this.flag(target.x + 1, target.y + 3, '#d93933');
+      const foot = new THREE.Vector3(1, -1, 7);
+      const anchor = this.unitAnchor(
+        enemy.army[0]?.creature ?? 'sylve',
+        2.5,
+        enemy,
+        foot,
+        oldEnemies.get(enemy.id),
+      );
+      anchor.userData.id = enemy.id;
+      this.attachFlag(
+        anchor,
+        FLAG_ON_HEX.x - foot.x,
+        FLAG_ON_HEX.y - foot.y,
+        '#d93933',
+      );
+      this.pickables.push(anchor);
+      this.enemies.push(anchor);
+      this.content.add(anchor);
     }
     if (selected && state.explored.includes(key(selected))) {
       const point = place(selected),
@@ -331,15 +414,24 @@ export class AdventureScene {
         this.content.add(dot);
       });
     }
-    const hero = creatureModel(state.army[0]?.creature ?? 'sylve');
-    hero.scale.setScalar(2.4);
-    this.targetHero.copy(place(state.hero)).add(new THREE.Vector3(-1, -2, 6));
-    hero.position.copy(old ?? this.targetHero);
-    this.content.add(hero);
-    this.hero = hero;
-    hero.userData.hex = { ...state.hero };
-    this.pickables.push(hero);
-    this.flag(this.targetHero.x - 1, this.targetHero.y + 3, '#447bce');
+    const heroFoot = new THREE.Vector3(-1, -2, 6);
+    this.targetHero.copy(place(state.hero)).add(heroFoot);
+    const heroAnchor = this.unitAnchor(
+      state.army[0]?.creature ?? 'sylve',
+      2.4,
+      state.hero,
+      heroFoot,
+      old,
+    );
+    this.attachFlag(
+      heroAnchor,
+      FLAG_ON_HEX.x - heroFoot.x,
+      FLAG_ON_HEX.y - heroFoot.y,
+      '#447bce',
+    );
+    this.content.add(heroAnchor);
+    this.hero = heroAnchor;
+    this.pickables.push(heroAnchor);
   }
   private object(
     kind:
@@ -433,19 +525,56 @@ export class AdventureScene {
     this.pickables.push(group);
     this.content.add(group);
   }
-  private flag(posX: number, posY: number, color: string) {
+  /** Ancre non mise à l’échelle : le modèle est enfant, le drapeau reste aligné hex. */
+  private unitAnchor(
+    creatureId: string,
+    scale: number,
+    hex: Hex,
+    footOffset: THREE.Vector3,
+    start?: THREE.Vector3,
+  ): THREE.Group {
+    const anchor = new THREE.Group();
+    const target = place(hex).add(footOffset);
+    anchor.position.copy(start ?? target);
+    anchor.userData.target = target;
+    anchor.userData.hex = { q: hex.q, r: hex.r };
+    const model = creatureModel(creatureId);
+    model.scale.setScalar(scale);
+    anchor.add(model);
+    return anchor;
+  }
+
+  private flagMeshes(color: string): THREE.Group {
+    const group = new THREE.Group();
     const pole = new THREE.Mesh(
       new THREE.CylinderGeometry(0.05, 0.05, 3, 6),
       new THREE.MeshBasicMaterial({ color: '#cfb976' }),
     );
-    pole.position.set(posX, posY, 7);
-    this.content.add(pole);
+    group.add(pole);
     const cloth = new THREE.Mesh(
       new THREE.PlaneGeometry(1.6, 0.9),
       new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide }),
     );
-    cloth.position.set(posX + 0.8, posY + 1, 7);
-    this.content.add(cloth);
+    cloth.position.set(0.8, 1, 0);
+    group.add(cloth);
+    return group;
+  }
+
+  private flag(posX: number, posY: number, color: string) {
+    const banner = this.flagMeshes(color);
+    banner.position.set(posX, posY, 7);
+    this.content.add(banner);
+  }
+
+  private attachFlag(
+    parent: THREE.Object3D,
+    localX: number,
+    localY: number,
+    color: string,
+  ) {
+    const banner = this.flagMeshes(color);
+    banner.position.set(localX, localY, 0);
+    parent.add(banner);
   }
   private clear() {
     this.content.traverse((object3d) => {
@@ -487,6 +616,10 @@ export class AdventureScene {
     this.zoom = THREE.MathUtils.clamp(this.zoom + delta, 0.8, 2.5);
     this.positionCamera();
   }
+  applyZoomFactor(factor: number) {
+    this.zoom = THREE.MathUtils.clamp(this.zoom * factor, 0.8, 2.5);
+    this.positionCamera();
+  }
   resetCamera() {
     this.offset.set(this.targetHero.x, this.targetHero.y).clampScalar(-25, 25);
     this.zoom = 1;
@@ -505,19 +638,46 @@ export class AdventureScene {
       if (this.reduced) {
         heroTilt = 0;
       }
-      this.hero.rotation.z = heroTilt;
+      const heroModel = this.hero.children[0];
+      if (heroModel) heroModel.rotation.z = heroTilt;
     }
     let enemyLerp = 0.12;
     if (this.reduced) {
       enemyLerp = 1;
     }
-    this.enemies.forEach((group) =>
-      group.position.lerp(group.userData.target, enemyLerp),
-    );
+    let enemyMarching = false;
+    this.enemies.forEach((group) => {
+      const target = group.userData.target as THREE.Vector3 | undefined;
+      if (target && group.position.distanceTo(target) > 0.15) {
+        enemyMarching = true;
+      }
+      group.position.lerp(target ?? group.position, enemyLerp);
+    });
+    this.host.dataset.enemyMarching = enemyMarching ? '1' : '0';
+    if (this.cameraFollowEnemyId) {
+      const follow = this.enemies.find(
+        (group) => String(group.userData.id) === this.cameraFollowEnemyId,
+      );
+      if (follow) {
+        let panLerp = 0.14;
+        if (this.reduced) {
+          panLerp = 1;
+        }
+        this.offset.x += (follow.position.x - this.offset.x) * panLerp;
+        this.offset.y += (follow.position.y - this.offset.y) * panLerp;
+        this.offset.clampScalar(-25, 25);
+        this.positionCamera();
+      }
+    }
+    const focusHex = adventureCellAt(this.offset.x, this.offset.y);
+    this.host.dataset.cameraFocusHex = focusHex
+      ? `${focusHex.q},${focusHex.r}`
+      : '';
     this.renderer.render(this.scene, this.camera);
   };
   dispose() {
     cancelAnimationFrame(this.frame);
+    this.gestureInput.dispose();
     this.observer.disconnect();
     this.clear();
     this.renderer.dispose();

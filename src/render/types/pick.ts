@@ -4,4 +4,5 @@ export interface Pick {
   hex?: Hex;
   unit?: string;
   site?: string;
+  doubleClick?: boolean;
 }

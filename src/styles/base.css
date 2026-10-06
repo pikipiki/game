@@ -183,6 +183,10 @@ h3 {
   background: var(--color-icon-btn-hover-bg);
   border-color: var(--color-icon-btn-hover-border);
 }
+.locale-toggle span {
+  font-size: 1.35rem;
+  line-height: 1;
+}
 .layout {
   display: flex;
   height: calc(100dvh - 171px);
@@ -1083,9 +1087,18 @@ h3 {
     font-size: 9px;
     bottom: 31px;
   }
-  .drag-tip,
   .caption-divider {
     display: none;
+  }
+  .world .map-caption--explore {
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding-left: 52px;
+    transform: none;
+  }
+  .world .map-tools {
+    z-index: 6;
   }
   .map-tools {
     left: 17px;
@@ -1205,13 +1218,19 @@ h3 {
   .map-tools svg {
     width: 16px;
   }
-  .map-caption {
+  .map-caption:not(.map-caption--explore) {
     left: auto;
     right: 16px;
     bottom: 25px;
     transform: none;
     font-size: 9px;
     gap: 5px;
+  }
+  .world .map-caption--explore {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
   }
   .map-compass {
     display: none;
@@ -1253,7 +1272,8 @@ h3 {
     padding-top: 9px;
     flex-wrap: nowrap;
   }
-  .location-action .button {
+  .location-action .button,
+  .location-action .MuiButton-root {
     min-height: 36px;
     padding: 8px 12px;
     font-size: 11px;

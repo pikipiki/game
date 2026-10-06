@@ -5,13 +5,19 @@ export interface AppToastViewProps {
   readonly open: boolean;
   readonly message: string;
   readonly onClose: () => void;
+  readonly autoHideDuration?: number;
 }
 
-export function AppToastView({ open, message, onClose }: AppToastViewProps) {
+export function AppToastView({
+  open,
+  message,
+  onClose,
+  autoHideDuration = 3500,
+}: AppToastViewProps) {
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      autoHideDuration={3500}
+      autoHideDuration={autoHideDuration}
       className="toast"
       id="toast"
       onClose={onClose}

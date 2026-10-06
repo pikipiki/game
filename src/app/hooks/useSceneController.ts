@@ -52,7 +52,7 @@ export function useSceneController(
 
   useEffect(() => {
     const scene = sceneRef.current;
-    if (!scene) return;
+    if (!scene || snap.resolving) return;
     const state = snap.game;
     const selectedUnit = state.battle?.units.find(
       (unit) => unit.id === snap.selectedFighter,
@@ -63,8 +63,12 @@ export function useSceneController(
         highlight = snap.selectedBattleHex ?? selectedUnit ?? null;
       }
       scene.update(state, highlight, snap.selectedFighter);
-    } else {
-      scene.update(state, snap.selected);
+    } else if (scene instanceof AdventureScene) {
+      const followEnemyId =
+        snap.opponentStrikePause && snap.opponentStrikeBubble
+          ? snap.opponentStrikeBubble.enemyId
+          : null;
+      scene.update(state, snap.selected, followEnemyId);
     }
   }, [snap, sceneRef]);
 }

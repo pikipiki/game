@@ -18,13 +18,21 @@ import {
   type SceneInstance,
 } from '@/app/providers/GameContext';
 import {
+  income,
   loadGame,
   newGame,
   reduce,
   type Action,
+  type GameState,
 } from '@/game/engine';
+import { opponentStrikeToast } from '@/app/lib/opponent-alert';
+import { ownedCastleAt } from '@/app/lib/town-site';
+import { createTranslator } from '@/i18n/translate';
 import { GameScene, type Pick } from '@/render/scene';
 import type { TownScene } from '@/render/town';
+
+/** Pause sur la carte avant le combat déclenché par l’IA (fin de journée). */
+const OPPONENT_STRIKE_PAUSE_MS = 3000;
 
 function createInitialStore(previewSandbox: boolean): AppStore {
   const stored = readStoredGame(previewSandbox);
@@ -43,6 +51,8 @@ function createInitialStore(previewSandbox: boolean): AppStore {
     storageWorks: stored.storageWorks,
     sandbox: previewSandbox,
     resolving: false,
+    opponentStrikePause: false,
+    opponentStrikeBubble: null,
     townOpen: false,
     townPanel: false,
     townBuilding: 'keep',
@@ -68,6 +78,7 @@ export function GameProvider({
   const [audioUiTick, setAudioUiTick] = useState(0);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [toastDurationMs, setToastDurationMs] = useState(3500);
 
   const bumpAudioUi = useCallback(() => {
     setAudioUiTick((tick) => tick + 1);
@@ -89,13 +100,14 @@ export function GameProvider({
     setToastOpen(false);
   }, []);
 
-  const toast = useCallback((message: string) => {
+  const toast = useCallback((message: string, durationMs = 3500) => {
     setToastMessage(message);
+    setToastDurationMs(durationMs);
     setToastOpen(true);
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     toastTimerRef.current = setTimeout(() => {
       setToastOpen(false);
-    }, 3500);
+    }, durationMs);
   }, []);
 
   const closeTown = useCallback(() => {
@@ -150,7 +162,7 @@ export function GameProvider({
     (pick: Pick) => {
       const snap = store.getSnapshot();
       const state = snap.game;
-      if (snap.modal || snap.resolving) return;
+      if (snap.modal || snap.resolving || snap.opponentStrikePause) return;
       if (state.battle) {
         if (state.battle.result) return;
         if (pick.unit) selectFighter(pick.unit);
@@ -158,20 +170,41 @@ export function GameProvider({
           store.patch({ selectedBattleHex: pick.hex, selectedFighter: null });
         }
       } else if (pick.hex) {
+        if (pick.doubleClick && ownedCastleAt(pick.hex, state)) {
+          openTown();
+          return;
+        }
         store.patch({ selected: pick.hex });
       }
     },
-    [store, selectFighter],
+    [store, selectFighter, openTown],
   );
 
   const dispatch = useCallback(
     async (action: Action) => {
       const before = store.getSnapshot();
-      if (before.resolving) return;
+      if (before.resolving || before.opponentStrikePause) return;
       const next = reduce(before.game, action);
       if (next === before.game) {
         toast('Cette action n’est pas disponible pour le moment.');
         return;
+      }
+      const t = createTranslator(before.locale);
+      const strikeAlert = opponentStrikeToast(before.game, next, t);
+      const deferOpponentBattle =
+        Boolean(strikeAlert) &&
+        action.type === 'end-day' &&
+        !before.game.battle &&
+        Boolean(next.battle?.opponent);
+      const strikeEnemyId = next.battle?.opponent?.hero;
+      if (deferOpponentBattle && strikeAlert && strikeEnemyId) {
+        store.patch({
+          opponentStrikePause: true,
+          opponentStrikeBubble: {
+            enemyId: strikeEnemyId,
+            message: strikeAlert,
+          },
+        });
       }
       gameAudio.effect(soundForGameAction(action));
       const scene = sceneRef.current;
@@ -192,11 +225,12 @@ export function GameProvider({
         const combatButtons =
           '#combat-toolbar button, #combat-chrome button, ' +
           '.combat-sidebar-roster button, .retreat';
-        document
-          .querySelectorAll<HTMLButtonElement>(combatButtons)
-          .forEach((button) => {
-            button.disabled = true;
-          });
+        const lockedButtons = [
+          ...document.querySelectorAll<HTMLButtonElement>(combatButtons),
+        ];
+        lockedButtons.forEach((button) => {
+          button.disabled = true;
+        });
         const status = document.querySelector('.combat-instruction');
         if (status) status.textContent = next.log[0] ?? '';
         try {
@@ -207,15 +241,41 @@ export function GameProvider({
             error,
           );
         } finally {
+          lockedButtons.forEach((button) => {
+            button.disabled = false;
+          });
           store.patch({ resolving: false });
         }
       }
+      const gameForUi: GameState = deferOpponentBattle
+        ? { ...next, battle: null }
+        : next;
       store.patch({
-        game: next,
+        game: gameForUi,
         spell: null,
         selectedFighter: null,
         selectedBattleHex: null,
       });
+      if (strikeAlert && !deferOpponentBattle) {
+        toast(strikeAlert, OPPONENT_STRIKE_PAUSE_MS);
+      } else if (action.type === 'end-day') {
+        toast(
+          t('alerts.endDayIncome', {
+            day: before.game.day,
+            gold: income(before.game),
+          }),
+        );
+      }
+      if (deferOpponentBattle) {
+        await new Promise((resolve) => {
+          setTimeout(resolve, OPPONENT_STRIKE_PAUSE_MS);
+        });
+        store.patch({
+          game: next,
+          opponentStrikePause: false,
+          opponentStrikeBubble: null,
+        });
+      }
       persist();
     },
     [store, toast, persist],
@@ -233,6 +293,7 @@ export function GameProvider({
       toast,
       toastOpen,
       toastMessage,
+      toastDurationMs,
       dismissToast,
       dispatch,
       persist,
@@ -250,6 +311,7 @@ export function GameProvider({
       toast,
       toastOpen,
       toastMessage,
+      toastDurationMs,
       dismissToast,
       dispatch,
       persist,

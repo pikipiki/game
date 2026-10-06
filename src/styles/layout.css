@@ -11,6 +11,59 @@
 #app > .combat-toolbar {
   flex-shrink: 0;
 }
+#app > .header {
+  display: flex;
+  align-items: center;
+}
+#app:not(.in-battle):not(.in-town) > .footer {
+  display: flex;
+  align-items: center;
+}
+#app.in-battle > .footer {
+  display: none !important;
+}
+.footer nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer .MuiButton-root.nav-btn {
+  min-width: 0;
+  flex-shrink: 1;
+}
+#app:not(.in-battle) .world .retreat.MuiButton-root {
+  display: none !important;
+}
+#app.in-battle .world > .retreat.MuiButton-root {
+  position: absolute;
+  display: inline-flex !important;
+  top: 65px;
+  right: 24px;
+  z-index: 5;
+  min-height: 33px;
+}
+#app:not(.in-battle) .world > .training-entry.MuiButton-root {
+  position: absolute;
+  display: inline-flex !important;
+  right: 24px;
+  top: 27px;
+  z-index: 4;
+  min-height: 36px;
+  text-transform: none;
+}
+#app.in-battle .world > .training-entry.MuiButton-root {
+  display: none !important;
+}
+@media (max-width: 760px) {
+  #app:not(.in-battle) .world > .training-entry.MuiButton-root {
+    top: 18px;
+    right: 13px;
+    min-height: 31px;
+    font-size: 8px;
+    padding: 8px;
+  }
+}
 #app > .layout {
   flex: 1;
   height: auto;
@@ -18,6 +71,14 @@
 }
 #app .world {
   min-height: 0;
+}
+.scene {
+  position: absolute;
+  inset: 0;
+}
+.scene-host {
+  position: absolute;
+  inset: 0;
 }
 .scene canvas {
   touch-action: none;
@@ -171,7 +232,7 @@
   .initiative-unit .portrait {
     height: 30px;
   }
-  .in-battle .retreat {
+  #app.in-battle .world > .retreat.MuiButton-root {
     top: 6px;
     right: 8px;
     min-height: 44px;

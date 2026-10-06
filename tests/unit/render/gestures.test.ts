@@ -189,6 +189,29 @@ describe('Contacts réels reliés aux commandes de caméra', () => {
     input.dispose();
   });
   it(
+    'zoome avec deux doigts via les événements tactile (iOS)',
+    () => {
+    const { canvas, actions, input } = surface();
+    canvas.dispatchEvent(
+      Object.assign(new TouchEvent('touchstart', { cancelable: true }), {
+        touches: [
+          { clientX: 0, clientY: 0 },
+          { clientX: 100, clientY: 0 },
+        ],
+      }),
+    );
+    canvas.dispatchEvent(
+      Object.assign(new TouchEvent('touchmove', { cancelable: true }), {
+        touches: [
+          { clientX: 0, clientY: 0 },
+          { clientX: 200, clientY: 0 },
+        ],
+      }),
+    );
+    expect(actions.zoom).toHaveBeenCalledWith(2);
+    input.dispose();
+  });
+  it(
     'zoome à la molette et signale le survol sans contact actif',
     () => {
     const { canvas, actions, input } = surface();

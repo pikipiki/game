@@ -8,6 +8,11 @@
     "fr": "Français",
     "en": "English"
   },
+  "alerts": {
+    "enemyAttack": "Un ennemi vous attaque !",
+    "enemySiege": "Un ennemi assiège votre château !",
+    "endDayIncome": "Jour {day} · +{gold} or"
+  },
   "skipLink": "Aller au panneau de jeu",
   "errors": {
     "webglTitle": "La 3D a besoin de WebGL",
@@ -16,6 +21,8 @@
   "header": {
     "brand": "Les Royaumes de Pompon",
     "settingsAria": "Sauvegarde et paramètres",
+    "localeToggleToEn": "Passer en anglais",
+    "localeToggleToFr": "Passer en français",
     "soundOn": "Couper le son",
     "soundOff": "Activer le son"
   },
@@ -42,7 +49,8 @@
     "training": "Combat d’entraînement",
     "allyLegend": "Votre armée",
     "enemyLegend": "Adversaire",
-    "dragTip": "Glissez pour déplacer la carte · Bannières rouges : ennemis",
+    "dragTipPan": "Glissez pour déplacer la carte",
+    "dragTipEnemies": "Bannières rouges : ennemis",
     "movement": "{current}/{max} déplacements",
     "movementMana": "{moveCurrent}/{moveMax} déplacements · {manaCurrent}/{manaMax} mana",
     "campaignTag": "CAMPAGNE · CHAPITRE I",
@@ -65,7 +73,9 @@
     "journalEnemies": "{count} héros adverses · Mine : {mine}",
     "mineEnemy": "ennemie",
     "mineAlly": "alliée",
-    "mineNeutral": "neutre"
+    "mineNeutral": "neutre",
+    "citadelAria": "Ouvrir la citadelle",
+    "citadelShort": "Citadelle"
   },
   "creature": {
     "guardian": "GARDIEN",
