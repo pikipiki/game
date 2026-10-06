@@ -332,6 +332,7 @@
       "perPurchaseCount": "3 creatures",
       "available": "Creatures available",
       "recruitBtn": "Recruit 3 {name}",
+      "costGold": "{cost} gold",
       "growthFine": "+{growth} recruits each week on day {weekDay}. Recruits match your stack’s evolved form."
     },
     "guild": {
@@ -351,6 +352,13 @@
     "heroHall": {
       "title": "Guardian of Sylve",
       "lead": "Day {day} · Week {week}. Your hero leads these stacks with {movement}/{maxMove} moves left today."
+    },
+    "build": {
+      "unknown": "Unknown building",
+      "alreadyBuilt": "Already built",
+      "requires": "Required: {names}",
+      "alreadyToday": "A building was already built today",
+      "insufficientResources": "Not enough resources"
     },
     "unbuilt": {
       "title": "Building plot",

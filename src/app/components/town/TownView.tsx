@@ -19,15 +19,23 @@ import type {
   TownScreenLabels,
   WebglErrorCopy,
 } from '@/app/lib/game-copy';
+import { buildingNavLabel } from '@/app/lib/town-building-copy';
+import type { AppLocale } from '@/i18n/translate';
 import type { CreatureStatLabels } from '@/app/lib/creature-stat-labels';
 import type { TownDetailModel } from '@/app/types/town-detail';
 import { TownDetailView } from '@/app/components/town/TownDetailView';
 import { SceneWebglOverlay } from '@/app/components/feedback/SceneWebglOverlay';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 function navClassName(selectedId: string, buildingId: string): string {
   if (selectedId === buildingId) return 'selected';
   return '';
 }
+
+const LOCALE_FLAG: Record<AppLocale, string> = {
+  fr: '🇫🇷',
+  en: '🇬🇧',
+};
 
 function townNavIcon(buildingId: string): string {
   if (buildingId === 'sylve' || buildingId === 'sol') return 'shield';
@@ -46,6 +54,8 @@ export interface TownViewProps {
   readonly endDayDisabled: boolean;
   readonly sceneHostRef: RefObject<HTMLDivElement | null>;
   readonly labels: TownScreenLabels;
+  readonly locale: AppLocale;
+  readonly localeToggleAria: string;
   readonly armyUnitLabels: Record<string, ArmyUnitCardLabels>;
   readonly statLabels: CreatureStatLabels;
   readonly townWebglError: boolean;
@@ -61,11 +71,14 @@ export function TownView({
   endDayDisabled,
   sceneHostRef,
   labels,
+  locale,
+  localeToggleAria,
   armyUnitLabels,
   statLabels,
   townWebglError,
   webglError,
 }: TownViewProps) {
+  const { t } = useTranslation();
   return (
     <section aria-label={labels.screenAria} className="town-screen">
       <header className="town-header">
@@ -96,6 +109,14 @@ export function TownView({
           gameAction="audio-settings"
         >
           ♫
+        </GameActionIconButton>
+        <GameActionIconButton
+          aria-label={localeToggleAria}
+          className="icon-btn locale-toggle"
+          gameAction="toggle-locale"
+          title={localeToggleAria}
+        >
+          <span aria-hidden="true">{LOCALE_FLAG[locale]}</span>
         </GameActionIconButton>
         <GameActionButton
           gameAction="leave-town"
@@ -165,7 +186,7 @@ export function TownView({
               <span>
                 <GameIcon name={navIcon} size={22} />
               </span>
-              <strong>{building.name}</strong>
+              <strong>{buildingNavLabel(building.id, t)}</strong>
             </GameActionButton>
           );
         })}
