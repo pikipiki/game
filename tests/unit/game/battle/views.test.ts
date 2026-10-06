@@ -6,8 +6,10 @@ import {
   buildFighterPanelModel,
 } from '@/game/battle/presentation';
 import type { BattleSelection } from '@/game/battle/controls';
+import { createTranslator } from '@/i18n/translate';
 
 const empty: BattleSelection = { unit: null, hex: null, spell: null };
+const tFr = createTranslator('fr');
 
 function trainingBattle() {
   const game = newGame();
@@ -40,10 +42,10 @@ describe('Chrome et panneaux de combat', () => {
     expect(panel.finePrint).toContain('Riposte utilisée');
     expect(panel.finePrint).toContain('Attente utilisée');
     game.battle!.active = 'enemy-0';
-    const toolbar = buildCombatToolbarModel(game, empty, false);
+    const toolbar = buildCombatToolbarModel(game, empty, false, tFr);
     expect(toolbar?.roleLabel).toContain('ADVERSAIRE');
     game.battle!.result = 'defeat';
-    const defeat = buildCombatToolbarModel(game, empty, false);
+    const defeat = buildCombatToolbarModel(game, empty, false, tFr);
     expect(defeat?.summaryHeading).toContain('DÉFAITE');
   });
 });

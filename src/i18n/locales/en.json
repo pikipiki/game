@@ -61,6 +61,18 @@
     "initiativeBarAria": "Turn order",
     "combatToolbarAria": "Battle commands"
   },
+  "combat": {
+    "audioAria": "Music and sound effects",
+    "move": "Move",
+    "attack": "Attack",
+    "defend": "Defend",
+    "wait": "Wait",
+    "bolt": "Bolt · {cost}",
+    "heal": "Heal · {cost}",
+    "catapult": "Catapult",
+    "castSpell": "Cast spell",
+    "activeStack": "{count} units · {hp} HP"
+  },
   "sidebar": {
     "minimapAria": "Kingdom minimap",
     "heroTitle": "Guardian of Sylve",

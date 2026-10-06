@@ -61,6 +61,18 @@
     "initiativeBarAria": "Ordre des tours",
     "combatToolbarAria": "Commandes de bataille"
   },
+  "combat": {
+    "audioAria": "Musique et bruitages",
+    "move": "Déplacer",
+    "attack": "Attaquer",
+    "defend": "Défendre",
+    "wait": "Attendre",
+    "bolt": "Éclair · {cost}",
+    "heal": "Soin · {cost}",
+    "catapult": "Catapulte",
+    "castSpell": "Lancer le sort",
+    "activeStack": "{count} unités · {hp} PV"
+  },
   "sidebar": {
     "minimapAria": "Mini-carte du royaume",
     "heroTitle": "Gardien de Sylve",
