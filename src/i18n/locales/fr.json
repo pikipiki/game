@@ -1,0 +1,340 @@
+{
+  "meta": {
+    "title": "Les Royaumes de Pompon — Jeu de stratégie 3D",
+    "description": "Un petit royaume, de grandes aventures. Jeu de stratégie 3D au tour par tour."
+  },
+  "locale": {
+    "label": "Langue",
+    "fr": "Français",
+    "en": "English"
+  },
+  "skipLink": "Aller au panneau de jeu",
+  "errors": {
+    "webglTitle": "La 3D a besoin de WebGL",
+    "webglBody": "Activez l’accélération matérielle ou un navigateur récent pour afficher le royaume."
+  },
+  "header": {
+    "brand": "Les Royaumes de Pompon",
+    "settingsAria": "Sauvegarde et paramètres",
+    "soundOn": "Couper le son",
+    "soundOff": "Activer le son"
+  },
+  "footer": {
+    "navAria": "Navigation principale",
+    "explore": "Explorer",
+    "army": "Armée",
+    "castle": "Citadelle",
+    "codex": "Bestiaire",
+    "helpAria": "Comment jouer",
+    "endDay": "Jour {day} Terminer le jour",
+    "saveAuto": "Sauvegarde automatique",
+    "savePreview": "Aperçu sans sauvegarde",
+    "saveUnavailable": "Sauvegarde indisponible"
+  },
+  "map": {
+    "worldAria": "Carte du royaume en trois dimensions",
+    "zoomIn": "Zoom avant",
+    "zoomOut": "Zoom arrière",
+    "recenter": "Recentrer la caméra",
+    "destinations": "Ouvrir le carnet de voyage",
+    "tacticalGrid": "Grille de déplacement",
+    "retreat": "Retraite",
+    "training": "Combat d’entraînement",
+    "allyLegend": "Votre armée",
+    "enemyLegend": "Adversaire",
+    "dragTip": "Glissez pour déplacer la carte · Bannières rouges : ennemis",
+    "movement": "{current}/{max} déplacements",
+    "movementMana": "{moveCurrent}/{moveMax} déplacements · {manaCurrent}/{manaMax} mana",
+    "campaignTag": "CAMPAGNE · CHAPITRE I",
+    "campaignTitle": "La vallée de Sylve",
+    "campaignSubtitle": "Un petit royaume. De grandes aventures.",
+    "battleSubtitle": "Tour {round} · Attendre · Riposter · Tirer · Lancer un sort",
+    "battleTag": "BATAILLE TACTIQUE",
+    "initiativeBarAria": "Ordre des tours",
+    "combatToolbarAria": "Commandes de bataille"
+  },
+  "sidebar": {
+    "minimapAria": "Mini-carte du royaume",
+    "heroTitle": "Gardien de Sylve",
+    "armyAria": "Armée du héros",
+    "unknownLand": "Terre inexplorée",
+    "terrain": "Terrain",
+    "day": "Jour {day}",
+    "week": "Semaine {week}",
+    "income": "+{gold} or / jour",
+    "journalEnemies": "{count} héros adverses · Mine : {mine}",
+    "mineEnemy": "ennemie",
+    "mineAlly": "alliée",
+    "mineNeutral": "neutre"
+  },
+  "creature": {
+    "guardian": "GARDIEN",
+    "mage": "MAGE",
+    "evolutionReady": "✦ Évolution disponible",
+    "subtitleMelee": "{xp} XP · Corps à corps",
+    "subtitleRanged": "{xp} XP · Attaque à distance",
+    "combatMelee": "Mêlée",
+    "combatRanged": "Tir",
+    "or": "ou",
+    "units": "unités",
+    "statHp": "Vie / unité",
+    "statAttack": "Attaque",
+    "statDefense": "Défense",
+    "statCombat": "Combat"
+  },
+  "location": {
+    "move": "Se déplacer",
+    "enter": "Entrer",
+    "viewArmy": "Voir l’armée",
+    "intercept": "Intercepter le héros",
+    "fightHero": "Combattre le héros",
+    "steps": "déplacements",
+    "stepsUnit": "pas",
+    "castleLevel": "Niveau {level} · +{gold} or/j",
+    "lockedBoss": "2 camps requis",
+    "eyebrowEnemyArmy": "ARMÉE ENNEMIE",
+    "eyebrowEnemyCastle": "CHÂTEAU ENNEMI",
+    "eyebrowHere": "VOTRE POSITION",
+    "eyebrowDest": "DESTINATION",
+    "eyebrowEnemyHero": "HÉROS ADVERSE",
+    "unknownTitle": "Terre inexplorée",
+    "forestTitle": "Bois de velours",
+    "grassTitle": "Prairie de Sylve",
+    "unknownDesc": "Approchez-vous pour révéler cette partie du royaume.",
+    "defaultDesc": "Les chemins de Sylve recèlent encore bien des surprises. Explorez pour dévoiler le royaume.",
+    "enemyHeroDesc": "Il joue automatiquement à la fin de votre jour et peut capturer des lieux ou attaquer.",
+    "difficultyEasy": "Difficulté : douce",
+    "difficultyMid": "Difficulté : moyenne",
+    "difficultyHard": "Difficulté : élevée",
+    "cleared": "✓ Libéré",
+    "victoryBtn": "Victoire",
+    "sealed": "Scellée",
+    "siegeCastle": "Assiéger le château",
+    "fight": "Combattre",
+    "bannerContinue": "Le voyage continue",
+    "bannerOwned": "✓ Sous votre bannière"
+  },
+  "modals": {
+    "intro": {
+      "title": "Une aventure à votre mesure",
+      "welcome": "BIENVENUE DANS LES ROYAUMES DE POMPON",
+      "headline": "Les plus petits héros font les grandes légendes.",
+      "copy": "Vos créatures prennent vie dans un royaume en 3D. Explorez, rassemblez votre armée et choisissez leurs évolutions.",
+      "featExplore": "Exploration",
+      "featTurn": "Tour par tour",
+      "featEvolve": "Évolutions",
+      "enter": "Entrer dans le royaume",
+      "finePrint": "Solo · Sans compte · Sauvegarde sur cet appareil"
+    },
+    "settings": {
+      "title": "Votre aventure, à garder",
+      "subtitle": "La partie est enregistrée automatiquement dans ce navigateur après chaque action.",
+      "summary": "Jour {day} · Citadelle niveau {castle}",
+      "stats": "{cleared} territoires libérés · {troops} créatures",
+      "export": "Exporter la sauvegarde",
+      "import": "Importer une sauvegarde",
+      "audio": "Musique et bruitages",
+      "help": "Comment jouer",
+      "restart": "Recommencer l’aventure",
+      "finePrint": "L’export permet de transférer votre partie entre appareils. Une importation remplace la partie actuelle après validation du fichier."
+    },
+    "audio": {
+      "title": "Musique et bruitages",
+      "intro": "Musique du royaume, de la ville et des batailles.",
+      "music": "Musique",
+      "effects": "Bruitages",
+      "musicAria": "Volume de la musique",
+      "effectsAria": "Volume des bruitages",
+      "mute": "Couper le son",
+      "unmute": "Activer le son"
+    },
+    "help": {
+      "title": "Votre premier voyage",
+      "steps": [
+        {
+          "title": "Explorez votre royaume",
+          "body": "Touchez une case puis « Se déplacer ». Chaque pas consomme un déplacement. La brume se dissipe autour de votre héros. Glissez pour déplacer la carte."
+        },
+        {
+          "title": "Préparez votre armée",
+          "body": "Capturez la mine et les cristaux pour gagner des revenus. Revenez à la citadelle pour recruter. Terminez le jour pour récupérer vos déplacements et 4 mana."
+        },
+        {
+          "title": "Combattez et évoluez",
+          "body": "En combat, chaque troupe joue selon sa vitesse. Libérez les deux camps, faites évoluer vos créatures, puis triomphez de la Forteresse du Crépuscule."
+        }
+      ]
+    },
+    "retreat": {
+      "trainingTitle": "Quitter l’entraînement ?",
+      "trainingBody": "Vous retrouvez votre campagne exactement où vous l’avez laissée, sans perdre de créatures ni de ressources.",
+      "trainingConfirm": "Revenir à la campagne",
+      "trainingCancel": "Continuer l’entraînement",
+      "castleTitle": "Abandonner la défense du château ?",
+      "castleBody": "La ville passe sous la bannière adverse. Votre héros et son armée, qui se trouvent ailleurs sur la carte, restent à leur position.",
+      "castleConfirm": "Abandonner le château",
+      "castleCancel": "Continuer la défense",
+      "defaultTitle": "Battre en retraite ?",
+      "defaultLead": "Vous abandonnez ce château à l’adversaire. ",
+      "defaultBody": "Votre héros se replie vers un château allié ou une case sûre si vous n’en possédez plus. Vous perdez 20 % des créatures survivantes et vos déplacements du jour.",
+      "defaultConfirm": "Replier le héros",
+      "defaultCancel": "Continuer le combat"
+    },
+    "army": {
+      "title": "Votre compagnie",
+      "subtitle": "Deux lignées, des chemins uniques. Touchez une troupe pour choisir son avenir.",
+      "notice": "Les victoires débloquent les évolutions. Votre armée se rétablit entre les combats ; les unités perdues doivent être recrutées."
+    },
+    "creature": {
+      "title": "L’atelier des évolutions",
+      "lineageSylve": "LIGNÉE DE SYLVE",
+      "lineageSol": "LIGNÉE DE L’AURORE",
+      "level": "NIVEAU",
+      "badge": "{count} créatures · {xp} XP",
+      "chooseEvolution": "CHOISIR UNE ÉVOLUTION",
+      "xpAcquired": "{xp} XP acquis",
+      "ultimate": "✦ Cette troupe a atteint sa forme ultime.",
+      "evolveCost": "{xp} XP requis · {gold} or · {crystals} cristaux",
+      "evolveBtn": "Évoluer",
+      "finePrint": "L’expérience se gagne au combat. L’évolution transforme toute la troupe ; vos futures recrues adoptent aussi cette forme."
+    },
+    "codex": {
+      "title": "Le bestiaire de Pompon",
+      "subtitle": "Créatures inspirées de vos deux peluches : la barbe verte de Sylve et la houppe dorée de l’Aurore.",
+      "familySylve": "SYLVE",
+      "familySol": "AURORE",
+      "level": "NIVEAU",
+      "ultimate": "✦ Forme ultime",
+      "evolves": "Évolue en {names}"
+    },
+    "destinations": {
+      "title": "Le carnet de voyage",
+      "subtitle": "Explorez les environs ou choisissez un lieu révélé pour préparer votre trajet.",
+      "exploreLabel": "EXPLORER AUTOUR DE MOI",
+      "stepsAvailable": "{count} pas disponibles",
+      "placesLabel": "LES LIEUX DU ROYAUME",
+      "unknownPlace": "Lieu à découvrir",
+      "revealHint": "Approchez pour révéler ce lieu",
+      "here": "Vous êtes ici",
+      "cleared": "{steps} pas · Libéré",
+      "owned": "{steps} pas · Sous votre bannière",
+      "explore": "{steps} pas · À explorer",
+      "directions": [
+        "Est",
+        "Ouest",
+        "Sud-est",
+        "Nord-ouest",
+        "Nord-est",
+        "Sud-ouest"
+      ]
+    },
+    "tactical": {
+      "title": "Déplacements tactiques",
+      "intro": "Sélectionnez une destination sur cette grille ou directement sur le plateau 3D. Le bouton « Déplacer » confirme votre choix.",
+      "gridAria": "Cases accessibles"
+    },
+    "restart": {
+      "title": "Un nouveau départ",
+      "body": "Recommencer effacera la partie actuelle de ce navigateur. Vous pouvez d’abord exporter votre sauvegarde depuis les paramètres.",
+      "confirm": "Recommencer la partie",
+      "back": "Revenir aux sauvegardes"
+    },
+    "victory": {
+      "title": "La vallée retrouve sa lumière",
+      "tag": "CAMPAGNE TERMINÉE · JOUR {day}",
+      "headline": "Un royaume de lumière.",
+      "copy": "Vos Pompons ont libéré Sylve du Crépuscule. {troops} héros rentrent chez eux, plus grands qu’au départ.",
+      "export": "Garder cette aventure",
+      "restart": "Commencer une nouvelle légende"
+    },
+    "closeAria": "Fermer"
+  },
+  "town": {
+    "screen": {
+      "aria": "Citadelle en trois dimensions",
+      "realmTag": "ROYAUME DE POMPON",
+      "goldTitle": "Or",
+      "crystalsTitle": "Cristaux",
+      "audioAria": "Musique et bruitages",
+      "backToMap": "Retour à la carte",
+      "sceneTitle": "✦ LA CITÉ DES FRIANDISES ✦",
+      "sceneHint": "Touchez un bâtiment pour entrer",
+      "zoomInAria": "Agrandir la ville",
+      "zoomOutAria": "Réduire la ville",
+      "recenterAria": "Recentrer la ville",
+      "enterBuildingAria": "Entrer dans {name}",
+      "viewTip": "Glissez pour tourner · Pincez pour zoomer",
+      "navAria": "Bâtiments de la citadelle",
+      "mobileArmyEyebrow": "VOTRE ARMÉE",
+      "mobileArmyTip": "Touchez une troupe pour voir ses évolutions.",
+      "dayLabel": "JOUR {day}",
+      "incomeFooter": "+{gold} or / jour",
+      "garrisonLabel": "ARMÉE DU HÉROS",
+      "nextDay": "Jour suivant"
+    },
+    "webglError": "Activez WebGL pour afficher la ville.",
+    "closeBuildingAria": "Fermer le bâtiment",
+    "travelRecruitNotice": "Rejoignez un château allié sur la carte pour recruter.",
+    "keep": {
+      "title": "Une cité sous votre bannière",
+      "lead": "Ses tours protègent les Pompons de la vallée. Votre royaume possède {count} château(x).",
+      "conquer": "Conquérez les châteaux des Brumes et de l’Aurore sur la carte. Vos catapultes ouvrent leurs remparts au combat.",
+      "buildCitadel": "Construire dans la citadelle"
+    },
+    "stat": {
+      "fortifications": "Fortifications",
+      "realmIncome": "Revenus du royaume",
+      "goldPerDay": "{gold} or / jour",
+      "level": "Niveau {level}"
+    },
+    "hall": {
+      "projectsTitle": "Les chantiers du royaume",
+      "projectsLead": "Un bâtiment par jour. Construisez les habitations dans l’ordre de leurs prérequis : elles apparaissent réellement dans la ville 3D.",
+      "buildToday": "Un chantier est disponible aujourd’hui.",
+      "buildDoneToday": "Le chantier du jour est terminé. Revenez demain.",
+      "fortTitle": "Fortifications · Niveau {level}",
+      "fortBonus": "+50 or/jour, +1 déplacement et +2 mana maximum. {note}",
+      "upgradeNote": "La tour des astres requiert l’Atelier du sucre étoilé.",
+      "maxLevel": "Niveau maximum atteint",
+      "upgradeCost": "{gold} or · {crystals} cristaux",
+      "upgradeDone": "Achevé",
+      "upgradeBtn": "Améliorer les fortifications",
+      "readyBuild": "Prêt à construire",
+      "built": "✓ Construit",
+      "costLine": "{gold} or · {crystals} cristaux",
+      "buildBtn": "Construire {name}",
+      "homeNote": "Les constructions se font dans la citadelle de départ."
+    },
+    "recruit": {
+      "perPurchase": "Recrues par achat",
+      "perPurchaseCount": "3 créatures",
+      "available": "Créatures disponibles",
+      "recruitBtn": "Recruter 3 {name}",
+      "growthFine": "+{growth} recrues chaque semaine, le jour {weekDay}. Les recrues adoptent la forme évoluée de votre troupe."
+    },
+    "guild": {
+      "title": "Le grimoire du héros",
+      "lead": "{mana} / {maxMana} points de mana. Le héros peut lancer un sort par round sans consommer le tour de sa troupe. Construire la guilde restaure toute sa réserve de mana.",
+      "boltTitle": "Éclair astral",
+      "boltDesc": "4 mana · {damage} dégâts à une troupe ennemie.",
+      "healTitle": "Souffle de vie",
+      "healDesc": "4 mana · Restaure {amount} PV à une troupe alliée.",
+      "manaRestore": "Terminer un jour restaure 4 mana. La Source des murmures restaure toute votre réserve."
+    },
+    "forge": {
+      "title": "Les chemins de l’évolution",
+      "lead": "Les batailles donnent de l’expérience. Choisissez une troupe pour consulter et débloquer ses variantes.",
+      "codexBtn": "Consulter les huit formes"
+    },
+    "heroHall": {
+      "title": "Le gardien de Sylve",
+      "lead": "Jour {day} · Semaine {week}. Votre héros commande ces troupes et {movement}/{maxMove} déplacements lui restent aujourd’hui."
+    },
+    "unbuilt": {
+      "title": "Terrain à bâtir",
+      "lead": "{subtitle}. Ce bâtiment apparaîtra sur cette parcelle après sa construction.",
+      "buildAvailable": "Votre chantier du jour est disponible.",
+      "buildBtn": "Construire {name}"
+    }
+  }
+}

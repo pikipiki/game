@@ -7,34 +7,52 @@ import assets from '../assets/h3/adventure.json';
 import { pomponCitadel } from './kingdom-models';
 
 const CELL = 8;
-const place = (h: Hex) => new THREE.Vector3(h.q * CELL, -h.r * CELL, 0);
-export function adventureCellAt(x: number, y: number): Hex | null {
-  const q = Math.floor(x / CELL + 0.5),
-    r = Math.floor(-y / CELL + 0.5);
-  return WORLD.some((t) => t.q === q && t.r === r) ? { q, r } : null;
+const place = (height: Hex) =>
+  new THREE.Vector3(height.q * CELL, -height.r * CELL, 0);
+export function adventureCellAt(posX: number, posY: number): Hex | null {
+  const hexQ = Math.floor(posX / CELL + 0.5),
+    hexR = Math.floor(-posY / CELL + 0.5);
+  return (function ternaryValue() {
+    if (WORLD.some((tile) => tile.q === hexQ && tile.r === hexR)) {
+      return { q: hexQ, r: hexR };
+    }
+    return null;
+  })();
 }
 export class AdventureScene {
-  private renderer: THREE.WebGLRenderer;
-  private scene = new THREE.Scene();
-  private camera = new THREE.OrthographicCamera(-36, 36, 36, -36, 0.1, 300);
-  private content = new THREE.Group();
-  private observer: ResizeObserver;
+  private readonly renderer: THREE.WebGLRenderer;
+  private readonly scene = new THREE.Scene();
+  private readonly camera = new THREE.OrthographicCamera(
+    -36,
+    36,
+    36,
+    -36,
+    0.1,
+    300,
+  );
+  private readonly content = new THREE.Group();
+  private readonly observer: ResizeObserver;
   private frame = 0;
   private zoom = 1;
-  private offset = new THREE.Vector2();
+  private readonly offset = new THREE.Vector2();
   private down: { x: number; y: number; moved: boolean } | null = null;
-  private ray = new THREE.Raycaster();
+  private readonly ray = new THREE.Raycaster();
   private hero: THREE.Group | null = null;
   private pickables: THREE.Object3D[] = [];
   private initialized = false;
   private enemies: THREE.Group[] = [];
-  private targetHero = new THREE.Vector3();
-  private reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  private readonly targetHero = new THREE.Vector3();
+  private readonly reduced = matchMedia(
+    '(prefers-reduced-motion: reduce)',
+  ).matches;
   constructor(
-    private host: HTMLElement,
-    private onPick: (p: Pick) => void,
+    private readonly host: HTMLElement,
+    private readonly onPick: (point: Pick) => void,
   ) {
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'low-power' });
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: 'low-power',
+    });
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     host.append(this.renderer.domElement);
@@ -46,35 +64,36 @@ export class AdventureScene {
     const canvas = this.renderer.domElement;
     canvas.setAttribute(
       'aria-label',
-      'Carte du royaume : terrains continus, château, mines, ennemis et héros en 3D.',
+      'Carte du royaume : terrains, château, mines, ennemis et héros en 3D.',
     );
-    canvas.addEventListener('pointerdown', (e) => {
-      this.down = { x: e.clientX, y: e.clientY, moved: false };
-      canvas.setPointerCapture(e.pointerId);
+    canvas.addEventListener('pointerdown', (event) => {
+      this.down = { x: event.clientX, y: event.clientY, moved: false };
+      canvas.setPointerCapture(event.pointerId);
     });
-    canvas.addEventListener('pointermove', (e) => {
+    canvas.addEventListener('pointermove', (event) => {
       if (!this.down) return;
-      const dx = e.clientX - this.down.x,
-        dy = e.clientY - this.down.y;
+      const dx = event.clientX - this.down.x,
+        dy = event.clientY - this.down.y;
       if (Math.abs(dx) + Math.abs(dy) > 7) {
         this.down.moved = true;
-        const scale = (this.camera.right - this.camera.left) / host.clientWidth / this.zoom;
+        const scale =
+          (this.camera.right - this.camera.left) / host.clientWidth / this.zoom;
         this.offset.x -= dx * scale;
         this.offset.y += dy * scale;
         this.offset.clampScalar(-25, 25);
-        this.down.x = e.clientX;
-        this.down.y = e.clientY;
+        this.down.x = event.clientX;
+        this.down.y = event.clientY;
         this.positionCamera();
       }
     });
-    canvas.addEventListener('pointerup', (e) => {
+    canvas.addEventListener('pointerup', (event) => {
       if (this.down && !this.down.moved) {
         const rect = canvas.getBoundingClientRect();
         this.camera.updateMatrixWorld(true);
         this.ray.setFromCamera(
           new THREE.Vector2(
-            ((e.clientX - rect.left) / rect.width) * 2 - 1,
-            1 - ((e.clientY - rect.top) / rect.height) * 2,
+            ((event.clientX - rect.left) / rect.width) * 2 - 1,
+            1 - ((event.clientY - rect.top) / rect.height) * 2,
           ),
           this.camera,
         );
@@ -91,7 +110,12 @@ export class AdventureScene {
           new THREE.Plane(new THREE.Vector3(0, 0, 1), 0),
           new THREE.Vector3(),
         );
-        const hex = pos ? adventureCellAt(pos.x, pos.y) : null;
+        const hex = (function ternaryValue() {
+          if (pos) {
+            return adventureCellAt(pos.x, pos.y);
+          }
+          return null;
+        })();
         if (hex) this.onPick({ hex });
       }
       this.down = null;
@@ -105,16 +129,16 @@ export class AdventureScene {
     this.animate();
   }
   private plane(
-    w: number,
-    h: number,
-    x: number,
-    y: number,
-    z: number,
+    width: number,
+    height: number,
+    posX: number,
+    posY: number,
+    posZ: number,
     name: string,
     color = '#ffffff',
   ) {
     const mesh = new THREE.Mesh(
-      new THREE.PlaneGeometry(w, h),
+      new THREE.PlaneGeometry(width, height),
       new THREE.MeshBasicMaterial({
         map: h3Texture(name),
         color,
@@ -122,137 +146,222 @@ export class AdventureScene {
         alphaTest: 0.01,
       }),
     );
-    mesh.position.set(x, y, z);
+    mesh.position.set(posX, posY, posZ);
     this.content.add(mesh);
     return mesh;
   }
-  update(s: GameState, selected: Hex | null) {
+  // eslint-disable-next-line sonarjs/cognitive-complexity -- adventure map layout
+  update(state: GameState, selected: Hex | null) {
     const oldEnemies = new Map(
-      this.enemies.map((g) => [String(g.userData.id), g.position.clone()]),
+      this.enemies.map((group) => [
+        String(group.userData.id),
+        group.position.clone(),
+      ]),
     );
     const old = this.hero?.position.clone();
     if (!this.initialized) {
-      this.offset.set(s.hero.q * CELL, -s.hero.r * CELL).clampScalar(-25, 25);
+      this.offset
+        .set(state.hero.q * CELL, -state.hero.r * CELL)
+        .clampScalar(-25, 25);
       this.initialized = true;
       this.positionCamera();
     }
     this.clear();
-    for (let r = -4; r <= 4; r++)
-      for (let q = -4; q <= 4; q++) {
-        const t = WORLD.find((t) => t.q === q && t.r === r),
-          known = !!t && s.explored.includes(key(t));
-        const kind = t?.terrain === 'water' ? 'water' : t?.terrain === 'sand' ? 'sand' : 'grass';
+    for (let hexR = -4; hexR <= 4; hexR++) {
+      for (let hexQ = -4; hexQ <= 4; hexQ++) {
+        const tile = WORLD.find((tile) => tile.q === hexQ && tile.r === hexR),
+          known = !!tile && state.explored.includes(key(tile));
+        const kind = (function ternaryValue() {
+          if (tile?.terrain === 'water') {
+            return 'water';
+          }
+          return (function ternaryValue() {
+            if (tile?.terrain === 'sand') {
+              return 'sand';
+            }
+            return 'grass';
+          })();
+        })();
         const files = assets[kind].frames;
-        for (let i = 0; i < 4; i++)
+        for (let index = 0; index < 4; index++) {
           this.plane(
             4,
             4,
-            q * CELL + (i % 2) * 4 - 2,
-            -r * CELL - Math.floor(i / 2) * 4 + 2,
+            hexQ * CELL + (index % 2) * 4 - 2,
+            -hexR * CELL - Math.floor(index / 2) * 4 + 2,
             0,
-            files[(q * q + r * r + i * 7) % files.length],
-            known ? '#ffffff' : '#080b08',
+            (() => {
+              const frameIndex =
+                (hexQ * hexQ + hexR * hexR + index * 7) % files.length;
+              const frameName = files[frameIndex] ?? files[0];
+              if (!frameName) {
+                return kind;
+              }
+              return frameName;
+            })(),
+            (function ternaryValue() {
+              if (known) {
+                return '#ffffff';
+              }
+              return '#080b08';
+            })(),
           );
-        if (!t || !known) continue;
-        const site = SITES.find((site) => key(site) === key(t));
-        if (!site && t.terrain === 'forest')
-          for (let i = 0; i < 3; i++)
+        }
+        if (!tile || !known) continue;
+        const site = SITES.find((site) => key(site) === key(tile));
+        if (!site && tile.terrain === 'forest') {
+          for (let index = 0; index < 3; index++) {
             this.object(
-              i % 2 ? 'oak' : 'pine',
-              q * CELL + (i - 1) * 2,
-              -r * CELL + (i % 2),
-              1 + r * 0.01,
+              (function ternaryValue() {
+                if (index % 2) {
+                  return 'oak';
+                }
+                return 'pine';
+              })(),
+              hexQ * CELL + (index - 1) * 2,
+              -hexR * CELL + (index % 2),
+              1 + hexR * 0.01,
             );
-        if (!site && t.terrain === 'mountain')
-          this.object('rocks', q * CELL, -r * CELL, 1 + r * 0.01);
+          }
+        }
+        if (!site && tile.terrain === 'mountain') {
+          this.object('rocks', hexQ * CELL, -hexR * CELL, 1 + hexR * 0.01);
+        }
         if (site) {
           if (site.kind === 'castle' || site.kind === 'fortress') {
-            const castle = pomponCitadel(site.id === 'home' ? s.castle : 2);
-            castle.position.set(q * CELL, -r * CELL - 2, 2);
+            const castle = pomponCitadel(
+              (function ternaryValue() {
+                if (site.id === 'home') {
+                  return state.castle;
+                }
+                return 2;
+              })(),
+            );
+            castle.position.set(hexQ * CELL, -hexR * CELL - 2, 2);
             castle.rotation.x = 0.5;
             castle.scale.setScalar(0.95);
-            castle.userData.hex = { q, r };
+            castle.userData.hex = { hexQ, hexR };
             this.pickables.push(castle);
             this.content.add(castle);
-          } else if (site.kind === 'gold') this.object('mine', q * CELL, -r * CELL, 2);
-          else if (site.kind === 'crystal') this.object('crystal-mine', q * CELL, -r * CELL, 2);
-          else if (site.kind === 'shrine') this.object('shrine', q * CELL, -r * CELL, 2);
-          else if (site.kind === 'camp') this.object('camp', q * CELL, -r * CELL, 2);
-          if (site.difficulty && !s.cleared.includes(site.id)) {
-            const foe = creatureModel(site.difficulty === 1 ? 'sylve' : 'sol-flame');
+          } else if (site.kind === 'gold')
+            {this.object('mine', hexQ * CELL, -hexR * CELL, 2);}
+          else if (site.kind === 'crystal')
+            {this.object('crystal-mine', hexQ * CELL, -hexR * CELL, 2);}
+          else if (site.kind === 'shrine')
+            {this.object('shrine', hexQ * CELL, -hexR * CELL, 2);}
+          else if (site.kind === 'camp')
+            {this.object('camp', hexQ * CELL, -hexR * CELL, 2);}
+          if (site.difficulty && !state.cleared.includes(site.id)) {
+            const foe = creatureModel(
+              (function ternaryValue() {
+                if (site.difficulty === 1) {
+                  return 'sylve';
+                }
+                return 'sol-flame';
+              })(),
+            );
             foe.scale.setScalar(2);
-            foe.position.set(q * CELL + 2, -r * CELL - 2, 4);
-            foe.userData.hex = { q, r };
+            foe.position.set(hexQ * CELL + 2, -hexR * CELL - 2, 4);
+            foe.userData.hex = { hexQ, hexR };
             this.pickables.push(foe);
             this.content.add(foe);
-            this.flag(q * CELL + 3, -r * CELL + 2, '#c33a3a');
-          } else if (s.enemyOwned?.includes(site.id))
-            this.flag(q * CELL + 3, -r * CELL + 2, '#c33a3a');
-          else if (s.owned.includes(site.id)) this.flag(q * CELL + 3, -r * CELL + 2, '#447bce');
+            this.flag(hexQ * CELL + 3, -hexR * CELL + 2, '#c33a3a');
+          } else if (state.enemyOwned?.includes(site.id)) {
+            this.flag(hexQ * CELL + 3, -hexR * CELL + 2, '#c33a3a');
+          } else if (state.owned.includes(site.id))
+            {this.flag(hexQ * CELL + 3, -hexR * CELL + 2, '#447bce');}
         }
       }
-    for (const enemy of s.enemyHeroes ?? []) {
-      if (!s.explored.includes(key(enemy))) continue;
-      const g = creatureModel(enemy.army[0]?.creature ?? 'sylve');
-      g.scale.setScalar(2.5);
+    }
+    for (const enemy of state.enemyHeroes ?? []) {
+      if (!state.explored.includes(key(enemy))) continue;
+      const group = creatureModel(enemy.army[0]?.creature ?? 'sylve');
+      group.scale.setScalar(2.5);
       const target = place(enemy).add(new THREE.Vector3(1, -1, 7));
-      g.position.copy(oldEnemies.get(enemy.id) ?? target);
-      g.userData.target = target;
-      g.userData.id = enemy.id;
-      g.userData.hex = { q: enemy.q, r: enemy.r };
-      this.pickables.push(g);
-      this.enemies.push(g);
-      this.content.add(g);
+      group.position.copy(oldEnemies.get(enemy.id) ?? target);
+      group.userData.target = target;
+      group.userData.id = enemy.id;
+      group.userData.hex = { q: enemy.q, r: enemy.r };
+      this.pickables.push(group);
+      this.enemies.push(group);
+      this.content.add(group);
       this.flag(target.x + 1, target.y + 3, '#d93933');
     }
-    if (selected && s.explored.includes(key(selected))) {
-      const p = place(selected),
+    if (selected && state.explored.includes(key(selected))) {
+      const point = place(selected),
         points = [
           [-4, -4],
           [4, -4],
           [4, 4],
           [-4, 4],
           [-4, -4],
-        ].map(([x, y]) => new THREE.Vector3(p.x + x, p.y + y, 5));
+        ].map(([offsetX, offsetY]) => {
+          const deltaX = offsetX ?? 0;
+          const deltaY = offsetY ?? 0;
+          return new THREE.Vector3(point.x + deltaX, point.y + deltaY, 5);
+        });
       this.content.add(
         new THREE.Line(
           new THREE.BufferGeometry().setFromPoints(points),
           new THREE.LineBasicMaterial({ color: '#e1bc62' }),
         ),
       );
-      const path = pathTo(s.hero, selected, WALKABLE);
-      path.forEach((h, i) => {
-        const p = place(h);
+      const path = pathTo(state.hero, selected, WALKABLE);
+      path.forEach((height, index) => {
+        const point = place(height);
         const dot = new THREE.Mesh(
           new THREE.CircleGeometry(0.3, 8),
-          new THREE.MeshBasicMaterial({ color: i < s.movement ? '#cced96' : '#ba4235' }),
+          new THREE.MeshBasicMaterial({
+            color: (function ternaryValue() {
+              if (index < state.movement) {
+                return '#cced96';
+              }
+              return '#ba4235';
+            })(),
+          }),
         );
-        dot.position.set(p.x, p.y, 5);
+        dot.position.set(point.x, point.y, 5);
         this.content.add(dot);
       });
     }
-    const hero = creatureModel(s.army[0]?.creature ?? 'sylve');
+    const hero = creatureModel(state.army[0]?.creature ?? 'sylve');
     hero.scale.setScalar(2.4);
-    this.targetHero.copy(place(s.hero)).add(new THREE.Vector3(-1, -2, 6));
+    this.targetHero.copy(place(state.hero)).add(new THREE.Vector3(-1, -2, 6));
     hero.position.copy(old ?? this.targetHero);
     this.content.add(hero);
     this.hero = hero;
-    hero.userData.hex = { ...s.hero };
+    hero.userData.hex = { ...state.hero };
     this.pickables.push(hero);
     this.flag(this.targetHero.x - 1, this.targetHero.y + 3, '#447bce');
   }
   private object(
-    kind: 'pine' | 'oak' | 'rocks' | 'mine' | 'crystal-mine' | 'shrine' | 'camp',
-    x: number,
-    y: number,
-    z: number,
+    kind:
+      | 'pine'
+      | 'oak'
+      | 'rocks'
+      | 'mine'
+      | 'crystal-mine'
+      | 'shrine'
+      | 'camp',
+    posX: number,
+    posY: number,
+    posZ: number,
   ) {
-    const g = new THREE.Group();
-    g.position.set(x, y - 2, z);
-    g.rotation.x = 0.5;
+    const group = new THREE.Group();
+    group.position.set(posX, posY - 2, posZ);
+    group.rotation.x = 0.5;
     const mat = new THREE.MeshStandardMaterial({
-      color:
-        kind === 'pine' || kind === 'oak' ? '#4b6934' : kind === 'rocks' ? '#8b8b78' : '#b7afa0',
+      color: (function ternaryValue() {
+        if (kind === 'pine' || kind === 'oak') {
+          return '#4b6934';
+        }
+        return (function ternaryValue() {
+          if (kind === 'rocks') {
+            return '#8b8b78';
+          }
+          return '#b7afa0';
+        })();
+      })(),
       roughness: 0.93,
     });
     if (kind === 'pine' || kind === 'oak') {
@@ -261,69 +370,87 @@ export class AdventureScene {
         new THREE.MeshStandardMaterial({ color: '#5e4831' }),
       );
       trunk.position.y = 1.5;
-      g.add(trunk);
-      for (let i = 0; i < 3; i++) {
-        const leaves = new THREE.Mesh(new THREE.ConeGeometry(1.6 - i * 0.25, 2.6, 12), mat);
-        leaves.position.y = 2.5 + i;
-        g.add(leaves);
+      group.add(trunk);
+      for (let index = 0; index < 3; index++) {
+        const leaves = new THREE.Mesh(
+          new THREE.ConeGeometry(1.6 - index * 0.25, 2.6, 12),
+          mat,
+        );
+        leaves.position.y = 2.5 + index;
+        group.add(leaves);
       }
-    } else if (kind === 'rocks')
-      for (let i = 0; i < 4; i++) {
-        const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(1.4 + (i % 2) * 0.5), mat);
-        rock.position.set((i - 1.5) * 0.9, 0.8 + (i % 2), i % 2);
-        g.add(rock);
+    } else if (kind === 'rocks') {
+      for (let index = 0; index < 4; index++) {
+        const rock = new THREE.Mesh(
+          new THREE.DodecahedronGeometry(1.4 + (index % 2) * 0.5),
+          mat,
+        );
+        rock.position.set((index - 1.5) * 0.9, 0.8 + (index % 2), index % 2);
+        group.add(rock);
       }
-    else {
+    } else {
       const house = new THREE.Mesh(new THREE.BoxGeometry(3.6, 2.4, 2.8), mat);
       house.position.y = 1.2;
-      g.add(house);
+      group.add(house);
       const roof = new THREE.Mesh(
         new THREE.ConeGeometry(3.2, 1.4, 4),
         new THREE.MeshStandardMaterial({ color: '#765543', roughness: 0.9 }),
       );
       roof.rotation.y = Math.PI / 4;
       roof.position.y = 3;
-      g.add(roof);
+      group.add(roof);
       const door = new THREE.Mesh(
         new THREE.BoxGeometry(1.1, 1.7, 0.06),
         new THREE.MeshStandardMaterial({ color: '#29251e' }),
       );
       door.position.set(0, 0.85, 1.43);
-      g.add(door);
-      if (kind === 'crystal-mine')
-        for (let i = 0; i < 4; i++) {
-          const c = new THREE.Mesh(
+      group.add(door);
+      if (kind === 'crystal-mine') {
+        for (let index = 0; index < 4; index++) {
+          const creature = new THREE.Mesh(
             new THREE.OctahedronGeometry(0.5),
-            new THREE.MeshStandardMaterial({ color: '#b18ace', metalness: 0.2 }),
+            new THREE.MeshStandardMaterial({
+              color: '#b18ace',
+              metalness: 0.2,
+            }),
           );
-          c.position.set(i - 1.5, 0.7, 2);
-          g.add(c);
+          creature.position.set(index - 1.5, 0.7, 2);
+          group.add(creature);
         }
+      }
     }
-    g.userData.hex = { q: Math.round(x / CELL), r: Math.round(-y / CELL) };
-    this.pickables.push(g);
-    this.content.add(g);
+    group.userData.hex = {
+      q: Math.round(posX / CELL),
+      r: Math.round(-posY / CELL),
+    };
+    this.pickables.push(group);
+    this.content.add(group);
   }
-  private flag(x: number, y: number, color: string) {
+  private flag(posX: number, posY: number, color: string) {
     const pole = new THREE.Mesh(
       new THREE.CylinderGeometry(0.05, 0.05, 3, 6),
       new THREE.MeshBasicMaterial({ color: '#cfb976' }),
     );
-    pole.position.set(x, y, 7);
+    pole.position.set(posX, posY, 7);
     this.content.add(pole);
     const cloth = new THREE.Mesh(
       new THREE.PlaneGeometry(1.6, 0.9),
       new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide }),
     );
-    cloth.position.set(x + 0.8, y + 1, 7);
+    cloth.position.set(posX + 0.8, posY + 1, 7);
     this.content.add(cloth);
   }
   private clear() {
-    this.content.traverse((o) => {
-      if (o instanceof THREE.Mesh || o instanceof THREE.Line) {
-        o.geometry.dispose();
-        const mats = Array.isArray(o.material) ? o.material : [o.material];
-        mats.forEach((m) => m.dispose());
+    this.content.traverse((object3d) => {
+      if (object3d instanceof THREE.Mesh || object3d instanceof THREE.Line) {
+        object3d.geometry.dispose();
+        const mats = (function ternaryValue() {
+          if (Array.isArray(object3d.material)) {
+            return object3d.material;
+          }
+          return [object3d.material];
+        })();
+        mats.forEach((mesh) => mesh.dispose());
       }
     });
     this.content.clear();
@@ -332,13 +459,13 @@ export class AdventureScene {
     this.enemies = [];
   }
   private resize() {
-    const w = this.host.clientWidth,
-      h = this.host.clientHeight;
-    if (!w || !h) return;
-    this.renderer.setSize(w, h);
+    const width = this.host.clientWidth,
+      height = this.host.clientHeight;
+    if (!width || !height) return;
+    this.renderer.setSize(width, height);
     const span = 36;
-    this.camera.left = (-span * w) / h;
-    this.camera.right = (span * w) / h;
+    this.camera.left = (-span * width) / height;
+    this.camera.right = (span * width) / height;
     this.camera.top = span;
     this.camera.bottom = -span;
     this.positionCamera();
@@ -362,10 +489,24 @@ export class AdventureScene {
     this.frame = requestAnimationFrame(this.animate);
     if (document.hidden || !this.host.offsetParent) return;
     if (this.hero) {
-      this.hero.position.lerp(this.targetHero, this.reduced ? 1 : 0.12);
-      this.hero.rotation.z = this.reduced ? 0 : Math.sin(performance.now() / 600) * 0.015;
+      let heroLerp = 0.12;
+      if (this.reduced) {
+        heroLerp = 1;
+      }
+      this.hero.position.lerp(this.targetHero, heroLerp);
+      let heroTilt = Math.sin(performance.now() / 600) * 0.015;
+      if (this.reduced) {
+        heroTilt = 0;
+      }
+      this.hero.rotation.z = heroTilt;
     }
-    this.enemies.forEach((g) => g.position.lerp(g.userData.target, this.reduced ? 1 : 0.12));
+    let enemyLerp = 0.12;
+    if (this.reduced) {
+      enemyLerp = 1;
+    }
+    this.enemies.forEach((group) =>
+      group.position.lerp(group.userData.target, enemyLerp),
+    );
     this.renderer.render(this.scene, this.camera);
   };
   dispose() {

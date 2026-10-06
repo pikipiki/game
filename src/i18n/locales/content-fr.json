@@ -1,0 +1,82 @@
+{
+  "sites": {
+    "home": {
+      "name": "Citadelle de Pompon",
+      "description": "Le cœur de votre royaume. Recrutez, bâtissez et préparez vos prochaines aventures."
+    },
+    "gold": {
+      "name": "Mine de miel doré",
+      "description": "Capturez la mine : +150 or chaque jour."
+    },
+    "crystal": {
+      "name": "Jardin de cristaux",
+      "description": "Capturez le jardin : +3 cristaux chaque jour."
+    },
+    "spring": {
+      "name": "Source des murmures",
+      "description": "Une source enchantée restaure votre mana et soigne toute votre armée."
+    },
+    "camp1": {
+      "name": "Clairière oubliée",
+      "description": "Des créatures égarées gardent un trésor. Victoire : 450 or, 6 cristaux, +55 expérience."
+    },
+    "camp2": {
+      "name": "Vestiges de l’aurore",
+      "description": "Une troupe aguerrie défend ces ruines. Victoire : 700 or, 10 cristaux, +75 expérience."
+    },
+    "shade-castle": {
+      "name": "Château des Brumes",
+      "description": "Une garnison ennemie garde ses remparts. Assiégez le château pour le conquérir : +150 or par jour et recrutement sur place."
+    },
+    "dawn-castle": {
+      "name": "Château de l’Aurore",
+      "description": "Les tours du Crépuscule dominent la vallée. Conquérez ce château fortifié : +150 or par jour et recrutement sur place."
+    },
+    "army1": {
+      "name": "La bande des Ronces",
+      "description": "Une armée ennemie barre le chemin. Rejoignez sa case pour engager le combat : 450 or, 6 cristaux et 55 XP."
+    },
+    "army2": {
+      "name": "La garde du Crépuscule",
+      "description": "Des créatures évoluées occupent le passage. Défaites cette armée : 700 or, 10 cristaux et 75 XP."
+    },
+    "boss": {
+      "name": "Forteresse du Crépuscule",
+      "description": "Battez le Seigneur du Crépuscule après les deux camps pour rendre sa lumière au royaume."
+    }
+  },
+  "creatures": {
+    "sylve": {
+      "name": "Barbemousse",
+      "description": "Un petit gardien à la barbe verte. Ses racines ralentissent la cible après une attaque."
+    },
+    "sylve-guard": {
+      "name": "Gardien des bois",
+      "description": "Une armure de feuilles et un cœur de chêne. Réduit les dégâts de 25 %."
+    },
+    "sylve-druid": {
+      "name": "Druide émeraude",
+      "description": "Sa barbe lumineuse canalise la forêt. Récupère des points de vie après chaque attaque."
+    },
+    "sylve-ancient": {
+      "name": "Ancêtre de Sylve",
+      "description": "Des bois majestueux, une magie ancienne. Puissant gardien capable de se régénérer."
+    },
+    "sol": {
+      "name": "Pompon solaire",
+      "description": "Sa houppe jaune crépite de magie. Tire des étincelles sur le champ de bataille, avec une pénalité à longue distance."
+    },
+    "sol-flame": {
+      "name": "Crête de braise",
+      "description": "Une crête ardente et des étincelles plus fortes. Ses attaques infligent 20 % de dégâts supplémentaires."
+    },
+    "sol-star": {
+      "name": "Oracle étoilé",
+      "description": "Lit les constellations et absorbe la lumière. Ses attaques restaurent une partie de ses points de vie."
+    },
+    "sol-phoenix": {
+      "name": "Phénix d’aurore",
+      "description": "Couronné de plumes et d’ailes dorées. La forme ultime des Pompons solaires."
+    }
+  }
+}

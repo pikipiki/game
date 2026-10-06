@@ -1,0 +1,180 @@
+/**
+ * Design system — couleurs (Les Royaumes de Pompon)
+ *
+ * 1. --palette-*     Valeurs brutes (ne pas utiliser dans les composants)
+ * 2. --color-*       Tokens sémantiques (à utiliser dans src/styles/*.css)
+ * 3. --bg, --gold…   Alias historiques pour compatibilité
+ */
+
+:root {
+  /* —— Palette —— */
+  --palette-parchment-50: #eeeade;
+  --palette-parchment-100: #e9e3d5;
+  --palette-parchment-200: #e8e1d3;
+  --palette-parchment-300: #e7cf9d;
+
+  --palette-ink-950: #121a24;
+  --palette-ink-900: #151e28;
+  --palette-ink-850: #17212b;
+  --palette-ink-800: #1b2530;
+  --palette-ink-750: #17232c;
+  --palette-ink-700: #232e38;
+  --palette-forest-950: #181b12;
+  --palette-forest-900: #282b20;
+  --palette-forest-800: #4c4933;
+
+  --palette-gold-200: #e2c58d;
+  --palette-gold-300: #d5bc76;
+  --palette-gold-400: #f0d48c;
+  --palette-gold-500: #e8cc8b;
+  --palette-brass-400: #ad945a;
+  --palette-brass-500: #a68e56;
+  --palette-brass-600: #9e814c;
+
+  --palette-crystal-300: #b4a0db;
+  --palette-crystal-400: #9584ba;
+
+  --palette-mana-300: #9bcbb0;
+  --palette-mana-400: #98b6a3;
+  --palette-sylve-400: #9dc7a3;
+  --palette-sylve-muted: #acbdb0;
+  --palette-sylve-caption: #a1b9a9;
+
+  --palette-dusk-300: #ce8c9b;
+  --palette-dusk-400: #e0a3a8;
+  --palette-dusk-500: #c68b93;
+  --palette-dusk-600: #cf8a9d;
+
+  --palette-danger-500: #c68b93;
+  --palette-danger-text: #29171d;
+  --palette-on-accent: #1a1f16;
+  --palette-on-gold: #30291c;
+  --palette-on-crystal: #1b1630;
+
+  --palette-white-03: #ffffff05;
+  --palette-white-05: #ffffff0f;
+  --palette-white-07: #ffffff12;
+  --palette-white-08: #ffffff18;
+  --palette-border-faint: #ffffff0b;
+  --palette-border-gold-soft: #ddc38c4a;
+  --palette-border-gold-mid: #ddc38c55;
+
+  --palette-parchment-ui-900: #211d17;
+  --palette-parchment-ui-800: #302b21;
+  --palette-parchment-ui-700: #3e3527;
+  --palette-parchment-ui-muted: #c0b99e;
+  --palette-parchment-ui-line: #b69a5555;
+
+  /* —— Sémantique (thème aventure / UI active) —— */
+  --color-bg-page: var(--palette-forest-950);
+  --color-bg-chrome: var(--palette-ink-900);
+  --color-bg-panel: var(--palette-ink-850);
+  --color-bg-overlay: var(--palette-ink-750);
+  --color-bg-surface: var(--palette-ink-800);
+  --color-bg-surface-raised: var(--palette-ink-700);
+  --color-bg-inset: var(--palette-white-03);
+
+  --color-text-primary: var(--palette-parchment-50);
+  --color-text-secondary: var(--palette-parchment-200);
+  --color-text-muted: #9aa7ae;
+  --color-text-caption: #899ba2;
+  --color-text-on-accent: var(--palette-on-accent);
+  --color-text-on-gold: var(--palette-on-gold);
+  --color-text-on-crystal: var(--palette-on-crystal);
+  --color-text-on-danger: var(--palette-danger-text);
+
+  --color-border-subtle: var(--palette-white-07);
+  --color-border-default: var(--palette-white-08);
+  --color-border-faint: var(--palette-border-faint);
+  --color-border-brass: var(--palette-brass-400);
+  --color-border-brass-ridge: var(--palette-brass-500);
+  --color-border-gold-soft: var(--palette-border-gold-soft);
+  --color-border-gold-mid: var(--palette-border-gold-mid);
+
+  --color-focus-ring: var(--palette-gold-300);
+  --color-accent-brand: var(--palette-gold-300);
+  --color-accent-highlight: #fff2b7;
+
+  --color-resource-gold: var(--palette-gold-200);
+  --color-resource-crystal: var(--palette-crystal-300);
+  --color-resource-mana: var(--palette-mana-300);
+
+  --color-faction-ally: var(--palette-mana-300);
+  --color-faction-ally-strong: var(--palette-sylve-400);
+  --color-faction-ally-surface: #9dc7a30c;
+  --color-faction-ally-border: #9dc7a33a;
+  --color-faction-ally-icon-bg: #d7ba8310;
+  --color-faction-ally-icon-border: #d7ba833a;
+  --color-faction-ally-caption: var(--palette-sylve-caption);
+
+  --color-faction-enemy: var(--palette-dusk-300);
+  --color-faction-enemy-strong: var(--palette-dusk-400);
+  --color-faction-enemy-surface: #dc9eaa0c;
+  --color-faction-enemy-border: #dc9eaa3a;
+  --color-faction-enemy-icon-bg: #cf8a9d13;
+  --color-faction-enemy-icon-border: #cf8a9d44;
+
+  --color-danger: var(--palette-danger-500);
+  --color-danger-surface: #c68b9318;
+
+  --color-spell-armed-border: #d0b8f0;
+  --color-spell-armed-bg: #68507a;
+
+  --color-map-sky-deep: #16222d;
+  --color-map-sky-mid: #20323c;
+  --color-map-sky-light: #29444a;
+  --color-map-grid-dot: #c4dbb535;
+  --color-region-tag: #b1c9bb;
+  --color-caption-muted: #7f9394;
+  --color-caption-soft: #bfcdc7;
+  --color-icon-btn-bg: var(--palette-white-03);
+  --color-icon-btn-hover-bg: var(--palette-white-07);
+  --color-icon-btn-hover-border: var(--palette-border-gold-mid);
+  --color-map-tools-bg: #17232cdf;
+  --color-sidebar-bg: var(--palette-ink-850);
+  --color-panel-gradient-start: #2b3540aa;
+  --color-panel-gradient-end: #1e2a32;
+  --color-modal-surface: #202b35;
+  --color-modal-surface-hover: #25303d;
+  --color-modal-glow: #9584ba3b;
+  --color-modal-glow-end: #252632;
+  --color-button-crystal: var(--palette-crystal-300);
+  --color-button-crystal-text: var(--palette-on-crystal);
+  --color-button-gold-text: var(--palette-on-gold);
+  --color-button-subtle-text: #d9e0d7;
+  --color-notice-gold-bg: #e4c78e10;
+  --color-notice-gold-border: #e4c78e25;
+  --color-brand-parchment: #e9e3d5;
+  --color-brand-border-soft: var(--palette-border-gold-soft);
+
+  --color-frame-gradient-start: var(--palette-forest-800);
+  --color-frame-gradient-end: var(--palette-forest-900);
+
+  /* —— Alias historiques (préférer --color-*) —— */
+  --bg: var(--color-bg-page);
+  --surface: var(--color-bg-surface);
+  --surface2: var(--color-bg-surface-raised);
+  --line: var(--color-border-subtle);
+  --muted: var(--color-text-muted);
+  --gold: var(--color-accent-brand);
+  --purple: var(--color-resource-crystal);
+  --mint: var(--color-resource-mana);
+
+  --radius: 0px;
+}
+
+/* Thème parchment / cité (surcharges optionnelles en fin de feuille de style) */
+:root.theme-parchment {
+  --color-bg-page: var(--palette-parchment-ui-900);
+  --color-bg-surface: var(--palette-parchment-ui-800);
+  --color-bg-surface-raised: var(--palette-parchment-ui-700);
+  --color-border-subtle: var(--palette-parchment-ui-line);
+  --color-text-muted: var(--palette-parchment-ui-muted);
+  --color-accent-brand: var(--palette-gold-400);
+  --bg: var(--color-bg-page);
+  --surface: var(--color-bg-surface);
+  --surface2: var(--color-bg-surface-raised);
+  --line: var(--color-border-subtle);
+  --muted: var(--color-text-muted);
+  --gold: var(--color-accent-brand);
+}

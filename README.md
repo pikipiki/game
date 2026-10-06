@@ -25,13 +25,13 @@ pnpm check
 Deux options sont préparées :
 
 - **Dépôt Git** : placez le contenu du dossier du projet à la racine du dépôt et connectez-le à Netlify. `netlify.toml` fixe la commande `pnpm build`, le dossier publié `dist`, Node 24 et l’installation avec le verrou pnpm. Si le projet est dans un sous-dossier d’un dépôt, choisissez ce sous-dossier comme **Base directory** dans Netlify.
-- **Déploiement manuel** : décompressez `royaumes-de-pompon-netlify-v1.4.zip` et glissez son dossier `dist` dans Netlify Drop. Ce dossier contient le jeu déjà compilé ; aucune installation n’est nécessaire.
+- **Déploiement manuel** : décompressez `royaumes-de-pompon-netlify-v1.5.zip` et glissez son dossier `dist` dans Netlify Drop. Ce dossier contient le jeu déjà compilé ; aucune installation n’est nécessaire.
 
 La configuration suit la [documentation officielle des dépendances Netlify](https://docs.netlify.com/build/configure-builds/manage-dependencies/) et de [`netlify.toml`](https://docs.netlify.com/build/configure-builds/file-based-configuration/). La compilation locale est vérifiée ; aucun déploiement sur un compte Netlify n’a été effectué.
 
 ## Exploration et ville
 
-Touchez une case révélée ou un objet, puis confirmez **Se déplacer**. Les bâtiments et le héros sélectionnent leur propre case, même si leur silhouette dépasse sur une case voisine. Glissez pour déplacer la carte ; les boutons +/− zooment et le bouton cible recentre la vue sur le héros. La mine donne de l’or et le jardin des cristaux. L’eau et les montagnes sont infranchissables.
+Touchez une case révélée ou un objet, puis confirmez **Se déplacer**. Les bâtiments et le héros sélectionnent leur propre case, même si leur silhouette dépasse sur une case voisine. Glissez pour déplacer la carte ; un pincement à deux doigts permet de zoomer et dézoomer dans les trois scènes, et les boutons +/− zooment et le bouton cible recentre la vue sur le héros. La mine donne de l’or et le jardin des cristaux. L’eau et les montagnes sont infranchissables.
 
 Le **Château des biscuits** possède des remparts de caramel et des couronnes de donuts. La **Maison du grand donut** gère les constructions. La **Cabane de Barbe-Mousse** et la **Pâtisserie de l’Aurore** reprennent la morphologie des deux peluches : corps rond, yeux, nez, barbe végétale et houppe dorée. L’auberge possède un toit en pain au chocolat ; la guilde est une tour de macarons. Toutes ces formes sont des volumes 3D cliquables.
 
@@ -80,9 +80,15 @@ Les parties et préférences sont conservées localement dans le navigateur. Les
 
 **`?preview=1` est un aperçu sans sauvegarde** : recharger cette URL recommence une partie isolée. Jouez sans ce paramètre pour conserver la progression.
 
+## Mobile : gestes et orientation
+
+La carte, les combats et la ville acceptent le pincement à deux doigts. Écartez les doigts pour agrandir, rapprochez-les pour réduire. Le relâchement après un pincement ne sélectionne aucune case ni bâtiment. Le glissement à un doigt déplace la carte/le combat et tourne la ville.
+
+Le passage portrait/paysage recalcule la taille du canvas et la projection 3D sans recharger ni réinitialiser la partie. Les contacts en cours sont annulés pendant ce changement pour éviter un clic involontaire. En paysage sur écran bas, la ville présente ses bâtiments dans une colonne latérale ; les boutons de bataille se répartissent dans l’espace disponible. Les menus longs défilent, leur bouton de fermeture reste accessible et les encoches sont prises en compte.
+
 ## Validation et limites
 
-85 tests Vitest couvrent la campagne gagnable, les conquêtes, le combat, le pointage des 187 cases, les constructions, les stocks hebdomadaires, les tours adverses automatiques, les défenses de garnisons et les sauvegardes. ESLint, TypeScript strict et le build passent. Les transitions de scènes, le son, les constructions et les commandes mobiles ont aussi été vérifiés dans le navigateur.
+92 tests Vitest couvrent la campagne gagnable, les conquêtes, le combat, le pointage des 187 cases, les constructions, les stocks hebdomadaires, les tours adverses automatiques, les défenses de garnisons et les sauvegardes. ESLint, TypeScript strict et le build passent. Les transitions de scènes, le son, les constructions et les commandes mobiles ont aussi été vérifiés dans le navigateur. Les gestes sont testés par séquences de Pointer Events ; l’affichage a été vérifié en portrait et paysage dans le navigateur, sans validation sur un téléphone physique.
 
 Le projet reste une campagne fixe, avec un héros et deux troupes de lignées. Les stocks et constructions sont gérés pour le royaume, pas indépendamment pour chaque château. Les cinq emplacements supplémentaires dessinés dans l’interface ne permettent pas de recruter cinq autres factions. Il n’existe pas de multijoueur ni d’éditeur de cartes.
 

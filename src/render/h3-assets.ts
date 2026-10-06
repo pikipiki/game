@@ -5,14 +5,20 @@ const images = import.meta.glob<string>('../assets/h3/*.png', {
   query: '?inline',
   import: 'default',
 });
-export const h3Image = (name: string) => images[`../assets/h3/${name}`];
+export function h3Image(name: string): string | undefined {
+  return images[`../assets/h3/${name}`];
+}
 const textures = new Map<string, THREE.Texture>();
 /** Shared textures survive scene rebuilds; URLs are embedded in the offline HTML. */
 export function h3Texture(name: string): THREE.Texture {
   if (!textures.has(name)) {
-    const t = new THREE.TextureLoader().load(h3Image(name));
-    t.colorSpace = THREE.SRGBColorSpace;
-    textures.set(name, t);
+    const url = h3Image(name);
+    if (!url) {
+      throw new Error(`Texture H3 introuvable : ${name}`);
+    }
+    const texture = new THREE.TextureLoader().load(url);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    textures.set(name, texture);
   }
   return textures.get(name)!;
 }

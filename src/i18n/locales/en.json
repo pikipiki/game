@@ -1,0 +1,340 @@
+{
+  "meta": {
+    "title": "The Plush Kingdoms — 3D Strategy Game",
+    "description": "A small kingdom, big adventures. Turn-based 3D strategy game."
+  },
+  "locale": {
+    "label": "Language",
+    "fr": "Français",
+    "en": "English"
+  },
+  "skipLink": "Skip to game panel",
+  "errors": {
+    "webglTitle": "This game needs WebGL",
+    "webglBody": "Enable hardware acceleration or use a recent browser to display the realm."
+  },
+  "header": {
+    "brand": "The Plush Kingdoms",
+    "settingsAria": "Save and settings",
+    "soundOn": "Mute sound",
+    "soundOff": "Turn sound on"
+  },
+  "footer": {
+    "navAria": "Main navigation",
+    "explore": "Explore",
+    "army": "Army",
+    "castle": "Citadel",
+    "codex": "Bestiary",
+    "helpAria": "How to play",
+    "endDay": "Day {day} End day",
+    "saveAuto": "Autosave",
+    "savePreview": "Preview without saving",
+    "saveUnavailable": "Save unavailable"
+  },
+  "map": {
+    "worldAria": "Three-dimensional kingdom map",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "recenter": "Recenter camera",
+    "destinations": "Open travel journal",
+    "tacticalGrid": "Movement grid",
+    "retreat": "Retreat",
+    "training": "Training battle",
+    "allyLegend": "Your army",
+    "enemyLegend": "Enemy",
+    "dragTip": "Drag to pan the map · Red banners: enemies",
+    "movement": "{current}/{max} moves",
+    "movementMana": "{moveCurrent}/{moveMax} moves · {manaCurrent}/{manaMax} mana",
+    "campaignTag": "CAMPAIGN · CHAPTER I",
+    "campaignTitle": "Sylve Valley",
+    "campaignSubtitle": "A small kingdom. Big adventures.",
+    "battleSubtitle": "Round {round} · Wait · Counter · Shoot · Cast a spell",
+    "battleTag": "TACTICAL BATTLE",
+    "initiativeBarAria": "Turn order",
+    "combatToolbarAria": "Battle commands"
+  },
+  "sidebar": {
+    "minimapAria": "Kingdom minimap",
+    "heroTitle": "Guardian of Sylve",
+    "armyAria": "Hero army",
+    "unknownLand": "Unexplored land",
+    "terrain": "Terrain",
+    "day": "Day {day}",
+    "week": "Week {week}",
+    "income": "+{gold} gold / day",
+    "journalEnemies": "{count} enemy heroes · Mine: {mine}",
+    "mineEnemy": "enemy",
+    "mineAlly": "allied",
+    "mineNeutral": "neutral"
+  },
+  "creature": {
+    "guardian": "GUARDIAN",
+    "mage": "MAGE",
+    "evolutionReady": "✦ Evolution available",
+    "subtitleMelee": "{xp} XP · Melee",
+    "subtitleRanged": "{xp} XP · Ranged attack",
+    "combatMelee": "Melee",
+    "combatRanged": "Ranged",
+    "or": "or",
+    "units": "units",
+    "statHp": "HP / unit",
+    "statAttack": "Attack",
+    "statDefense": "Defense",
+    "statCombat": "Combat"
+  },
+  "location": {
+    "move": "Move",
+    "enter": "Enter",
+    "viewArmy": "View army",
+    "intercept": "Intercept hero",
+    "fightHero": "Fight hero",
+    "steps": "moves",
+    "stepsUnit": "steps",
+    "castleLevel": "Level {level} · +{gold} gold/day",
+    "lockedBoss": "2 camps required",
+    "eyebrowEnemyArmy": "ENEMY ARMY",
+    "eyebrowEnemyCastle": "ENEMY CASTLE",
+    "eyebrowHere": "YOUR POSITION",
+    "eyebrowDest": "DESTINATION",
+    "eyebrowEnemyHero": "ENEMY HERO",
+    "unknownTitle": "Unexplored land",
+    "forestTitle": "Velvet Woods",
+    "grassTitle": "Sylve Meadow",
+    "unknownDesc": "Move closer to reveal this part of the kingdom.",
+    "defaultDesc": "Sylve still holds many surprises. Explore to unveil the realm.",
+    "enemyHeroDesc": "They act automatically at the end of your day and may capture sites or attack.",
+    "difficultyEasy": "Difficulty: easy",
+    "difficultyMid": "Difficulty: medium",
+    "difficultyHard": "Difficulty: hard",
+    "cleared": "✓ Cleared",
+    "victoryBtn": "Victory",
+    "sealed": "Sealed",
+    "siegeCastle": "Siege the castle",
+    "fight": "Fight",
+    "bannerContinue": "The journey continues",
+    "bannerOwned": "✓ Under your banner"
+  },
+  "modals": {
+    "intro": {
+      "title": "An adventure made for you",
+      "welcome": "WELCOME TO THE PLUSH KINGDOMS",
+      "headline": "The smallest heroes make the greatest legends.",
+      "copy": "Your creatures come alive in a 3D realm. Explore, gather your army, and choose their evolutions.",
+      "featExplore": "Exploration",
+      "featTurn": "Turn-based",
+      "featEvolve": "Evolutions",
+      "enter": "Enter the kingdom",
+      "finePrint": "Solo · No account · Saved on this device"
+    },
+    "settings": {
+      "title": "Keep your adventure",
+      "subtitle": "The game autosaves in this browser after each action.",
+      "summary": "Day {day} · Citadel level {castle}",
+      "stats": "{cleared} territories freed · {troops} creatures",
+      "export": "Export save",
+      "import": "Import save",
+      "audio": "Music and sound",
+      "help": "How to play",
+      "restart": "Start over",
+      "finePrint": "Export lets you move your game between devices. Import replaces the current game after you confirm the file."
+    },
+    "audio": {
+      "title": "Music and sound",
+      "intro": "Music for the realm, town, and battles.",
+      "music": "Music",
+      "effects": "Sound effects",
+      "musicAria": "Music volume",
+      "effectsAria": "Effects volume",
+      "mute": "Mute sound",
+      "unmute": "Turn sound on"
+    },
+    "help": {
+      "title": "Your first journey",
+      "steps": [
+        {
+          "title": "Explore your kingdom",
+          "body": "Tap a tile then Move. Each step costs movement. Fog clears around your hero. Drag to pan the map."
+        },
+        {
+          "title": "Prepare your army",
+          "body": "Capture the mine and crystals for income. Return to the citadel to recruit. End the day to restore moves and 4 mana."
+        },
+        {
+          "title": "Fight and evolve",
+          "body": "In battle, each unit acts by speed. Clear both camps, evolve your creatures, then defeat the Dusk Fortress."
+        }
+      ]
+    },
+    "retreat": {
+      "trainingTitle": "Leave training?",
+      "trainingBody": "You return to your campaign exactly where you left it, with no lost creatures or resources.",
+      "trainingConfirm": "Return to campaign",
+      "trainingCancel": "Keep training",
+      "castleTitle": "Abandon castle defense?",
+      "castleBody": "The town falls to the enemy. Your hero and army elsewhere on the map stay where they are.",
+      "castleConfirm": "Abandon castle",
+      "castleCancel": "Keep defending",
+      "defaultTitle": "Retreat?",
+      "defaultLead": "You leave this castle to the enemy. ",
+      "defaultBody": "Your hero falls back to an allied castle or a safe tile if you have none. You lose 20% of surviving creatures and your moves for the day.",
+      "defaultConfirm": "Retreat hero",
+      "defaultCancel": "Keep fighting"
+    },
+    "army": {
+      "title": "Your company",
+      "subtitle": "Two lineages, unique paths. Tap a stack to choose its future.",
+      "notice": "Victories unlock evolutions. Your army heals between battles; lost units must be recruited again."
+    },
+    "creature": {
+      "title": "Evolution workshop",
+      "lineageSylve": "SYLVE LINEAGE",
+      "lineageSol": "DAWN LINEAGE",
+      "level": "LEVEL",
+      "badge": "{count} creatures · {xp} XP",
+      "chooseEvolution": "CHOOSE AN EVOLUTION",
+      "xpAcquired": "{xp} XP earned",
+      "ultimate": "✦ This stack has reached its ultimate form.",
+      "evolveCost": "{xp} XP required · {gold} gold · {crystals} crystals",
+      "evolveBtn": "Evolve",
+      "finePrint": "Experience is earned in battle. Evolution transforms the whole stack; future recruits share this form."
+    },
+    "codex": {
+      "title": "Pompon bestiary",
+      "subtitle": "Creatures inspired by your two plush friends: Sylve’s green beard and Dawn’s golden crest.",
+      "familySylve": "SYLVE",
+      "familySol": "DAWN",
+      "level": "LEVEL",
+      "ultimate": "✦ Ultimate form",
+      "evolves": "Evolves into {names}"
+    },
+    "destinations": {
+      "title": "Travel journal",
+      "subtitle": "Explore nearby or pick a revealed place to plan your route.",
+      "exploreLabel": "EXPLORE AROUND ME",
+      "stepsAvailable": "{count} steps available",
+      "placesLabel": "REALM LOCATIONS",
+      "unknownPlace": "Place to discover",
+      "revealHint": "Move closer to reveal this place",
+      "here": "You are here",
+      "cleared": "{steps} steps · Cleared",
+      "owned": "{steps} steps · Under your banner",
+      "explore": "{steps} steps · To explore",
+      "directions": [
+        "East",
+        "West",
+        "Southeast",
+        "Northwest",
+        "Northeast",
+        "Southwest"
+      ]
+    },
+    "tactical": {
+      "title": "Tactical moves",
+      "intro": "Pick a destination on this grid or on the 3D board. The Move button confirms your choice.",
+      "gridAria": "Reachable tiles"
+    },
+    "restart": {
+      "title": "A fresh start",
+      "body": "Restarting erases the current game in this browser. Export your save from settings first if you want a backup.",
+      "confirm": "Restart game",
+      "back": "Back to saves"
+    },
+    "victory": {
+      "title": "The valley shines again",
+      "tag": "CAMPAIGN COMPLETE · DAY {day}",
+      "headline": "A kingdom of light.",
+      "copy": "Your plush heroes freed Sylve from Dusk. {troops} heroes return home taller than they left.",
+      "export": "Keep this adventure",
+      "restart": "Begin a new legend"
+    },
+    "closeAria": "Close"
+  },
+  "town": {
+    "screen": {
+      "aria": "Three-dimensional citadel",
+      "realmTag": "POMPON REALM",
+      "goldTitle": "Gold",
+      "crystalsTitle": "Crystals",
+      "audioAria": "Music and sound",
+      "backToMap": "Back to map",
+      "sceneTitle": "✦ THE TREAT CITY ✦",
+      "sceneHint": "Tap a building to enter",
+      "zoomInAria": "Zoom in on town",
+      "zoomOutAria": "Zoom out on town",
+      "recenterAria": "Recenter town",
+      "enterBuildingAria": "Enter {name}",
+      "viewTip": "Drag to rotate · Pinch to zoom",
+      "navAria": "Citadel buildings",
+      "mobileArmyEyebrow": "YOUR ARMY",
+      "mobileArmyTip": "Tap a stack to see its evolutions.",
+      "dayLabel": "DAY {day}",
+      "incomeFooter": "+{gold} gold / day",
+      "garrisonLabel": "HERO ARMY",
+      "nextDay": "Next day"
+    },
+    "webglError": "Enable WebGL to display the town.",
+    "closeBuildingAria": "Close building",
+    "travelRecruitNotice": "Reach an allied castle on the map to recruit.",
+    "keep": {
+      "title": "A city under your banner",
+      "lead": "Its towers protect the valley’s plush folk. Your realm holds {count} castle(s).",
+      "conquer": "Conquer the Mists and Dawn castles on the map. Your catapults breach their walls in battle.",
+      "buildCitadel": "Build in the citadel"
+    },
+    "stat": {
+      "fortifications": "Fortifications",
+      "realmIncome": "Realm income",
+      "goldPerDay": "{gold} gold / day",
+      "level": "Level {level}"
+    },
+    "hall": {
+      "projectsTitle": "Realm construction",
+      "projectsLead": "One building per day. Build dwellings in prerequisite order—they appear in the 3D town.",
+      "buildToday": "A build slot is available today.",
+      "buildDoneToday": "Today’s build is done. Come back tomorrow.",
+      "fortTitle": "Fortifications · Level {level}",
+      "fortBonus": "+50 gold/day, +1 move and +2 max mana. {note}",
+      "upgradeNote": "The star tower requires the Star Sugar Workshop.",
+      "maxLevel": "Maximum level reached",
+      "upgradeCost": "{gold} gold · {crystals} crystals",
+      "upgradeDone": "Complete",
+      "upgradeBtn": "Upgrade fortifications",
+      "readyBuild": "Ready to build",
+      "built": "✓ Built",
+      "costLine": "{gold} gold · {crystals} crystals",
+      "buildBtn": "Build {name}",
+      "homeNote": "Construction happens at your starting citadel."
+    },
+    "recruit": {
+      "perPurchase": "Recruits per purchase",
+      "perPurchaseCount": "3 creatures",
+      "available": "Creatures available",
+      "recruitBtn": "Recruit 3 {name}",
+      "growthFine": "+{growth} recruits each week on day {weekDay}. Recruits match your stack’s evolved form."
+    },
+    "guild": {
+      "title": "Hero’s spellbook",
+      "lead": "{mana} / {maxMana} mana. The hero may cast one spell per round without ending their unit’s turn. Building the guild refills mana.",
+      "boltTitle": "Astral bolt",
+      "boltDesc": "4 mana · {damage} damage to an enemy stack.",
+      "healTitle": "Breath of life",
+      "healDesc": "4 mana · Restores {amount} HP to an allied stack.",
+      "manaRestore": "Ending the day restores 4 mana. The Whispering Spring refills your pool."
+    },
+    "forge": {
+      "title": "Paths of evolution",
+      "lead": "Battles grant experience. Pick a stack to view and unlock its variants.",
+      "codexBtn": "Browse all eight forms"
+    },
+    "heroHall": {
+      "title": "Guardian of Sylve",
+      "lead": "Day {day} · Week {week}. Your hero leads these stacks with {movement}/{maxMove} moves left today."
+    },
+    "unbuilt": {
+      "title": "Building plot",
+      "lead": "{subtitle}. This building will appear on this lot after construction.",
+      "buildAvailable": "Your daily build is available.",
+      "buildBtn": "Build {name}"
+    }
+  }
+}

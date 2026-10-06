@@ -1,0 +1,82 @@
+{
+  "sites": {
+    "home": {
+      "name": "Pompon Citadel",
+      "description": "The heart of your realm. Recruit, build, and plan your next adventures."
+    },
+    "gold": {
+      "name": "Golden honey mine",
+      "description": "Capture the mine: +150 gold each day."
+    },
+    "crystal": {
+      "name": "Crystal garden",
+      "description": "Capture the garden: +3 crystals each day."
+    },
+    "spring": {
+      "name": "Whispering spring",
+      "description": "An enchanted spring restores your mana and heals your whole army."
+    },
+    "camp1": {
+      "name": "Forgotten clearing",
+      "description": "Lost creatures guard a treasure. Victory: 450 gold, 6 crystals, +55 XP."
+    },
+    "camp2": {
+      "name": "Dawn ruins",
+      "description": "A seasoned troop defends these ruins. Victory: 700 gold, 10 crystals, +75 XP."
+    },
+    "shade-castle": {
+      "name": "Mists Castle",
+      "description": "An enemy garrison holds the walls. Siege it to conquer: +150 gold per day and local recruitment."
+    },
+    "dawn-castle": {
+      "name": "Dawn Castle",
+      "description": "Dusk towers loom over the valley. Conquer this fortress: +150 gold per day and local recruitment."
+    },
+    "army1": {
+      "name": "The Bramble Band",
+      "description": "An enemy army blocks the path. Reach their tile to fight: 450 gold, 6 crystals, and 55 XP."
+    },
+    "army2": {
+      "name": "Dusk Guard",
+      "description": "Evolved creatures hold the pass. Defeat this army: 700 gold, 10 crystals, and 75 XP."
+    },
+    "boss": {
+      "name": "Dusk Fortress",
+      "description": "Defeat the Lord of Dusk after both camps to bring light back to the realm."
+    }
+  },
+  "creatures": {
+    "sylve": {
+      "name": "Beardmoss",
+      "description": "A small guardian with a green beard. Roots slow the target after each attack."
+    },
+    "sylve-guard": {
+      "name": "Wood warden",
+      "description": "Leaf armor and an oak heart. Reduces damage taken by 25%."
+    },
+    "sylve-druid": {
+      "name": "Emerald druid",
+      "description": "A glowing beard channels the forest. Recovers HP after each attack."
+    },
+    "sylve-ancient": {
+      "name": "Sylve ancestor",
+      "description": "Majestic woods, ancient magic. A mighty guardian that can regenerate."
+    },
+    "sol": {
+      "name": "Sun plush",
+      "description": "A yellow crest crackles with magic. Fires sparks in battle, with a penalty at long range."
+    },
+    "sol-flame": {
+      "name": "Ember crest",
+      "description": "A blazing crest and stronger sparks. Attacks deal 20% extra damage."
+    },
+    "sol-star": {
+      "name": "Star oracle",
+      "description": "Reads the constellations and absorbs light. Attacks restore some HP."
+    },
+    "sol-phoenix": {
+      "name": "Dawn phoenix",
+      "description": "Crowned with feathers and golden wings. The ultimate sun plush form."
+    }
+  }
+}

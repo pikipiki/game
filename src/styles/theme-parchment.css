@@ -1,0 +1,613 @@
+/* Classic strategy-game framing: engraved brass, dark timber and parchment. */
+:root.theme-parchment {
+  color-scheme: dark;
+}
+body.theme-parchment {
+  background: var(--color-bg-page);
+}
+.header,
+.footer,
+.sidebar,
+.modal {
+  background: linear-gradient(100deg, #2e2a20, #393123 50%, #24231b);
+}
+.header,
+.footer {
+  border-color: #9e814c;
+  box-shadow:
+    inset 0 0 0 2px #161812,
+    inset 0 0 0 3px #6d603d;
+}
+.brand {
+  color: #e8cc8b;
+}
+.button,
+.icon-btn,
+.nav-btn,
+.army-card,
+.location-card,
+.quest-card,
+.day-card,
+.modal,
+.notice,
+.evolution-card,
+.recruit-card,
+.building-card {
+  border-radius: 2px;
+}
+.button,
+.icon-btn {
+  border: 1px solid #9c824c;
+  box-shadow:
+    inset 1px 1px #c2ac7066,
+    inset -1px -1px #090e0b;
+  background: linear-gradient(#494331, #2b2a20);
+}
+.button.gold,
+.button.primary {
+  background: linear-gradient(#bca56c, #847142);
+  color: #181d17;
+  border-color: #e4ce91;
+}
+.location-card,
+.army-card,
+.quest-card,
+.day-card {
+  border: 1px solid #7f714b;
+  background: linear-gradient(120deg, #3c392a, #2c2c21);
+  box-shadow: inset 0 0 0 2px #1d2018;
+}
+.modal-backdrop {
+  z-index: 40;
+}
+.in-town > .header,
+.in-town > .layout,
+.in-town > .footer,
+.in-town > #combat-toolbar {
+  display: none;
+}
+.town-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  background: #282c20;
+  border: 5px ridge #a68e56;
+  color: #f2e2ae;
+  overflow: hidden;
+}
+.town-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  background: linear-gradient(#393b2c, #23261d);
+  border-bottom: 3px ridge #9c8651;
+  min-height: 80px;
+}
+.town-header h1 {
+  font-size: 29px;
+  text-shadow: 2px 2px #111b14;
+  letter-spacing: 0;
+}
+.town-header .eyebrow {
+  font-size: 9px;
+  color: #c5b481;
+}
+.town-header .resources {
+  margin-left: auto;
+}
+.town-header .resource {
+  background: #20261b;
+  border: 1px solid #7e7143;
+  border-radius: 0;
+}
+.town-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  flex: 1;
+  min-height: 0;
+}
+.town-viewport {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  border-right: 4px ridge #9c8651;
+  background: #6f91a1;
+}
+#town-scene {
+  position: absolute;
+  inset: 0;
+}
+#town-scene canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+.town-scene-title {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  text-align: center;
+  font-family: Georgia, serif;
+  font-size: 15px;
+  font-weight: bold;
+  color: #fff2bd;
+  text-shadow: 0 2px 3px #18251b;
+  pointer-events: none;
+}
+.town-scene-title small {
+  display: block;
+  font: 10px sans-serif;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+.town-camera {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  gap: 4px;
+}
+.town-camera .icon-btn {
+  width: 32px;
+  height: 32px;
+  background: #2c392ae3;
+}
+.town-view-tip {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 4px 12px;
+  background: #142316d9;
+  border: 1px solid #a8ad76;
+  color: #ede4ba;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.town-building-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.town-marker {
+  position: absolute;
+  transform: translate(-50%, 0);
+  background: #1f301bd9;
+  border: 1px solid #c2bb80;
+  color: #f7e8b4;
+  font:
+    11px Georgia,
+    serif;
+  padding: 4px 8px;
+  white-space: nowrap;
+  pointer-events: auto;
+  box-shadow: 0 2px 5px #16251877;
+}
+.town-marker.selected {
+  background: #6f632fe8;
+  border-color: #ffe7a1;
+  color: #fff0b0;
+}
+.town-detail {
+  min-height: 0;
+  overflow: auto;
+  background: repeating-linear-gradient(96deg, #2a3023 0, #303426 3px, #2b3023 6px);
+  scrollbar-color: #94814a #263020;
+}
+.town-detail-heading {
+  padding: 18px 20px 15px;
+  border-bottom: 2px ridge #8b7950;
+  background: linear-gradient(#454332, #2b3024);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.town-detail-heading h2 {
+  color: #f1dca1;
+  font-size: 25px;
+}
+.town-detail-heading .eyebrow {
+  color: #bfb788;
+  font-size: 9px;
+}
+.town-detail-content {
+  padding: 15px 19px;
+}
+.town-detail p {
+  color: #c5c2a2;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.town-detail h3 {
+  font-size: 21px;
+  color: #e3d29f;
+}
+.town-crest {
+  text-align: center;
+  padding: 5px 0 14px;
+  color: #c2ad6d;
+  filter: drop-shadow(0 3px 1px #121d15);
+}
+.town-stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #b9a77233;
+  padding: 9px 0;
+  font-size: 11px;
+  color: #c5c3a1;
+}
+.town-stat b {
+  color: #ecd28b;
+}
+.town-cost {
+  text-align: center;
+  padding: 18px 0;
+  font-family: Georgia, serif;
+  font-size: 20px;
+  color: #efd385;
+}
+.town-creature {
+  height: 142px;
+  background: radial-gradient(ellipse, #81985944, transparent 65%);
+  text-align: center;
+}
+.town-creature svg {
+  width: 150px;
+  height: 142px;
+}
+.town-detail .stats-grid {
+  margin: 14px 0;
+  gap: 3px;
+}
+.town-detail .stats-grid span {
+  padding: 9px 4px;
+  background: #20291d;
+}
+.town-detail .stats-grid small {
+  font-size: 8px;
+}
+.town-detail .army-card {
+  padding: 9px 6px;
+  margin: 10px 0;
+}
+.town-detail .army-card .avatar {
+  width: 42px;
+  height: 50px;
+}
+.town-detail .army-info strong {
+  font-size: 13px;
+}
+.town-detail .army-info small {
+  font-size: 8px;
+}
+.town-detail .army-info span {
+  font-size: 9px;
+}
+.town-detail .army-count {
+  font-size: 19px;
+}
+.town-spell {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 15px 0;
+  border-top: 1px solid #9b915c66;
+}
+.town-spell h3 {
+  font-size: 19px;
+}
+.town-spell p {
+  margin: 5px 0;
+}
+.town-building-nav {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  flex-shrink: 0;
+  border-top: 4px ridge #a48d50;
+  border-bottom: 3px ridge #a48d50;
+  background: #20291d;
+}
+.town-building-nav button {
+  padding: 8px 4px;
+  border-right: 2px ridge #887744;
+  background: linear-gradient(#42452f, #2c3223);
+  color: #d1c494;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  justify-content: center;
+}
+.town-building-nav button.selected {
+  background: linear-gradient(#6d6842, #3a4028);
+  box-shadow: inset 0 0 0 1px #e4ce89;
+  color: #fff6d0;
+}
+.town-building-nav button strong {
+  font:
+    12px Georgia,
+    serif;
+}
+.town-building-nav button span {
+  color: #c6b477;
+}
+.town-garrison {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 7px 17px;
+  background: linear-gradient(#3b3e2b, #21291c);
+  flex-shrink: 0;
+  min-height: 74px;
+}
+.town-day {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 145px;
+}
+.town-day span {
+  font:
+    bold 11px Georgia,
+    serif;
+  color: #dbc78a;
+}
+.town-day b {
+  font-size: 11px;
+  color: #bfb88d;
+}
+.town-troops {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+.town-troops > span {
+  font-size: 9px;
+  letter-spacing: 1px;
+  max-width: 64px;
+  color: #c1bc93;
+}
+.town-troops button {
+  position: relative;
+  width: 68px;
+  height: 58px;
+  border: 3px ridge #a69565;
+  background: linear-gradient(#475330, #232b1c);
+}
+.town-troops svg {
+  width: 52px;
+  height: 48px;
+}
+.town-troops b {
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  background: #172317d9;
+  padding: 1px 5px;
+  font-size: 12px;
+  color: #ffdf9a;
+}
+.siege-status {
+  position: absolute;
+  right: 16px;
+  top: 170px;
+  background: #392e22e8;
+  border: 2px ridge #b49c67;
+  padding: 10px 14px;
+  pointer-events: none;
+  font-size: 12px;
+  color: #ffdf9c;
+}
+.siege-status small {
+  display: block;
+  margin-top: 4px;
+  color: #d0c3a1;
+}
+@media (max-width: 900px) {
+  .town-body {
+    grid-template-columns: minmax(0, 1fr) 255px;
+  }
+  .town-header {
+    gap: 10px;
+    padding: 8px 12px;
+    min-height: 65px;
+  }
+  .town-header h1 {
+    font-size: 24px;
+  }
+  .town-header .resource small {
+    display: none;
+  }
+  .town-building-nav button strong {
+    font-size: 10px;
+  }
+  .town-building-nav button {
+    gap: 3px;
+  }
+  .town-scene-title {
+    left: 16px;
+    transform: none;
+    font-size: 11px;
+    text-align: left;
+  }
+}
+@media (max-width: 600px) {
+  .town-screen {
+    border-width: 3px;
+    overflow: auto;
+  }
+  .town-header {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 7px 9px;
+    min-height: 85px;
+  }
+  .town-header h1 {
+    font-size: 22px;
+  }
+  .town-header .resources {
+    margin-left: 0;
+    gap: 6px;
+    order: 3;
+    width: 100%;
+  }
+  .town-header .resource {
+    padding: 3px 8px;
+    min-width: 0;
+    height: 28px;
+  }
+  .town-header .resource svg {
+    width: 16px;
+  }
+  .town-header > .button {
+    margin-left: auto;
+    padding: 8px;
+    font-size: 10px;
+    min-height: 34px;
+  }
+  .town-header > .button svg {
+    width: 14px;
+  }
+  .town-header .eyebrow {
+    font-size: 7px;
+  }
+  .town-body {
+    display: flex;
+    flex-direction: column;
+    flex: none;
+    min-height: 0;
+    order: 1;
+  }
+  .town-viewport {
+    height: 355px;
+    min-height: 355px;
+    flex: none;
+    border-right: 0;
+    border-bottom: 4px ridge #9c8651;
+  }
+  .town-detail {
+    overflow: visible;
+    min-height: 200px;
+    order: 2;
+  }
+  .town-detail-heading {
+    position: static;
+    padding: 12px 16px 9px;
+  }
+  .town-detail-heading h2 {
+    font-size: 23px;
+  }
+  .town-detail-content {
+    padding: 12px 16px;
+  }
+  .town-detail .town-crest {
+    display: none;
+  }
+  .town-marker {
+    font-size: 8px;
+    padding: 3px 5px;
+  }
+  .town-scene-title {
+    top: 10px;
+    left: 10px;
+    font-size: 9px;
+  }
+  .town-scene-title small {
+    font-size: 8px;
+  }
+  .town-camera {
+    top: 8px;
+    right: 8px;
+    gap: 3px;
+  }
+  .town-camera .icon-btn {
+    width: 27px;
+    height: 27px;
+  }
+  .town-view-tip {
+    font-size: 8px;
+    padding: 3px 6px;
+    bottom: 6px;
+  }
+  .town-building-nav {
+    order: 0;
+    display: flex;
+    overflow-x: auto;
+    position: sticky;
+    top: 85px;
+    z-index: 2;
+    border-top: 0;
+    border-bottom-width: 3px;
+    min-height: 48px;
+  }
+  .town-building-nav button {
+    flex: none;
+    min-width: 90px;
+    padding: 6px;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .town-building-nav button strong {
+    font-size: 9px;
+  }
+  .town-building-nav button svg {
+    width: 16px;
+    height: 16px;
+  }
+  .town-garrison {
+    order: 2;
+    padding: 8px;
+    gap: 8px;
+    min-height: 70px;
+  }
+  .town-day {
+    min-width: 65px;
+  }
+  .town-day span,
+  .town-day b {
+    font-size: 9px;
+  }
+  .town-troops {
+    gap: 4px;
+  }
+  .town-troops > span {
+    display: none;
+  }
+  .town-troops button {
+    width: 46px;
+    height: 48px;
+  }
+  .town-troops svg {
+    width: 40px;
+    height: 40px;
+  }
+  .town-garrison .button {
+    font-size: 10px;
+    min-height: 38px;
+    padding: 6px;
+  }
+  .town-garrison .button svg {
+    width: 14px;
+  }
+  .siege-status {
+    top: 135px;
+    right: 8px;
+    padding: 5px 9px;
+    font-size: 10px;
+  }
+  .siege-status small {
+    font-size: 8px;
+  }
+}
+

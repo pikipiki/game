@@ -9,7 +9,7 @@
 | Chemin dans ce dossier | Modification |
 | --- | --- |
 | `src/main.ts` | Interface, constructions, sons, commandes, bascule carte/combat, retour du héros |
-| `src/style.css` | Interface bois/laiton, mise en page et contrôles mobiles |
+| `src/style.css` | Interface bois/laiton, redimensionnement portrait/paysage, menus défilants et encoches mobiles |
 | `src/battle-ui.ts` | Interface tactique, attente, munitions et état des ripostes |
 | `src/audio.ts` | Musiques de carte/ville/combat, bruitages et réglages |
 | `src/game/data.ts` | Arène 17 × 11, voisinage des cases et chemins |
@@ -19,6 +19,7 @@
 | `src/game/battle-controls.ts` | Commandes disponibles, déplacement vers une cible et ordre des tours |
 | `src/game/battle-animation.ts` | Déplacements combinés aux attaques et plans d’animation |
 | `src/game/*.test.ts` | Régressions de combat, constructions, économie, sauvegardes et campagne |
+| `src/render/gestures.ts` et `gestures.test.ts` | Pincement à deux doigts, clic après zoom bloqué, annulation à la rotation et nettoyage des contacts |
 | `src/render/adventure.ts` | Carte continue, objets et héros 3D, recentrage, sélection des objets et cases |
 | `src/render/scene.ts` | Créatures/combats 3D, correction des coordonnées et suppression du vieux canvas en sortie |
 | `src/render/battle-space.ts` | Géométrie et pointage précis des 187 cases |
@@ -33,7 +34,7 @@
 | `tools/import-h3.py` | Convertisseur des surfaces LOD/DEF/PCX du CD |
 | `netlify.toml` et `.node-version` | Compilation et publication Netlify, Node 24 |
 | `public/_redirects` et `public/_headers` | Règles Netlify incluses dans le build pour le déploiement manuel |
-| `package.json` | Version 1.4.0 et outils pnpm/TypeScript/ESLint/Vitest |
+| `package.json` | Version 1.5.0 et outils pnpm/TypeScript/ESLint/Vitest |
 | `README.md`, `ASSETS.md`, `THIRD_PARTY_NOTICES.md`, `LICENSE` | Instructions, provenance et licences |
 | `dist/index.html` et `JOUER.html` | Jeu recompilé, autonome et à jour |
 
@@ -43,11 +44,11 @@
 
 Dans `/Users/sevenone./Documents/Codex/2026-10-05/cre/outputs/` :
 
-- `royaumes-de-pompon-v1.4.zip` : jeu complet, sources et build autonome ;
-- `royaumes-de-pompon-netlify-v1.4.zip` : uniquement le dossier `dist` prêt au déploiement manuel ;
-- `ville-friandises-v1.4.png`, `carte-v1.4.png`, `combat-mobile-v1.4.png`, `ville-mobile-v1.4.png`, `defense-v1.4.png` : captures de vérification.
+- `royaumes-de-pompon-v1.5.zip` : jeu complet, sources et build autonome ;
+- `royaumes-de-pompon-netlify-v1.5.zip` : uniquement le dossier `dist` prêt au déploiement manuel ;
+- `ville-portrait-v1.5.png`, `ville-paysage-v1.5.png`, `combat-portrait-v1.5.png`, `combat-paysage-v1.5.png` : captures de vérification du changement d’orientation.
 
-Les anciennes archives v1.1/v1.2 restent disponibles et ne correspondent pas à la version actuelle.
+Les anciennes archives v1.1/v1.2/v1.4 restent disponibles et ne correspondent pas à la version actuelle.
 
 ## Fichiers de travail
 

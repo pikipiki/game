@@ -1,0 +1,154 @@
+/* Native Heroes III town composition with unobstructed panorama. */
+.town-body {
+  display: block;
+  position: relative;
+}
+.town-viewport {
+  height: 100%;
+  border-right: 0;
+}
+.town-detail {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  bottom: 18px;
+  width: min(360px, calc(100% - 36px));
+  z-index: 12;
+  border: 5px ridge #a68e56;
+  background: #282c20f5;
+  box-shadow: 0 8px 30px #0009;
+}
+.town-detail[hidden] {
+  display: none;
+}
+.town-detail-heading {
+  position: relative;
+  padding-right: 48px;
+}
+.town-panel-close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  font-size: 27px;
+}
+
+.town-camera {
+  z-index: 4;
+}
+
+@media (max-width: 600px) {
+  .town-screen {
+    overflow-y: auto;
+  }
+  .town-body {
+    order: 0;
+    flex: 1;
+    min-height: 280px;
+    display: block;
+  }
+  .town-viewport {
+    height: 100%;
+    min-height: 280px;
+  }
+  .town-detail {
+    position: fixed;
+    inset: auto 8px 8px;
+    width: auto;
+    max-height: 60vh;
+    height: auto;
+    z-index: 15;
+    overflow-y: auto;
+  }
+  .town-detail-heading {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #282c20;
+  }
+  .town-building-nav {
+    position: static;
+    order: 1;
+    top: auto;
+  }
+  .town-garrison {
+    order: 2;
+  }
+  .town-camera {
+    top: 8px;
+    right: 8px;
+  }
+}
+
+@media (min-width: 900px) {
+  .in-battle > .header {
+    display: none;
+  }
+  .in-battle .layout {
+    height: calc(100dvh - 116px);
+  }
+  .in-battle .scene {
+    inset: 110px 0 90px;
+  }
+  .combat-heading {
+    top: 10px;
+  }
+  .combat-heading h1 {
+    font-size: 24px;
+  }
+  .hero-banner {
+    top: 10px;
+  }
+  .initiative-bar {
+    top: 66px;
+    padding-top: 5px;
+  }
+  .in-battle .retreat {
+    top: 42px;
+  }
+  .in-battle .map-tools {
+    bottom: 95px;
+  }
+}
+.town-mobile-army {
+  display: none;
+}
+@media (max-width: 600px) {
+  .town-mobile-army {
+    display: block;
+    order: 2;
+    flex: 1;
+    padding: 18px 14px 10px;
+    background: repeating-linear-gradient(96deg, #2a3023 0, #303426 3px, #2b3023 6px);
+  }
+  .town-mobile-army .army-card {
+    margin-top: 10px;
+  }
+  .town-mobile-army .eyebrow {
+    color: #d9c796;
+  }
+  .town-mobile-army .fine-print {
+    margin-top: 12px;
+    color: #bdc4a3;
+  }
+  .town-garrison {
+    order: 3;
+  }
+}
+
+@media (max-width: 600px) {
+  .combat-heading {
+    left: 17px;
+    right: 86px;
+    transform: none;
+    text-align: left;
+    white-space: normal;
+  }
+  .combat-heading h1 {
+    font-size: 18px;
+    line-height: 1.15;
+  }
+  .combat-heading .eyebrow {
+    justify-content: flex-start;
+  }
+}
+

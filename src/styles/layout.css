@@ -1,0 +1,451 @@
+/* The scene takes the space left by controls, including after device rotation. */
+#app {
+  height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+#app > .header,
+#app > .footer,
+#app > .combat-toolbar {
+  flex-shrink: 0;
+}
+#app > .layout {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}
+#app .world {
+  min-height: 0;
+}
+.scene canvas {
+  touch-action: none;
+}
+.header {
+  padding-top: max(4px, env(safe-area-inset-top));
+  padding-left: max(8px, env(safe-area-inset-left));
+  padding-right: max(8px, env(safe-area-inset-right));
+}
+.footer,
+.combat-toolbar,
+.town-garrison {
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+.modal-backdrop {
+  padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+    max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+}
+.modal {
+  max-height: calc(100dvh - max(16px, env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+.modal-header > button,
+.town-panel-close {
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+}
+.combat-toolbar {
+  position: static;
+  max-height: 45dvh;
+  overflow-y: auto;
+}
+.combat-command-area,
+.combat-active {
+  min-width: 0;
+}
+.combat-commands {
+  flex-wrap: wrap;
+}
+.combat-command {
+  min-width: 44px;
+  flex: 1 0 60px;
+}
+.cast-button {
+  flex: 1 0 120px;
+}
+.town-screen {
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+.town-header,
+.town-building-nav,
+.town-garrison,
+.town-mobile-army {
+  flex-shrink: 0;
+}
+.town-building-nav {
+  min-width: 0;
+  overscroll-behavior: contain;
+}
+.town-detail {
+  max-height: calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+@media (max-width: 899px) {
+  #app > .layout > .sidebar {
+    flex: 0 0 auto;
+    width: 100%;
+    max-height: min(155px, 24dvh);
+    min-height: 0;
+  }
+  #app.in-battle > .layout > .world {
+    min-height: 0;
+  }
+  .combat-commands {
+    display: flex;
+    gap: 4px;
+  }
+  .combat-command {
+    flex: 1 0 44px;
+    min-height: 44px;
+  }
+  .town-camera .icon-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+@media (max-height: 500px) and (min-width: 601px) {
+  #app > .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 210px;
+  }
+  #app > .layout > .sidebar {
+    max-height: none;
+    width: auto;
+  }
+  .footer {
+    height: 58px;
+    min-height: 58px;
+  }
+  .footer nav {
+    flex: 1;
+  }
+  .footer .nav-btn {
+    min-height: 44px;
+  }
+  #app.in-battle > .header {
+    display: none;
+  }
+  #app.in-battle > .layout {
+    display: flex;
+  }
+  #app.in-battle > .layout > .sidebar {
+    display: none;
+  }
+  .combat-heading {
+    top: 6px;
+    left: 14px;
+    right: 90px;
+    transform: none;
+    text-align: left;
+    white-space: normal;
+  }
+  .combat-heading h1 {
+    font-size: 18px;
+    margin-top: 3px;
+  }
+  .combat-heading .eyebrow {
+    justify-content: flex-start;
+    font-size: 7px;
+  }
+  .hero-banner {
+    display: none;
+  }
+  .initiative-bar {
+    top: 49px;
+    left: 14px;
+    right: 14px;
+    padding-top: 3px;
+    gap: 6px;
+  }
+  .initiative-unit {
+    width: 32px;
+    height: 32px;
+  }
+  .initiative-unit .portrait {
+    height: 30px;
+  }
+  .in-battle .retreat {
+    top: 6px;
+    right: 8px;
+    min-height: 44px;
+  }
+  .in-battle .scene {
+    inset: 88px 0 70px;
+  }
+  .in-battle .map-tools {
+    bottom: 74px;
+    left: 8px;
+  }
+  .combat-roster-strip {
+    bottom: 20px;
+    left: 8px;
+    right: 8px;
+    gap: 5px;
+  }
+  .combat-roster-unit {
+    min-width: 135px;
+    padding: 4px;
+  }
+  .combat-roster-unit .portrait {
+    width: 30px;
+    height: 32px;
+  }
+  .combat-event {
+    bottom: 3px;
+    left: 8px;
+    font-size: 9px;
+  }
+  .siege-status {
+    top: 88px;
+    right: 8px;
+    padding: 4px 7px;
+    font-size: 9px;
+    max-width: 280px;
+  }
+  .siege-status small {
+    font-size: 8px;
+  }
+  .combat-toolbar {
+    display: flex;
+    gap: 12px;
+    min-height: 82px;
+    padding: 5px 8px max(5px, env(safe-area-inset-bottom));
+  }
+  .combat-active {
+    flex: 0 0 115px;
+    margin: 0;
+    gap: 6px;
+  }
+  .combat-active > .portrait {
+    width: 30px;
+    height: 34px;
+  }
+  .combat-active > span {
+    display: block;
+  }
+  .combat-active small {
+    display: none;
+  }
+  .combat-active strong {
+    font-size: 13px;
+    margin: 3px 0;
+  }
+  .combat-active b,
+  .combat-instruction {
+    font-size: 9px;
+  }
+  .combat-instruction {
+    margin-bottom: 4px;
+  }
+  .combat-command-area {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+  .combat-commands {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+  .combat-command {
+    min-width: 52px;
+    min-height: 48px;
+    font-size: 9px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .combat-command svg {
+    width: 14px;
+    height: 14px;
+  }
+  .combat-command.armed {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+  .cast-button {
+    flex: 0 0 auto;
+    min-height: 44px;
+    align-self: center;
+  }
+  .town-screen {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 210px;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    overflow: hidden;
+    border-width: 3px;
+  }
+  .town-header {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    flex-wrap: nowrap;
+    gap: 8px;
+    min-height: 54px;
+    padding: 4px 8px;
+    position: static;
+  }
+  .town-header h1 {
+    font-size: 20px;
+  }
+  .town-header .eyebrow {
+    font-size: 7px;
+  }
+  .town-header .resources {
+    order: 0;
+    width: auto;
+    margin-left: auto;
+    margin-right: 0;
+    gap: 4px;
+  }
+  .town-header .resource {
+    padding: 3px 5px;
+  }
+  .town-header > .button {
+    margin-left: 0;
+    min-height: 44px;
+    font-size: 11px;
+    padding: 6px;
+  }
+  .town-body {
+    grid-column: 1;
+    grid-row: 2;
+    height: auto;
+    min-height: 0;
+    order: initial;
+  }
+  .town-viewport {
+    height: 100%;
+    min-height: 0;
+    border: 0;
+  }
+  .town-mobile-army {
+    display: none;
+  }
+  .town-building-nav {
+    grid-column: 2;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: minmax(54px, 1fr);
+    overflow-y: auto;
+    position: static;
+    min-height: 0;
+    border: 2px ridge #9c8651;
+    order: initial;
+  }
+  .town-building-nav button {
+    min-width: 0;
+    min-height: 44px;
+    flex-direction: column;
+    padding: 4px;
+  }
+  .town-building-nav button strong {
+    font-size: 9px;
+  }
+  .town-garrison {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    min-height: 58px;
+    padding: 4px 8px max(4px, env(safe-area-inset-bottom));
+    gap: 8px;
+    order: initial;
+  }
+  .town-troops > span {
+    display: none;
+  }
+  .town-troops button {
+    height: 44px;
+    width: 46px;
+  }
+  .town-day {
+    min-width: 85px;
+  }
+  .town-garrison .button {
+    min-height: 44px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  .town-detail {
+    position: absolute;
+    inset: 4px;
+    width: auto;
+    max-height: none;
+    height: auto;
+  }
+  .town-marker {
+    font-size: 8px;
+  }
+  .town-scene-title {
+    top: 8px;
+    left: 8px;
+    font-size: 9px;
+  }
+  .town-view-tip {
+    font-size: 8px;
+  }
+  .modal-header {
+    padding: 8px 12px;
+  }
+  .modal-body {
+    padding: 12px;
+  }
+}
+#app.in-town > .header,
+#app.in-town > .layout,
+#app.in-town > .footer,
+#app.in-town > .combat-toolbar {
+  display: none;
+}
+.town-detail-heading {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #282c20;
+}
+@media (max-width: 600px) {
+  .town-detail {
+    max-height: 65dvh;
+    bottom: max(8px, env(safe-area-inset-bottom));
+  }
+}
+@media (max-width: 600px) and (max-height: 700px) {
+  .town-screen {
+    overflow: hidden;
+  }
+  .town-body {
+    min-height: 0;
+  }
+  .town-viewport {
+    min-height: 0;
+  }
+  .town-mobile-army {
+    display: none;
+  }
+}
+#app.in-battle {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+.in-battle .combat-toolbar {
+  position: static;
+}
+@media (max-width: 600px) {
+  .town-scene-title {
+    max-width: calc(100% - 132px);
+    font-size: 10px;
+    white-space: normal;
+  }
+}

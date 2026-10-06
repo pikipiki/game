@@ -6,7 +6,7 @@ const files = import.meta.glob<string>('./assets/audio/*.{mp3,wav}', {
   import: 'default',
 });
 export class GameAudio {
-  private music = document.createElement('audio');
+  private readonly music = document.createElement('audio');
   private unlocked = false;
   private track: MusicTrack = 'adventure';
   muted = false;
@@ -14,10 +14,10 @@ export class GameAudio {
   effectsVolume = 0.55;
   constructor() {
     try {
-      const p = JSON.parse(localStorage.getItem('pompon-audio') ?? '{}');
-      this.muted = p.muted === true;
-      this.musicVolume = this.volume(p.music, 0.28);
-      this.effectsVolume = this.volume(p.effects, 0.55);
+      const prefs = JSON.parse(localStorage.getItem('pompon-audio') ?? '{}');
+      this.muted = prefs.muted === true;
+      this.musicVolume = this.volume(prefs.music, 0.28);
+      this.effectsVolume = this.volume(prefs.effects, 0.55);
     } catch {
       /* optional local preferences */
     }
@@ -26,15 +26,20 @@ export class GameAudio {
     this.music.hidden = true;
     this.music.dataset.role = 'game-music';
     document.body.append(this.music);
-    document.addEventListener('pointerdown', () => this.unlock(), { once: true });
+    document.addEventListener('pointerdown', () => this.unlock(), {
+      once: true,
+    });
     document.addEventListener('keydown', () => this.unlock(), { once: true });
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) this.music.pause();
       else this.resume();
     });
   }
-  private volume(n: unknown, fallback: number) {
-    return typeof n === 'number' && Number.isFinite(n) ? Math.max(0, Math.min(1, n)) : fallback;
+  private volume(raw: unknown, fallback: number) {
+    if (typeof raw === 'number' && Number.isFinite(raw)) {
+      return Math.max(0, Math.min(1, raw));
+    }
+    return fallback;
   }
   unlock() {
     this.unlocked = true;
@@ -43,7 +48,10 @@ export class GameAudio {
   setTrack(track: MusicTrack) {
     if (this.track !== track || !this.music.src) {
       this.track = track;
-      this.music.src = files[`./assets/audio/${track}.mp3`];
+      const musicSrc = files[`./assets/audio/${track}.mp3`];
+      if (musicSrc) {
+        this.music.src = musicSrc;
+      }
       this.music.dataset.track = track;
       this.music.load();
     }
@@ -53,9 +61,9 @@ export class GameAudio {
     this.music.volume = this.musicVolume;
     this.music.muted = this.muted;
     if (this.unlocked && !this.muted && !document.hidden && this.music.paused)
-      void this.music.play().catch(() => {
+      {void this.music.play().catch(() => {
         /* retry on the next gesture */
-      });
+      });}
   }
   effect(name: SoundEffect) {
     if (!this.unlocked || this.muted || this.effectsVolume === 0) return;
@@ -69,7 +77,8 @@ export class GameAudio {
     this.resume();
   }
   setVolume(kind: 'music' | 'effects', value: number) {
-    if (kind === 'music') this.musicVolume = this.volume(value, this.musicVolume);
+    if (kind === 'music')
+      {this.musicVolume = this.volume(value, this.musicVolume);}
     else this.effectsVolume = this.volume(value, this.effectsVolume);
     this.save();
     this.resume();
@@ -78,7 +87,11 @@ export class GameAudio {
     try {
       localStorage.setItem(
         'pompon-audio',
-        JSON.stringify({ muted: this.muted, music: this.musicVolume, effects: this.effectsVolume }),
+        JSON.stringify({
+          muted: this.muted,
+          music: this.musicVolume,
+          effects: this.effectsVolume,
+        }),
       );
     } catch {
       /* storage may be unavailable */
