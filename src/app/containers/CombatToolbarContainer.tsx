@@ -18,6 +18,7 @@ export function CombatToolbarContainer() {
       selection,
       Boolean(snap.trainingBackup),
       t,
+      snap.resolving,
     );
   }
 

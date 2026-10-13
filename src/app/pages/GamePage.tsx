@@ -9,6 +9,7 @@ import { ToastContainer } from '@/app/containers/ToastContainer';
 import { TownContainer } from '@/app/containers/TownContainer';
 import { WorldViewContainer } from '@/app/containers/WorldViewContainer';
 import { useAppShellEffects } from '@/app/hooks/useAppShellEffects';
+import { useBattleSettlement } from '@/app/hooks/useBattleSettlement';
 import { useEnemyScheduler } from '@/app/hooks/useEnemyScheduler';
 import { useGameActions } from '@/app/hooks/useGameActions';
 import { useTranslation } from '@/app/hooks/useTranslation';
@@ -18,6 +19,7 @@ export function GamePage() {
   const { t } = useTranslation();
   useGameActions();
   useAppShellEffects();
+  useBattleSettlement();
   useEnemyScheduler();
 
   return (

@@ -35,7 +35,11 @@ export function useSceneController(
     const host = sceneHostRef.current;
     if (!host || !sceneRef.current) return;
     const inBattle = Boolean(snap.game.battle);
-    if (battleModeRef.current === inBattle) return;
+    const scene = sceneRef.current;
+    const wrongScene =
+      (inBattle && scene instanceof AdventureScene) ||
+      (!inBattle && scene instanceof GameScene);
+    if (!wrongScene && battleModeRef.current === inBattle) return;
     sceneRef.current.dispose();
     battleModeRef.current = inBattle;
     try {
@@ -43,12 +47,27 @@ export function useSceneController(
         sceneRef.current = new GameScene(host, onPick);
       } else {
         sceneRef.current = new AdventureScene(host, onPick);
+        const followEnemyId =
+          snap.opponentStrikePause && snap.opponentStrikeBubble
+            ? snap.opponentStrikeBubble.enemyId
+            : null;
+        sceneRef.current.update(snap.game, snap.selected, followEnemyId);
       }
     } catch {
       onWebglError?.();
       sceneRef.current = null;
     }
-  }, [snap.game.battle, sceneHostRef, sceneRef, onPick, onWebglError]);
+  }, [
+    snap.game.battle,
+    snap.game,
+    snap.selected,
+    snap.opponentStrikePause,
+    snap.opponentStrikeBubble,
+    sceneHostRef,
+    sceneRef,
+    onPick,
+    onWebglError,
+  ]);
 
   useEffect(() => {
     const scene = sceneRef.current;
