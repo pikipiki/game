@@ -207,8 +207,17 @@ export function GameProvider({
         });
       }
       gameAudio.effect(soundForGameAction(action));
+      const gameForUi: GameState = deferOpponentBattle
+        ? { ...next, battle: null }
+        : next;
+      const selectionPatch = {
+        game: gameForUi,
+        spell: null,
+        selectedFighter: null,
+        selectedBattleHex: null,
+      };
       const scene = sceneRef.current;
-      if (
+      const animatedAction =
         scene instanceof GameScene &&
         before.game.battle &&
         next.battle &&
@@ -219,20 +228,9 @@ export function GameProvider({
           'defend',
           'enemy',
           'catapult',
-        ].includes(action.type)
-      ) {
-        store.patch({ resolving: true });
-        const combatButtons =
-          '#combat-toolbar button, #combat-chrome button, ' +
-          '.combat-sidebar-roster button, .retreat';
-        const lockedButtons = [
-          ...document.querySelectorAll<HTMLButtonElement>(combatButtons),
-        ];
-        lockedButtons.forEach((button) => {
-          button.disabled = true;
-        });
-        const status = document.querySelector('.combat-instruction');
-        if (status) status.textContent = next.log[0] ?? '';
+        ].includes(action.type);
+      if (animatedAction) {
+        store.patch({ ...selectionPatch, resolving: true });
         try {
           await scene.playAction(before.game, next, action);
         } catch (error) {
@@ -241,21 +239,11 @@ export function GameProvider({
             error,
           );
         } finally {
-          lockedButtons.forEach((button) => {
-            button.disabled = false;
-          });
           store.patch({ resolving: false });
         }
+      } else {
+        store.patch(selectionPatch);
       }
-      const gameForUi: GameState = deferOpponentBattle
-        ? { ...next, battle: null }
-        : next;
-      store.patch({
-        game: gameForUi,
-        spell: null,
-        selectedFighter: null,
-        selectedBattleHex: null,
-      });
       if (strikeAlert && !deferOpponentBattle) {
         toast(strikeAlert, OPPONENT_STRIKE_PAUSE_MS);
       } else if (action.type === 'end-day') {

@@ -720,7 +720,8 @@
 .in-battle .battle-only {
   display: inline-flex;
 }
-.resolving .combat-command {
+.resolving .combat-command,
+.resolving .cast-button.MuiButton-root {
   opacity: 0.4;
   cursor: wait;
 }

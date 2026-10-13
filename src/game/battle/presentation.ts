@@ -195,11 +195,23 @@ function canCastSpell(
   return true;
 }
 
+function spellCommandDisabled(
+  kind: 'bolt' | 'heal',
+  spellsEnabled: boolean,
+  armed: BattleSelection['spell'],
+  locked: boolean,
+): boolean {
+  if (locked) return true;
+  if (armed === kind) return false;
+  return !spellsEnabled;
+}
+
 export function buildCombatToolbarModel(
   game: GameState,
   selection: BattleSelection,
   isTraining: boolean,
   t: TranslateFn,
+  resolving = false,
 ): CombatToolbarModel | null {
   const battle = game.battle!;
   if (battle.result) {
@@ -214,15 +226,16 @@ export function buildCombatToolbarModel(
   const controls = battleControls(game, selection);
   const activeFighter = activeUnit(game)!;
   const creature = getCreature(activeFighter.creature);
-  const moveEnabled = controls.move && !selection.spell;
-  const attackEnabled = controls.attack && !selection.spell;
-  const waitEnabled = controls.canPlay && !activeFighter.waited;
+  const locked = resolving;
+  const moveEnabled = !locked && controls.move && !selection.spell;
+  const attackEnabled = !locked && controls.attack && !selection.spell;
+  const waitEnabled = !locked && controls.canPlay && !activeFighter.waited;
   const spellsEnabled = canCastSpell(game, controls);
   const commands: CombatCommandModel[] = [
     {
       gameAction: 'audio-settings',
       label: '♫',
-      disabled: false,
+      disabled: locked,
       ariaLabel: t('combat.audioAria'),
     },
     {
@@ -239,7 +252,7 @@ export function buildCombatToolbarModel(
     {
       gameAction: 'defend',
       label: t('combat.defend'),
-      disabled: !controls.canPlay,
+      disabled: locked || !controls.canPlay,
     },
     {
       gameAction: 'wait',
@@ -249,21 +262,32 @@ export function buildCombatToolbarModel(
     {
       gameAction: 'bolt',
       label: t('combat.bolt', { cost: SPELL_MANA_COST }),
-      disabled: !spellsEnabled,
+      disabled: spellCommandDisabled(
+        'bolt',
+        spellsEnabled,
+        selection.spell,
+        locked,
+      ),
       className: spellButtonClass(selection.spell, 'bolt'),
       ariaPressed: selection.spell === 'bolt',
     },
     {
       gameAction: 'heal',
       label: t('combat.heal', { cost: SPELL_MANA_COST }),
-      disabled: !spellsEnabled,
+      disabled: spellCommandDisabled(
+        'heal',
+        spellsEnabled,
+        selection.spell,
+        locked,
+      ),
       className: spellButtonClass(selection.spell, 'heal'),
       ariaPressed: selection.spell === 'heal',
     },
   ];
   const isAttackingSiege = battle.siege && !battle.opponent?.town;
   if (isAttackingSiege) {
-    const catapultEnabled = controls.canPlay && battle.siege!.wallHp > 0;
+    const catapultEnabled =
+      !locked && controls.canPlay && battle.siege!.wallHp > 0;
     commands.push({
       gameAction: 'catapult',
       label: t('combat.catapult'),
@@ -282,7 +306,7 @@ export function buildCombatToolbarModel(
     hint: combatInstructionHint(selection, controls),
     commands,
     castSpell: Boolean(selection.spell),
-    castSpellEnabled: controls.cast,
+    castSpellEnabled: !locked && controls.cast,
     castSpellLabel: t('combat.castSpell'),
   };
 }
