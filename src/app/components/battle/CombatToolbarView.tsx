@@ -36,6 +36,11 @@ export function CombatToolbarView({ model }: CombatToolbarViewProps) {
           <strong>{model.activeName}</strong>
           <b>{model.activeSubtitle}</b>
         </span>
+        {model.manaLine !== undefined && (
+          <span className="combat-mana-meter" aria-live="polite">
+            {model.manaLine}
+          </span>
+        )}
       </Box>
       <Box className="combat-command-area">
         <Box className="combat-instruction">{model.hint}</Box>

@@ -1,3 +1,4 @@
+import { SPELL_MANA_COST } from './battle/constants';
 import { initialOpponents, opponentRoute, type OpponentHero } from './opponent';
 import {
   BUILDINGS,
@@ -1004,7 +1005,7 @@ export function reduce(state: GameState, action: Action): GameState {
     );
   } else if (action.type === 'spell') {
     if (
-      game.mana < 4 ||
+      game.mana < SPELL_MANA_COST ||
       battle.spellRound === battle.round ||
       battle.opponent?.armyBackup
     ) {
@@ -1025,7 +1026,7 @@ export function reduce(state: GameState, action: Action): GameState {
     } else {
       return state;
     }
-    game.mana -= 4;
+    game.mana -= SPELL_MANA_COST;
     battle.spellRound = battle.round;
     updateResult(game);
     return game;

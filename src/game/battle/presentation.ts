@@ -1,6 +1,7 @@
 import { getCreature, BATTLE_TILES, BATTLE_WIDTH } from '../data';
 import {
   activeUnit,
+  maxMana,
   reachable,
   unitCount,
   type Fighter,
@@ -111,6 +112,7 @@ export interface CombatToolbarModel {
   summaryText?: string;
   continueLabel?: string;
   castSpellLabel?: string;
+  manaLine?: string;
 }
 
 function rosterUnitModel(
@@ -308,6 +310,10 @@ export function buildCombatToolbarModel(
     castSpell: Boolean(selection.spell),
     castSpellEnabled: !locked && controls.cast,
     castSpellLabel: t('combat.castSpell'),
+    manaLine: t('combat.manaLine', {
+      current: game.mana,
+      max: maxMana(game),
+    }),
   };
 }
 
