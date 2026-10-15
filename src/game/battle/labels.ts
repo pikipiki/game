@@ -1,4 +1,4 @@
-import { activeUnit, type Fighter, type GameState } from '../engine';
+import { activeUnit, maxMana, type Fighter, type GameState } from '../engine';
 import { battleTitle } from '../opponent';
 import { cellName, type BattleSelection } from './controls';
 import {
@@ -101,7 +101,14 @@ export function allyBannerSubtitle(
   hasArmyBackup: boolean,
 ): string {
   if (hasArmyBackup) return LABEL_GARRISON_NO_SPELLS;
-  return `${game.mana} points de mana`;
+  const battle = game.battle;
+  const cap = maxMana(game);
+  const spent =
+    Boolean(battle) && battle!.spellRound === battle!.round;
+  if (spent) {
+    return `${game.mana}/${cap} mana · sort déjà lancé ce tour`;
+  }
+  return `${game.mana}/${cap} mana · sort disponible`;
 }
 
 export function initiativeTurnLabel(game: GameState): string {

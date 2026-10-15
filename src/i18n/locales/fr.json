@@ -71,7 +71,8 @@
     "heal": "Soin · {cost}",
     "catapult": "Catapulte",
     "castSpell": "Lancer le sort",
-    "activeStack": "{count} unités · {hp} PV"
+    "activeStack": "{count} unités · {hp} PV",
+    "manaLine": "Mana {current}/{max}"
   },
   "sidebar": {
     "minimapAria": "Mini-carte du royaume",

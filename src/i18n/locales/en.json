@@ -71,7 +71,8 @@
     "heal": "Heal · {cost}",
     "catapult": "Catapult",
     "castSpell": "Cast spell",
-    "activeStack": "{count} units · {hp} HP"
+    "activeStack": "{count} units · {hp} HP",
+    "manaLine": "Mana {current}/{max}"
   },
   "sidebar": {
     "minimapAria": "Kingdom minimap",

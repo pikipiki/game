@@ -119,6 +119,7 @@ export function WorldView({
       </GameActionButton>
       {combatChrome !== null && (
         <CombatChromeView
+          key={`battle-chrome-${combatChrome.allySubtitle}`}
           initiativeBarAria={labels.initiativeBarAria}
           model={combatChrome}
         />

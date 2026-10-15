@@ -191,7 +191,19 @@
     min-height: 44px;
   }
   #app.in-battle > .header {
+    display: flex;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 10px;
+  }
+  #app.in-battle > .header .brand,
+  #app.in-battle > .header .icon-btn {
     display: none;
+  }
+  #app.in-battle > .header .resources {
+    margin: 0 auto;
+    width: 100%;
+    justify-content: center;
   }
   #app.in-battle > .layout {
     display: flex;
