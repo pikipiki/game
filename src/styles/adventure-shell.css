@@ -342,16 +342,18 @@ body {
   font-weight: 600;
 }
 .footer {
-  height: 72px;
+  height: auto;
   min-height: 72px;
   padding: 5px 10px;
   border: 3px ridge #a68e56;
   border-radius: 0;
   background: linear-gradient(#4b4731, #262c1d);
   gap: 10px;
+  box-sizing: border-box;
 }
 .footer nav {
   gap: 4px;
+  min-width: 0;
 }
 .nav-btn {
   border: 2px ridge #948051;
@@ -359,6 +361,7 @@ body {
   background: #303622;
   min-width: 90px;
   padding: 7px 12px;
+  box-sizing: border-box;
 }
 .nav-btn.active {
   color: #ffe2a0;
@@ -454,7 +457,9 @@ body {
   .layout {
     display: flex;
     flex-direction: column;
-    height: calc(100dvh - 126px);
+    flex: 1;
+    min-height: 0;
+    height: auto;
   }
   .world {
     flex: 1;
@@ -535,21 +540,24 @@ body {
     font-size: 12px !important;
   }
   .footer {
-    padding: 4px;
-    gap: 4px;
+    padding: 4px max(4px, env(safe-area-inset-right)) 4px
+      max(4px, env(safe-area-inset-left));
+    gap: 6px;
+    flex-shrink: 0;
   }
   .footer .save-indicator {
     display: none;
   }
   .nav-btn {
-    min-width: 44px;
-    padding: 6px;
+    min-width: 0;
+    padding: 6px 4px;
   }
   .nav-btn span {
     font-size: 8px;
   }
   .end-day {
-    min-width: 100px;
+    min-width: 0;
+    max-width: 34%;
   }
   .in-battle .sidebar {
     display: none;

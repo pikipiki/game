@@ -1289,18 +1289,22 @@ h3 {
     gap: 8px;
   }
   .footer nav {
-    gap: 1px;
+    gap: 3px;
     flex: 1;
-    justify-content: space-between;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    min-width: 0;
   }
   .nav-btn {
+    flex: 1 1 0;
     flex-direction: column;
-    gap: 5px;
-    padding: 7px 8px;
+    gap: 4px;
+    padding: 6px 4px;
     font-size: 8px;
-    min-width: 47px;
+    min-width: 0;
     border-radius: 8px;
-    min-height: 52px;
+    min-height: 48px;
+    box-sizing: border-box;
   }
   .nav-btn > svg {
     width: 19px;
@@ -1327,9 +1331,10 @@ h3 {
   }
   .end-day b {
     font-size: 10px;
-    max-width: 76px;
-    line-height: 1.4;
+    max-width: 88px;
+    line-height: 1.3;
     margin-top: 2px;
+    white-space: normal;
   }
   .modal-backdrop {
     padding: 12px;

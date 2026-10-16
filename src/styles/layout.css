@@ -24,13 +24,15 @@
 }
 .footer nav {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  align-items: stretch;
+  flex-wrap: nowrap;
   gap: 8px;
+  min-width: 0;
 }
 .footer .MuiButton-root.nav-btn {
   min-width: 0;
-  flex-shrink: 1;
+  flex: 1 1 0;
+  box-sizing: border-box;
 }
 #app:not(.in-battle) .world .retreat.MuiButton-root {
   display: none !important;
@@ -514,6 +516,60 @@
 }
 .in-battle .combat-toolbar {
   position: static;
+}
+
+/* iPhone / mobile portrait: footer nav + end-day without overlap */
+@media (max-width: 899px) {
+  #app:not(.in-battle):not(.in-town) > .footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 6px;
+    height: auto;
+    min-height: 64px;
+    padding-top: 6px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+    padding-left: max(6px, env(safe-area-inset-left));
+    padding-right: max(6px, env(safe-area-inset-right));
+  }
+  #app:not(.in-battle):not(.in-town) > .footer nav {
+    grid-column: 1;
+    flex: 1;
+    flex-wrap: nowrap;
+    gap: 3px;
+    overflow: hidden;
+  }
+  #app:not(.in-battle):not(.in-town) > .footer .MuiButton-root.nav-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+    min-height: 48px;
+    padding: 4px 2px;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 9px;
+    line-height: 1.15;
+    text-transform: none;
+    overflow: hidden;
+  }
+  #app:not(.in-battle):not(.in-town) > .footer .nav-btn .MuiButton-startIcon {
+    margin: 0;
+  }
+  #app:not(.in-battle):not(.in-town) > .footer .nav-btn .MuiButton-startIcon > svg {
+    font-size: 18px;
+  }
+  #app:not(.in-battle):not(.in-town) > .footer .end-day {
+    grid-column: 2;
+    min-width: 0;
+    width: auto;
+    max-width: 118px;
+    min-height: 48px;
+    padding: 6px 8px;
+    flex-shrink: 0;
+  }
+  #app:not(.in-battle):not(.in-town) > .footer .end-day b {
+    max-width: none;
+  }
 }
 @media (max-width: 600px) {
   .town-scene-title {
