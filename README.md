@@ -20,6 +20,12 @@ pnpm check
 
 `pnpm check` exécute ESLint, les tests Vitest, TypeScript strict puis le build Vite (version Netlify découpée). `pnpm build` produit un `dist/` avec HTML, JS et assets séparés (meilleur cache et démarrage). `pnpm build:jouer` compile un fichier unique et met à jour `JOUER.html` pour le jeu hors ligne.
 
+## GitHub Pages
+
+- **URL :** https://pikipiki.github.io/game/
+- **Activation :** Settings → Pages → Source **GitHub Actions** (workflow `Deploy GitHub Pages`).
+- Chaque push sur `main` met à jour le site (`base: './'` dans Vite).
+
 ## Netlify
 
 Deux options sont préparées :
