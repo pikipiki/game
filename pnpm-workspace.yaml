@@ -2,3 +2,15 @@ managePackageManagerVersions: false
 verifyDepsBeforeRun: false
 allowBuilds:
   esbuild: true
+minimumReleaseAgeExclude:
+  - '@playwright/test@1.65.0-alpha-2026-10-22'
+  - '@typescript/typescript-darwin-arm64@7.1.0-dev.20261022.1'
+  - '@typescript/typescript-darwin-x64@7.1.0-dev.20261022.1'
+  - '@typescript/typescript-linux-arm64@7.1.0-dev.20261022.1'
+  - '@typescript/typescript-linux-arm@7.1.0-dev.20261022.1'
+  - '@typescript/typescript-linux-x64@7.1.0-dev.20261022.1'
+  - '@typescript/typescript-win32-arm64@7.1.0-dev.20261022.1'
+  - '@typescript/typescript-win32-x64@7.1.0-dev.20261022.1'
+  - playwright-core@1.65.0-alpha-2026-10-22
+  - playwright@1.65.0-alpha-2026-10-22
+  - typescript@7.1.0-dev.20261022.1
